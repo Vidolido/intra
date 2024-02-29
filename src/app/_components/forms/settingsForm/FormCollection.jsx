@@ -1,5 +1,5 @@
 import Single from './collections/Single';
-import TranslateInput from '../../translateInput/TranslateInput';
+import TranslateInput from './TranslateInput';
 import Limit from './collections/Limit';
 
 const switchRender = (type, item, i) => {
@@ -10,7 +10,7 @@ const switchRender = (type, item, i) => {
 			return (
 				<TranslateInput
 					key={i}
-					submitOnEnter={true}
+					submitOnEnter={false}
 					name={'translations[]'}
 					item={item}
 				/>

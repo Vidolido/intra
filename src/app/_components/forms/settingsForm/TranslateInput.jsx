@@ -8,16 +8,12 @@ const initialState = {
 };
 
 const TranslateInput = ({ submitOnEnter, name, item = null }) => {
-	const [data, setData] = useState(item ? [item] : []);
+	const [data, setData] = useState(item ? item : []);
 	const [language, setLanguage] = useState('en');
 	const [itemByLanguage, setItemByLanguage] = useState(initialState);
 
 	const inputRef = useRef(null);
 	const selectRef = useRef(null);
-
-	useEffect(() => {
-		inputRef.current.value = '';
-	}, [language]);
 
 	useEffect(() => {
 		let filtered = data?.find((n) => n.language === language);
@@ -44,29 +40,32 @@ const TranslateInput = ({ submitOnEnter, name, item = null }) => {
 			setData((prevData) => [...prevData, { language, value: e.target.value }]);
 		}
 	};
-	console.log(data, 'THE data');
+	console.log(data, 'THE data, outside');
+	// console.log(item, 'THE item');
 	return (
 		<label className='flex flex-row gap-2 flex-wrap'>
 			<input
 				type='text'
 				name={name}
 				ref={inputRef}
+				datatype='test'
 				className=' border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
 				onKeyDown={(e) =>
 					e.key === 'Enter' && !submitOnEnter && e.preventDefault()
 				}
-				onChange={(e) => {
-					handleOnChange(e);
-				}}
+				onChange={(e) => handleOnChange(e)}
 				value={!itemByLanguage ? '' : itemByLanguage.value}
 			/>
 
 			<select
-				name='title'
+				name={name + 'lang'}
 				id={name + 'lang'}
 				ref={selectRef}
 				className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'
-				onChange={(e) => setLanguage(e.target.value)}
+				onChange={(e) => {
+					setLanguage(e.target.value);
+					inputRef.current.value = '';
+				}}
 				defaultValue={language}>
 				{languages.map((lang, i) => (
 					<option key={i} value={lang}>

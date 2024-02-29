@@ -1,6 +1,11 @@
 import { useEffect, useRef } from 'react';
 
-const MainInput = ({ collectionType, setCollection }) => {
+// custom hooks
+import { useSettings } from './util/useSettings';
+
+const MainInput = () => {
+	const { setCollection, collectionType } = useSettings();
+
 	const newInputRef = useRef(null);
 
 	useEffect(() => {
@@ -9,20 +14,30 @@ const MainInput = ({ collectionType, setCollection }) => {
 
 	const handleOnClick = (e) => {
 		e.preventDefault();
-		// console.log(newInputRef.current.name);
-		setCollection((prev) => {
-			return {
-				...prev,
-				[collectionType]: [
-					...prev[collectionType],
-					collectionType === 'translatedString'
-						? { language: 'en', value: newInputRef.current.value }
-						: newInputRef.current.value,
-				],
-			};
-		});
+		if (!newInputRef.current.value) return;
+		setCollection(
+			collectionType === 'translatedString'
+				? [{ language: 'en', value: newInputRef.current.value }]
+				: newInputRef.current.value
+		);
+
+		// collectionType === 'translatedString'
+		// 				? [{ language: 'en', value: newInputRef.current.value }]
+		// 				: newInputRef.current.value,
+		// setCollection((prev) => {
+		// 	return {
+		// 		...prev,
+		// 		[collectionType]: [
+		// 			...prev[collectionType],
+		// 			collectionType === 'translatedString'
+		// 				? [{ language: 'en', value: newInputRef.current.value }]
+		// 				: newInputRef.current.value,
+		// 		],
+		// 	};
+		// });
 	};
 	console.log(collectionType, 'in singleInput');
+	console.log(newInputRef.current);
 	return (
 		<label className='flex flex-row gap-2'>
 			<input
