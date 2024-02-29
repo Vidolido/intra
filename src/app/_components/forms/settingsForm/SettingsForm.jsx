@@ -2,49 +2,53 @@
 
 import { useState } from 'react';
 
+import { testAction } from '@/app/_actions/settingsActions';
+
 // components
 import TranslateInput from '../../translateInput/TranslateInput';
 import RadioButtnos from './RadioButtons';
-import SingleInput from './SingleInput';
+import MainInput from './MainInput';
 import FormCollection from './FormCollection';
-
-// const languages = ['en', 'mk', 'gr'];
+import { SubmitButton } from '../submitButton/SubmitButton';
 
 const SettingsForm = () => {
-  // const [data, setData] = useState([]);
-  const [collectionType, setCollectionType] = useState('single');
-  const [collection, setCollection] = useState({
-    single: [],
-    translatedString: [],
-    limit: [],
-  });
+	const [collectionType, setCollectionType] = useState('single');
+	const [collection, setCollection] = useState({
+		single: [],
+		translatedString: [],
+		limit: [],
+	});
 
-  return (
-    <form className='flex w-full flex-col border-2 border-grey-50 border-opacity-60 rounded p-2 bg-gray-50 gap-2'>
-      <span>Title</span>
-      {/* <TranslateInput languages={languages} setData={setData} data={data} /> */}
-      <TranslateInput submitOnEnter={false} />
+	console.log(collection, 'the collection');
 
-      <RadioButtnos
-        collectionType={collectionType}
-        setCollectionType={setCollectionType}
-      />
+	return (
+		<form
+			action={testAction}
+			className='flex w-full flex-col border-2 border-grey-50 border-opacity-60 rounded p-2 bg-gray-50 gap-2'>
+			<span>Title</span>
+			<TranslateInput submitOnEnter={false} name={'title[]'} />
 
-      <SingleInput
-        collectionType={collectionType}
-        setCollection={setCollection}
-      />
+			<RadioButtnos
+				collectionType={collectionType}
+				setCollectionType={setCollectionType}
+			/>
 
-      {collection[collectionType].length > 0 && <hr className='m-5' />}
+			<MainInput
+				collectionType={collectionType}
+				setCollection={setCollection}
+			/>
 
-      {collection[collectionType].length > 0 && (
-        <FormCollection
-          collectionType={collectionType}
-          formCollection={collection}
-        />
-      )}
-    </form>
-  );
+			{collection[collectionType].length > 0 && <hr className='m-5' />}
+
+			{collection[collectionType].length > 0 && (
+				<FormCollection
+					collectionType={collectionType}
+					formCollection={collection}
+				/>
+			)}
+			<SubmitButton />
+		</form>
+	);
 };
 
 export default SettingsForm;
