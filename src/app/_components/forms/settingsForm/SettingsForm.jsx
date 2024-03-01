@@ -16,7 +16,7 @@ import { SubmitButton } from '../submitButton/SubmitButton';
 
 const SettingsForm = () => {
   const { collection, collectionType } = useSettings();
-
+  // za da proveram ushte ednash
   // console.log(extractedData, 'extractedData in SETTINGSFORM');
   // const [extractedData, setExtractedData] = useState([]);
   // const [childData, setChildData] = useState(null);
