@@ -1,9 +1,6 @@
 export const settingsState = {
-	extractedData: {
-		dataFor: '',
-		data: null,
-	},
-	groupName: [],
+	language: 'en',
+	groupName: {},
 	collection: {
 		single: [],
 		translatedString: [],

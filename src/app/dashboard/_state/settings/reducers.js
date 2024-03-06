@@ -1,44 +1,20 @@
-import { ADD_GROUPNAME, SET_COLLECTION_TYPE } from './actionTypes';
+import { ADD_GROUPNAME, SET_LANGUAGE } from './actionTypes';
 
-export const settingsReducer = (draft, action) => {
+export const settingsReducer = (state, action) => {
 	switch (action.type) {
-		// case EXTRACT_DATA: {
-		// 	const { dataFor, data } = action.payload;
-		// 	draft[dataFor].push(data);
-		// 	break;
-		// }
-		// return { ...draft, extractedData: action.payload };
-		case ADD_GROUPNAME:
-			console.log(action.payload, 'u reducer');
-			// draft.groupName.push(action.payload);
-			break;
-		// return {
-		// 	...draft,
-		// 	groupName: [...action.payload],
-		// };
-
-		case SET_COLLECTION_TYPE:
-			draft.collectionType = action.payload;
-			draft.collection = initialState.collection;
-			break;
-
-		// case SET_COLLECTION:
-		// 	return {
-		// 		...draft,
-		// 		collection: {
-		// 			...draft.collection,
-		// 			[draft.collectionType]: [
-		// 				...draft.collection[draft.collectionType],
-		// 				action.payload,
-		// 			],
-		// 		},
-		// 	};
-		// case ADD_TO_COLLECTION:
-		// 	return {
-		// 		...draft,
-		// 		collection: [...draft.collection, action.payload],
-		// 	};
+		case SET_LANGUAGE: {
+			return { ...state, language: action.payload };
+		}
+		case ADD_GROUPNAME: {
+			return {
+				...state,
+				groupName: {
+					...state.groupName,
+					[action.payload.language]: action.payload.value,
+				},
+			};
+		}
 		default:
-			return draft;
+			state;
 	}
 };
