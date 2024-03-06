@@ -1,11 +1,10 @@
 'use client';
 
-// import { useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
+import { useImmerReducer } from 'use-immer';
 
-// import { testAction } from '@/app/_actions/settingsActions';
-
-// custom hooks
-import { useSettings } from './util/useSettings';
+import { settingsReducer } from '@/app/dashboard/_state/settings/reducers';
+import { settingsState } from '@/app/dashboard/_state/settings/initState';
 
 // components
 import TranslateInput from './TranslateInput';
@@ -13,68 +12,69 @@ import RadioButtnos from './RadioButtons';
 import MainInput from './MainInput';
 import FormCollection from './FormCollection';
 import { SubmitButton } from '../submitButton/SubmitButton';
+import {
+	ADD_GROUPNAME,
+	EXTRACT_DATA,
+	SET_COLLECTION_TYPE,
+} from '@/app/dashboard/_state/settings/actionTypes';
 
 const SettingsForm = () => {
-  const { collection, collectionType } = useSettings();
-  // za da proveram ushte ednash
-  // console.log(extractedData, 'extractedData in SETTINGSFORM');
-  // const [extractedData, setExtractedData] = useState([]);
-  // const [childData, setChildData] = useState(null);
+	const [state, dispatch] = useImmerReducer(settingsReducer, settingsState);
 
-  // useEffect(() => {
-  //   setExtractedData(titleRef.current?.getData());
-  // });
+	const extractData = useCallback(
+		(data) => {
+			console.log('extracting data: ', data);
+			const newGroupName = state.groupName;
 
-  // const handleGetData = () => {
-  //   if (titleRef.current) {
-  //     setExtractedData(titleRef.current.getData());
-  //   }
-  // };
+			// console.log(newGroupName.find((e) => e === data));
+			// if (!newGroupName.find((e) => e === data)) {
+			dispatch({
+				type: ADD_GROUPNAME,
+				payload: data,
+			});
+			// }
+			// dispatch({ type: EXTRACT_DATA, payload: { dataFor: 'groupName', data } });
+		},
+		[state.groupName, dispatch]
+	);
 
-  // useEffect(() => {
-  //   handleGetData();
-  // }, []);
-  // useEffect(() => {
-  //   console.log();
-  //   titleRef.current.getData();
-  // }, [titleRef]);
+	const handleCollectionType = useCallback(
+		(e) => {
+			dispatch({ type: SET_COLLECTION_TYPE, payload: e.target.value });
+		},
+		[dispatch]
+	);
+	// console.log(state);
+	return (
+		<form className='flex w-full flex-col border-2 border-grey-50 border-opacity-60 rounded p-2 bg-gray-50 gap-2'>
+			<span>Title</span>
 
-  // const hanldeChange = () => {
-  //   console.log(titleRef.current.getData());
-  // };
+			<TranslateInput
+				submitOnEnter={false}
+				name={'groupName'}
+				// setExtractedData={setExtractedData}
+				item={state.groupName}
+				extractData={extractData}
+			/>
 
-  // console.log(extractedData, 'in SettingsForm');
-  // console.log(groupName, 'the groupName');
+			<RadioButtnos
+				collectionType={state.collectionType}
+				handleCollectionType={handleCollectionType}
+			/>
 
-  // useEffect(() => {
-  //   if (extractedData) setGroupName(extractedData);
-  // }, [extractedData]);
-  // console.log(extractedData, 'the extraction');
-  return (
-    <form className='flex w-full flex-col border-2 border-grey-50 border-opacity-60 rounded p-2 bg-gray-50 gap-2'>
-      <span>Title</span>
+			{/* <MainInput /> */}
 
-      <TranslateInput
-        submitOnEnter={false}
-        name={'title'}
-        // setExtractedData={setExtractedData}
-      />
+			{/* {collection[collectionType].length > 0 && <hr className='m-5' />} */}
 
-      <RadioButtnos />
-
-      <MainInput />
-
-      {collection[collectionType].length > 0 && <hr className='m-5' />}
-
-      {/* {collection[collectionType].length > 0 && (
+			{/* {collection[collectionType].length > 0 && (
         <FormCollection
           collectionType={collectionType}
           formCollection={collection}
         />
       )} */}
-      {collection[collectionType].length > 0 && <SubmitButton />}
-    </form>
-  );
+			{/* {collection[collectionType].length > 0 && <SubmitButton />} */}
+		</form>
+	);
 };
 
 export default SettingsForm;

@@ -1,79 +1,91 @@
 'use client';
-import { createContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from 'react';
+import { produce } from 'immer';
 
 import {
-  ADD_GROUPNAME,
-  EXTRACT_DATA,
-  SET_COLLECTION,
-  SET_COLLECTION_TYPE,
+	ADD_GROUPNAME,
+	EXTRACT_DATA,
+	SET_COLLECTION,
+	SET_COLLECTION_TYPE,
 } from './actionTypes';
+import { useImmerReducer } from 'use-immer';
 
 const initialState = {
-  extractedData: {
-    dataFor: '',
-    data: null,
-  },
-  groupName: [],
-  collection: {
-    single: [],
-    translatedString: [],
-    limit: [],
-  },
-  checked: false,
-  collectionType: 'single',
-  language: 'en',
-  buttonTypes: {
-    single: 'Simple Values',
-    translatedString: 'Translations',
-    limit: 'Limits',
-  },
+	extractedData: {
+		dataFor: '',
+		data: null,
+	},
+	groupName: [],
+	collection: {
+		single: [],
+		translatedString: [],
+		limit: [],
+	},
+	checked: false,
+	collectionType: 'single',
+	language: 'en',
 };
 
 export const SettingsContext = createContext();
+export const DispatchContext = createContext();
 
-export const settingsReducer = (state, action) => {
-  switch (action.type) {
-    case EXTRACT_DATA:
-      return { ...state, extractedData: action.payload };
-    case ADD_GROUPNAME:
-      return {
-        ...state,
-        groupName: [...action.payload],
-      };
-    case SET_COLLECTION_TYPE:
-      // Треба предупредвање пред промена "Ќе ги избришете сите внесени полиња, сигрни ли сте дека сакате да продолжите?"
-      return {
-        ...state,
-        collectionType: action.payload,
-        collection: initialState.collection,
-      };
-    case SET_COLLECTION:
-      return {
-        ...state,
-        collection: {
-          ...state.collection,
-          [state.collectionType]: [
-            ...state.collection[state.collectionType],
-            action.payload,
-          ],
-        },
-      };
-    case ADD_TO_COLLECTION:
-      return {
-        ...state,
-        collection: [...state.collection, action.payload],
-      };
-    default:
-      return state;
-  }
+export const exSettingsReducer = (draft, action) => {
+	switch (action.type) {
+		case EXTRACT_DATA: {
+			const { dataFor, data } = action.payload;
+			draft[dataFor].push(data);
+			break;
+		}
+		// return { ...draft, extractedData: action.payload };
+		case ADD_GROUPNAME:
+			return {
+				...draft,
+				groupName: [...action.payload],
+			};
+
+		case SET_COLLECTION_TYPE:
+			draft.collectionType = action.payload;
+			draft.collection = initialState.collection;
+			break;
+
+		case SET_COLLECTION:
+			return {
+				...draft,
+				collection: {
+					...draft.collection,
+					[draft.collectionType]: [
+						...draft.collection[draft.collectionType],
+						action.payload,
+					],
+				},
+			};
+		case ADD_TO_COLLECTION:
+			return {
+				...draft,
+				collection: [...draft.collection, action.payload],
+			};
+		default:
+			return draft;
+	}
 };
 
 export const SettingsContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(settingsReducer, initialState);
+	const [state, dispatch] = useImmerReducer(exSettingsReducer, initialState);
+	// const [state, dispatch] = useReducer(settingsReducer, initialState);
 
-  return (
-    <SettingsContext.Provider value={{ ...state, dispatch }}>
-      {children}
-    </SettingsContext.Provider>
-  );
+	return (
+		<SettingsContext.Provider value={state}>
+			<DispatchContext.Provider value={dispatch}>
+				{children}
+			</DispatchContext.Provider>
+		</SettingsContext.Provider>
+	);
+};
+
+export const useSettingsContext = () => {
+	return useContext(SettingsContext);
+};
+
+export const useSettingsDispatch = () => {
+	return useContext(DispatchContext);
 };
