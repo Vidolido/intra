@@ -12,9 +12,9 @@ const staticState = {
 		gr: 'Παρακαλώ προσθέστε ένα όνομα για την ομάδα',
 	},
 	addButtonLabels: {
-		en: 'Add group',
-		mk: 'Додади група',
-		gr: 'Προσθήκη grupou',
+		en: 'Add',
+		mk: 'Додади',
+		gr: 'Προσθήκη',
 	},
 	editButtonLabels: {
 		en: 'Edit',
@@ -25,6 +25,11 @@ const staticState = {
 		en: 'Save',
 		mk: 'Зачувај',
 		gr: 'Αποθηκεύστε',
+	},
+	deleteButtonLabels: {
+		en: 'Delete',
+		mk: 'Избриши',
+		gr: 'Διαγραφή',
 	},
 	topHeading: {
 		en: 'Create New Setting',

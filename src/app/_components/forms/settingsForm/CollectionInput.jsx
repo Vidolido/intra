@@ -3,13 +3,19 @@ import {
 	useSettingsContext,
 	useSettingsDispatchContext,
 } from '@/app/dashboard/_state/settings/settingsContext';
+import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
+import { useSearchParams } from 'next/navigation';
 import { memo, useCallback, useEffect, useRef } from 'react';
 
 const CollectionInput = () => {
+	const { addButtonLabels } = useStaticSettingsContext();
 	const { collectionType } = useSettingsContext();
 	const dispatch = useSettingsDispatchContext();
 
 	const inputRef = useRef(null);
+
+	const searchParams = useSearchParams();
+	const lang = searchParams.get('lang');
 
 	useEffect(() => {
 		inputRef.current.value = '';
@@ -54,7 +60,7 @@ const CollectionInput = () => {
 			<button
 				className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'
 				onClick={handleClick}>
-				Add
+				{addButtonLabels[lang]}
 			</button>
 		</label>
 	);

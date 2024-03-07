@@ -1,6 +1,9 @@
 'use client';
+import { useSearchParams } from 'next/navigation';
+import { useRef } from 'react';
 
 // state/constext
+import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
 import { useSettingsContext } from '@/app/dashboard/_state/settings/settingsContext';
 
 // components
@@ -14,8 +17,7 @@ import CollectionInput from './CollectionInput';
 import Single from './collections/Single';
 import LanguageInput from './collections/LanguageInput';
 import Limit from './collections/Limit';
-import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
-import { useSearchParams } from 'next/navigation';
+// components
 
 const SettingsForm = () => {
 	const { placeholder, topHeading, editHeading } = useStaticSettingsContext();
@@ -24,9 +26,11 @@ const SettingsForm = () => {
 	const searchParams = useSearchParams();
 	const lang = searchParams.get('lang');
 
+	const headingRef = useRef(null);
+
 	return (
 		<>
-			<h2 className='mb-2'>{topHeading[lang]}</h2>
+			us
 			<ParentForm>
 				{Object.keys(groupName).length === 0 ? (
 					<>

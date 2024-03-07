@@ -5,7 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 const Single = ({ item }) => {
-	const { editButtonLabels, saveButtonLabels } = useStaticSettingsContext();
+	const { editButtonLabels, saveButtonLabels, deleteButtonLabels } =
+		useStaticSettingsContext();
 
 	const [canEdit, setCanEdit] = useState(false);
 
@@ -28,17 +29,16 @@ const Single = ({ item }) => {
 	};
 
 	return (
-		<div className='flex flex-row justify-between'>
+		<div className='flex flex-row justify-between gap-2'>
 			<input
 				disabled={!canEdit && 'disabled'}
-				className='inline-block w-3/4 rounded px-3 py-1 focus:outline-none border-2 border-slate-100 border-opacity-90'
+				className='inline-block w-3/4 rounded px-3 py-1 hover:border-red-200 focus:outline-none border-2 border-slate-100 border-opacity-90'
 				defaultValue={item}
 			/>
-
 			{!canEdit && (
 				<button
 					onClick={handleEdit}
-					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
+					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded '>
 					{editButtonLabels[lang]}
 				</button>
 			)}
@@ -46,7 +46,7 @@ const Single = ({ item }) => {
 			{canEdit && (
 				<button
 					onClick={handleSave}
-					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
+					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>
 					{saveButtonLabels[lang]}
 				</button>
 			)}
@@ -54,7 +54,7 @@ const Single = ({ item }) => {
 			<button
 				onClick={handleDelete}
 				className='bg-slate-500 hover:bg-slate-700 text-white font-bold py-1 px-2 rounded'>
-				Delete
+				{deleteButtonLabels[lang]}
 			</button>
 		</div>
 	);
