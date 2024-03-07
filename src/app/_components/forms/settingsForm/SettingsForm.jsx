@@ -11,29 +11,64 @@ import RadioButtons from './RadioButtons';
 import FormCollection from './FormCollection';
 import CollectionInput from './CollectionInput';
 
+import Single from './collections/Single';
+import LanguageInput from './collections/LanguageInput';
+import Limit from './collections/Limit';
+import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
+import { useSearchParams } from 'next/navigation';
+
 const SettingsForm = () => {
+	const { placeholder, topHeading, editHeading } = useStaticSettingsContext();
 	const { groupName, collectionType, collection } = useSettingsContext();
 
-	return (
-		<ParentForm>
-			{Object.keys(groupName).length === 0 ? (
-				<>
-					<AddGroupName />
-				</>
-			) : (
-				<>
-					<h3>Edit Group Name: </h3>
-					<EditGroupName groupName={groupName} />
-				</>
-			)}
-			{Object.keys(groupName).length > 0 && <hr className='m-5' />}
-			{Object.keys(groupName).length > 0 && (
-				<RadioButtons collectionType={collectionType} />
-			)}
+	const searchParams = useSearchParams();
+	const lang = searchParams.get('lang');
 
-			{collection[collectionType] && <CollectionInput />}
-			{collection[collectionType] && <FormCollection />}
-		</ParentForm>
+	return (
+		<>
+			<h2 className='mb-2'>{topHeading[lang]}</h2>
+			<ParentForm>
+				{Object.keys(groupName).length === 0 ? (
+					<>
+						<h3>{placeholder[lang]}</h3>
+						<AddGroupName />
+					</>
+				) : (
+					<>
+						<h3>{editHeading[lang]} </h3>
+						<EditGroupName groupName={groupName} />
+					</>
+				)}
+				{Object.keys(groupName).length > 0 && <hr className='m-5' />}
+				{Object.keys(groupName).length > 0 && (
+					<RadioButtons collectionType={collectionType} />
+				)}
+
+				{collectionType && <CollectionInput />}
+				{collectionType && (
+					<FormCollection>
+						{collection[collectionType] &&
+							collection[collectionType].map((item, index) => {
+								switch (collectionType) {
+									case 'single': {
+										return <Single key={index} item={item} index={index} />;
+									}
+									case 'translatedString': {
+										return (
+											<LanguageInput key={index} item={item} index={index} />
+										);
+									}
+									case 'limit': {
+										return <Limit key={index} item={item} index={index} />;
+									}
+									default:
+										return;
+								}
+							})}
+					</FormCollection>
+				)}
+			</ParentForm>
+		</>
 	);
 };
 

@@ -10,14 +10,17 @@ import {
 	ADD_GROUPNAME,
 	SET_LANGUAGE,
 } from '@/app/dashboard/_state/settings/actionTypes';
+import { useSearchParams } from 'next/navigation';
 
 const AddGroupName = () => {
-	const { languages, placeholder, addButtonLabels } =
-		useStaticSettingsContext();
+	const { languages, addButtonLabels } = useStaticSettingsContext();
 	const state = useSettingsContext();
 	const dispatch = useSettingsDispatchContext();
 
-	const { language } = state;
+	const searchParams = useSearchParams();
+	const language = searchParams.get('lang');
+
+	// const { language } = state;
 
 	const inputRef = useRef(null);
 	const selectRef = useRef(null);
@@ -44,8 +47,6 @@ const AddGroupName = () => {
 
 	return (
 		<label className='flex flex-col gap-2'>
-			<h3>{placeholder[language]}</h3>
-
 			<input
 				ref={inputRef}
 				type='text'

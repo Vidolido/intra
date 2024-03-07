@@ -1,16 +1,21 @@
+'use client';
 import { memo, useCallback, useEffect, useState } from 'react';
 
 // state/constext
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
 import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
 import { ADD_GROUPNAME } from '@/app/dashboard/_state/settings/actionTypes';
+import { useSearchParams } from 'next/navigation';
 
 const EditGroupName = ({ groupName }) => {
 	const { languages, editButtonLabels, saveButtonLabels } =
 		useStaticSettingsContext();
 
 	const dispatch = useSettingsDispatchContext();
+	const searchParams = useSearchParams();
 
+	const lang = searchParams.get('lang');
+	console.log(lang, ' THE LANG');
 	// local state
 	const [language, setLanguage] = useState(null);
 	const [canEdit, setCanEdit] = useState(false);
@@ -60,7 +65,7 @@ const EditGroupName = ({ groupName }) => {
 				<>
 					<input
 						type='text'
-						className=' border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
+						className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
 						value={input}
 						onChange={(e) => setInput(e.target.value)}
 					/>
@@ -77,7 +82,7 @@ const EditGroupName = ({ groupName }) => {
 				</>
 			)}
 			{!canEdit && (
-				<h2 className=' border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'>
+				<h2 className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'>
 					{groupName[language]}
 				</h2>
 			)}
@@ -85,14 +90,14 @@ const EditGroupName = ({ groupName }) => {
 				<button
 					onClick={handleEdit}
 					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
-					{editButtonLabels[language]}
+					{editButtonLabels[lang]}
 				</button>
 			)}
 			{canEdit && (
 				<button
 					onClick={handleSave}
 					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
-					{saveButtonLabels[language]}
+					{saveButtonLabels[lang]}
 				</button>
 			)}
 		</label>

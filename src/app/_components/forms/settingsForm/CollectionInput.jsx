@@ -6,10 +6,8 @@ import {
 import { memo, useCallback, useEffect, useRef } from 'react';
 
 const CollectionInput = () => {
-	const state = useSettingsContext();
+	const { collectionType } = useSettingsContext();
 	const dispatch = useSettingsDispatchContext();
-
-	const { collectionType } = state;
 
 	const inputRef = useRef(null);
 
@@ -34,8 +32,6 @@ const CollectionInput = () => {
 	const handleClick = useCallback(
 		(e) => {
 			e.preventDefault();
-			// console.log(e.key);
-			//   console.log(inputRef);
 			if (!inputRef.current.value) return;
 
 			dispatch({
@@ -64,4 +60,4 @@ const CollectionInput = () => {
 	);
 };
 
-export default memo(CollectionInput);
+export default CollectionInput;
