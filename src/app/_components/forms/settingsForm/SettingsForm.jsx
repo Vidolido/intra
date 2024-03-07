@@ -12,30 +12,29 @@ import FormCollection from './FormCollection';
 import CollectionInput from './CollectionInput';
 
 const SettingsForm = () => {
-  const state = useSettingsContext();
-  const { groupName, collectionType, collection } = state;
+	const { groupName, collectionType, collection } = useSettingsContext();
 
-  return (
-    <ParentForm>
-      {Object.keys(groupName).length === 0 ? (
-        <>
-          <AddGroupName />
-        </>
-      ) : (
-        <>
-          <h3>Edit Group Name: </h3>
-          <EditGroupName groupName={groupName} />
-        </>
-      )}
-      {Object.keys(groupName).length > 0 && <hr className='m-5' />}
-      {Object.keys(groupName).length > 0 && (
-        <RadioButtons collectionType={collectionType} />
-      )}
+	return (
+		<ParentForm>
+			{Object.keys(groupName).length === 0 ? (
+				<>
+					<AddGroupName />
+				</>
+			) : (
+				<>
+					<h3>Edit Group Name: </h3>
+					<EditGroupName groupName={groupName} />
+				</>
+			)}
+			{Object.keys(groupName).length > 0 && <hr className='m-5' />}
+			{Object.keys(groupName).length > 0 && (
+				<RadioButtons collectionType={collectionType} />
+			)}
 
-      {collection[collectionType] && <CollectionInput />}
-      {collection[collectionType] && <FormCollection />}
-    </ParentForm>
-  );
+			{collection[collectionType] && <CollectionInput />}
+			{collection[collectionType] && <FormCollection />}
+		</ParentForm>
+	);
 };
 
 export default SettingsForm;

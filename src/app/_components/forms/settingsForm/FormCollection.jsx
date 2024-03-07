@@ -1,27 +1,25 @@
 import {
-  useSettingsContext,
-  useSettingsDispatchContext,
+	useSettingsContext,
+	useSettingsDispatchContext,
 } from '@/app/dashboard/_state/settings/settingsContext';
+import { useState } from 'react';
+import LanguageInput from './LanguageInput';
 
 const FormCollection = () => {
-  const state = useSettingsContext();
-  const dispatch = useSettingsDispatchContext();
+	const { collectionType, collection } = useSettingsContext();
+	const dispatch = useSettingsDispatchContext();
 
-  const { collectionType, collection } = state;
+	const [canEdit, setCanEdit] = useState(false);
 
-  console.log(collection, collectionType, 'these two');
-  return (
-    <div className='flex flex-col gap-2'>
-      {collection[collectionType] &&
-        collection[collectionType].map((item, i) => (
-          <h3
-            className=' border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
-            key={i}>
-            {item}
-          </h3>
-        ))}
-    </div>
-  );
+	// console.log(collection, collectionType, 'these two');
+	return (
+		<div className='flex flex-col gap-2'>
+			{collection[collectionType] &&
+				collection[collectionType].map((item, i) => (
+					<LanguageInput key={i} item={item} />
+				))}
+		</div>
+	);
 };
 
 export default FormCollection;
