@@ -30,7 +30,7 @@ const SettingsForm = () => {
 
 	return (
 		<>
-			us
+			<h3>{topHeading[lang]}</h3>
 			<ParentForm>
 				{Object.keys(groupName).length === 0 ? (
 					<>

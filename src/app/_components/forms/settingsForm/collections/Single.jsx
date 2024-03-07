@@ -1,12 +1,15 @@
 'use client';
 
+import { DELETE_FROM_COLLECTION } from '@/app/dashboard/_state/settings/actionTypes';
+import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-const Single = ({ item }) => {
+const Single = ({ item, index }) => {
 	const { editButtonLabels, saveButtonLabels, deleteButtonLabels } =
 		useStaticSettingsContext();
+	const dispatch = useSettingsDispatchContext();
 
 	const [canEdit, setCanEdit] = useState(false);
 
@@ -24,9 +27,13 @@ const Single = ({ item }) => {
 		setCanEdit(false);
 	};
 
-	const handleDelete = (e) => {
-		e.preventDefault();
-	};
+	const handleDelete = useCallback(
+		(e) => {
+			e.preventDefault();
+			dispatch({ type: DELETE_FROM_COLLECTION, payload: index });
+		},
+		[dispatch, index]
+	);
 
 	return (
 		<div className='flex flex-row justify-between gap-2'>
