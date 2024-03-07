@@ -30,13 +30,14 @@ export const settingsReducer = (draft, action) => {
 		}
 		case DELETE_FROM_COLLECTION: {
 			// const test = draft.collection[draft.collectionType];
-			draft.collection[draft.collectionType] = draft.collection[
-				draft.collectionType
-			].splice(action.payload, 1);
+			// draft.collection[draft.collectionType] = draft.collection[
+			// 	draft.collectionType
+			// ].splice(action.payload, 1);
 			// draft.collection[draft.collectionType] = draft.collection[
 			// 	draft.collectionType
 			// ].filter((item) => item !== action.payload);
 			// console.log(test);
+			draft.collection[draft.collectionType].splice(action.payload, 1);
 			break;
 		}
 		default:
