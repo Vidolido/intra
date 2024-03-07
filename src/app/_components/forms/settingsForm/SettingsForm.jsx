@@ -1,78 +1,58 @@
 'use client';
+import { useCallback, useState } from 'react';
 
-// import { useEffect, useRef, useState } from 'react';
-
-// import { testAction } from '@/app/_actions/settingsActions';
-
-// custom hooks
-import { useSettings } from './util/useSettings';
-
-// components
-import TranslateInput from './TranslateInput';
-import RadioButtnos from './RadioButtons';
-import MainInput from './MainInput';
-import FormCollection from './FormCollection';
-import { SubmitButton } from '../submitButton/SubmitButton';
+import {
+  addGroupName,
+  initialState,
+} from '@/app/dashboard/_state/settings/initState';
+import GroupName from './GroupName';
+import { produce } from 'immer';
 
 const SettingsForm = () => {
-  const { collection, collectionType } = useSettings();
-  // za da proveram ushte ednash
-  // console.log(extractedData, 'extractedData in SETTINGSFORM');
-  // const [extractedData, setExtractedData] = useState([]);
-  // const [childData, setChildData] = useState(null);
+  const [state, setState] = useState(initialState);
+  const { groupName, collectionType, collection } = state;
 
-  // useEffect(() => {
-  //   setExtractedData(titleRef.current?.getData());
-  // });
-
-  // const handleGetData = () => {
-  //   if (titleRef.current) {
-  //     setExtractedData(titleRef.current.getData());
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   handleGetData();
-  // }, []);
-  // useEffect(() => {
-  //   console.log();
-  //   titleRef.current.getData();
-  // }, [titleRef]);
-
-  // const hanldeChange = () => {
-  //   console.log(titleRef.current.getData());
-  // };
-
-  // console.log(extractedData, 'in SettingsForm');
-  // console.log(groupName, 'the groupName');
-
-  // useEffect(() => {
-  //   if (extractedData) setGroupName(extractedData);
-  // }, [extractedData]);
-  // console.log(extractedData, 'the extraction');
+  const handleAddGroupName = useCallback(
+    (input, language) => {
+      // console.log(item.target);
+      console.log(input.current.value, language.current.value);
+      setState((state) =>
+        produce(state, (draft) => {
+          draft.groupName = {
+            ...draft.groupName,
+            [language.current.value]: input.current.value,
+          };
+        })
+      );
+      //   setState((state) =>
+      //     addGroupName(state, {
+      //       language: language.current.value,
+      //       value: input.current.value,
+      //     })
+      //   );
+      //   setState((state) => ({
+      //     ...state,
+      //     groupName: addGroupName(state, {
+      //       language: language.current.value,
+      //       value: input.current.value,
+      //     }),
+      //   }));
+      //   setState((state) => {
+      //   addGroupName(state, {
+      //     language: language.current.value,
+      //     value: input.current.value,
+      //   });
+      //   });
+    },
+    [state.groupName]
+  );
+  console.log(state);
   return (
     <form className='flex w-full flex-col border-2 border-grey-50 border-opacity-60 rounded p-2 bg-gray-50 gap-2'>
-      <span>Title</span>
-
-      <TranslateInput
-        submitOnEnter={false}
-        name={'title'}
-        // setExtractedData={setExtractedData}
+      <GroupName
+        groupName={groupName}
+        handleAddGroupName={handleAddGroupName}
       />
-
-      <RadioButtnos />
-
-      <MainInput />
-
-      {collection[collectionType].length > 0 && <hr className='m-5' />}
-
-      {/* {collection[collectionType].length > 0 && (
-        <FormCollection
-          collectionType={collectionType}
-          formCollection={collection}
-        />
-      )} */}
-      {collection[collectionType].length > 0 && <SubmitButton />}
     </form>
   );
 };
