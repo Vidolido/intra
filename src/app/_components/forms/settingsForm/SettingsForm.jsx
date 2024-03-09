@@ -20,59 +20,59 @@ import Limit from './collections/Limit';
 // components
 
 const SettingsForm = () => {
-  const { placeholder, topHeading, editHeading } = useStaticSettingsContext();
-  const { groupName, collectionType, collection } = useSettingsContext();
+	const { placeholder, topHeading, editHeading } = useStaticSettingsContext();
+	const { groupName, collectionType, collection } = useSettingsContext();
 
-  const searchParams = useSearchParams();
-  const lang = searchParams.get('lang');
+	const searchParams = useSearchParams();
+	const lang = searchParams.get('lang');
 
-  const headingRef = useRef(null);
-  //   console.log(collection);
-  return (
-    <>
-      <h3>{topHeading[lang]}</h3>
-      <ParentForm>
-        {Object.keys(groupName).length === 0 ? (
-          <>
-            <h3>{placeholder[lang]}</h3>
-            <AddGroupName />
-          </>
-        ) : (
-          <>
-            <h3>{editHeading[lang]} </h3>
-            <EditGroupName groupName={groupName} />
-          </>
-        )}
-        {Object.keys(groupName).length > 0 && <hr className='m-5' />}
-        {Object.keys(groupName).length > 0 && (
-          <RadioButtons collectionType={collectionType} />
-        )}
+	const headingRef = useRef(null);
+	//   console.log(collection);
+	return (
+		<>
+			<h3>{topHeading[lang]}</h3>
+			<ParentForm>
+				{Object.keys(groupName).length === 0 ? (
+					<>
+						<h3>{placeholder[lang]}</h3>
+						<AddGroupName />
+					</>
+				) : (
+					<>
+						<h3>{editHeading[lang]} </h3>
+						<EditGroupName groupName={groupName} />
+					</>
+				)}
+				{Object.keys(groupName).length > 0 && <hr className='m-5' />}
+				{Object.keys(groupName).length > 0 && (
+					<RadioButtons collectionType={collectionType} />
+				)}
 
-        {collectionType && <CollectionInput />}
-        {collectionType && (
-          <FormCollection>
-            {collection[collectionType] &&
-              collection[collectionType].map((data) => {
-                // console.log(data, 'item in map');
-                switch (collectionType) {
-                  case 'single': {
-                    return <Single key={data?.id} data={data} />;
-                  }
-                  case 'translatedString': {
-                    return <LanguageInput key={data?.id} data={data} />;
-                  }
-                  case 'limit': {
-                    return <Limit key={data?.id} data={data} />;
-                  }
-                  default:
-                    return;
-                }
-              })}
-          </FormCollection>
-        )}
-      </ParentForm>
-    </>
-  );
+				{collectionType && <CollectionInput />}
+				{collectionType && (
+					<FormCollection>
+						{collection[collectionType] &&
+							collection[collectionType].map((data) => {
+								// console.log(data, 'item in map');
+								switch (collectionType) {
+									case 'single': {
+										return <Single key={data?.id} data={data} />;
+									}
+									case 'translatedString': {
+										return <LanguageInput key={data?.id} data={data} />;
+									}
+									case 'limit': {
+										return <Limit key={data?.id} data={data} />;
+									}
+									default:
+										return;
+								}
+							})}
+					</FormCollection>
+				)}
+			</ParentForm>
+		</>
+	);
 };
 
 export default SettingsForm;
