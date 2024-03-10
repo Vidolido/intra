@@ -12,11 +12,14 @@ import { RESET } from '@/app/dashboard/_state/settings/actionTypes';
 
 // components
 import { SubmitButton } from '../submitButton/SubmitButton';
+import { useRef } from 'react';
 
 const ParentForm = ({ children }) => {
 	const state = useSettingsContext();
 	const dispatch = useSettingsDispatchContext();
 	const router = useRouter();
+
+	const formRef = useRef(null);
 
 	const handleOnKeyDown = (e) => {
 		if (e.key === 'Enter') {
@@ -28,9 +31,11 @@ const ParentForm = ({ children }) => {
 	const sendState = createSetting.bind(null, state);
 	return (
 		<form
+			ref={formRef}
 			action={() => {
 				sendState();
 				dispatch({ type: RESET, payload: settingsState });
+				formRef.current?.reset();
 				router.push('/dashboard/settings');
 			}}
 			onKeyDown={handleOnKeyDown}

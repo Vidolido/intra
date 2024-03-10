@@ -47,7 +47,7 @@ const SettingsForm = ({ data }) => {
 		[dispatch]
 	);
 	useEffect(() => {
-		if (data) {
+		if (data !== undefined) {
 			setFormState(data);
 		} else {
 			dispatch({ type: RESET });
@@ -83,10 +83,12 @@ const SettingsForm = ({ data }) => {
 										return <Single key={data?.id || data?._id} data={data} />;
 									}
 									case 'translatedString': {
-										return <LanguageInput key={data?.id} data={data} />;
+										return (
+											<LanguageInput key={data?.id || data?._id} data={data} />
+										);
 									}
 									case 'limit': {
-										return <Limit key={data?.id} data={data} />;
+										return <Limit key={data?.id || data?._id} data={data} />;
 									}
 									default:
 										return;

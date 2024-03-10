@@ -24,9 +24,10 @@ export default memo(function LanguageInput({ data }) {
 	const [input, setInput] = useState('');
 
 	useEffect(() => {
-		let localState = Object.entries(data.item)[0];
-		setInput(localState[1]);
-		setLanguage(localState[0]);
+		console.log(data);
+		// let localState = Object.entries(data.item)[0];
+		// setInput(localState[1]);
+		// setLanguage(localState[0]);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
