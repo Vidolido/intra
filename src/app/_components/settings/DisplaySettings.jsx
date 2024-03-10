@@ -1,16 +1,17 @@
+'use server';
 import Link from 'next/link';
 
-export default function DisplaySettings({ setting }) {
+import DeleteButton from './DeleteButton';
+
+export default async function DisplaySettings({ setting }) {
 	const lang = 'en';
 
 	// console.log(setting, 'the setting');
 	return (
-		<section className='flex flex-col min-w-[300px] min-h-[400px] border-2 border-grey-50 border-opacity-60 p-2 rounded'>
+		<section className='flex flex-col min-w-[300px] min-h-[400px] max-h-[600px] border-2 border-grey-50 border-opacity-60 p-2 rounded'>
 			<h2 className='text-2xl font-bold'>{setting?.groupName['en']}</h2>
 			<ul className='px-2 py-1 mt-4 mb-5'>
 				{setting?.collection.map((collectionItem) => {
-					console.log(collectionItem);
-
 					return (
 						<li key={collectionItem._id}>
 							{collectionItem.single && (
@@ -37,9 +38,7 @@ export default function DisplaySettings({ setting }) {
 			</ul>
 			<div className='flex flex-col justify-end h-full'>
 				<div className='flex justify-between'>
-					<button className='bg-slate-500 hover:bg-slate-700 text-white font-bold py-[0.3rem] px-4 rounded'>
-						Delete
-					</button>
+					<DeleteButton settings={setting.collection} />
 					{/* href-от знае да направи проблеми, треба да проверам неколку опции
 					за да видам од кои причини се случува. */}
 					<Link

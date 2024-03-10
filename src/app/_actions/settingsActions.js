@@ -1,9 +1,12 @@
 'use server';
+import { revalidateTag } from 'next/cache';
 
 import { connect } from '@/../conn';
-import Settings from '@/app/_models/(settings)/Settings';
-import { revalidatePath } from 'next/cache';
 
+// moddel
+import Settings from '@/app/_models/(settings)/Settings';
+
+// <<helper functions
 function readyForInsert(data) {
 	if (!data.collection[data.collectionType]) return;
 	const collection = data.collection[data.collectionType].map(
@@ -18,15 +21,27 @@ function readyForInsert(data) {
 		return acc;
 	}, []);
 }
+// helper functions>>
 
 export async function createSetting(formData) {
 	const payload = readyForInsert(formData);
-	// console.log(payload, 'the payload');
 	try {
 		await connect();
 		await Settings.insertMany(payload);
-		revalidatePath('/dashboard/settings');
+		revalidateTag('collection');
 	} catch (error) {
 		throw Error('Could  not add setting to database: ' + error);
+	}
+}
+
+export async function deleteSettings(data) {
+	// console.log(data, 'FROM ACTION');
+	const groupName = data[0].groupName;
+	try {
+		await connect();
+		await Settings.deleteMany({ groupName });
+		revalidateTag('collection');
+	} catch (error) {
+		throw Error('Could not delete a setting from database: ' + error);
 	}
 }

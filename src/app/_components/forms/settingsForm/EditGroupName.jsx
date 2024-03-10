@@ -24,6 +24,7 @@ const EditGroupName = ({ groupName }) => {
 		let localState = Object.entries(groupName)[0];
 		setInput(localState[1]);
 		setLanguage(localState[0]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleOnLangChange = (e) => {

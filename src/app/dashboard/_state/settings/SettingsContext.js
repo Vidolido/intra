@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext } from 'react';
 import { useImmerReducer } from 'use-immer';
 
 import { settingsState } from './initState';

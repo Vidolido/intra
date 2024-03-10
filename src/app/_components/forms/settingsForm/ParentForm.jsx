@@ -3,13 +3,16 @@ import { useRouter } from 'next/navigation';
 
 // state/context
 import { useSettingsContext } from '@/app/dashboard/_state/settings/settingsContext';
+import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
 import { SubmitButton } from '../submitButton/SubmitButton';
 
 // server actions
 import { createSetting } from '@/app/_actions/settingsActions';
+import { RESET } from '@/app/dashboard/_state/settings/actionTypes';
 
 const ParentForm = ({ children }) => {
 	const state = useSettingsContext();
+	const dispatch = useSettingsDispatchContext();
 	const router = useRouter();
 
 	const handleOnKeyDown = (e) => {
@@ -22,8 +25,10 @@ const ParentForm = ({ children }) => {
 	const sendState = createSetting.bind(null, state);
 	return (
 		<form
-			action={() => {
+			action={(e) => {
 				sendState();
+				// dispatch({ type: RESET });
+				console.log(e.form, 'the form');
 				router.push('/dashboard/settings');
 			}}
 			onKeyDown={handleOnKeyDown}

@@ -7,6 +7,7 @@ export const connect = async () => {
 	const dbName = process.env.MONGO_DB_NAME;
 
 	const connectionString = `mongodb+srv://${dbUser}:${dbPass}@${dbURL}/${dbName}?retryWrites=true&w=majority`;
+	// const connectionString = process.env.MONGO_URI;
 	try {
 		await mongoose.connect(connectionString);
 		const connection = mongoose.connection;

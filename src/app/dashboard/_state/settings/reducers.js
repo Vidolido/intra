@@ -3,9 +3,12 @@ import {
 	ADD_TO_COLLECTION,
 	DELETE_FROM_COLLECTION,
 	EDIT_COLLECTION_ITEM,
+	RESET,
 	SET_COLLECTION_TYPE,
 	SET_LANGUAGE,
 } from './actionTypes';
+
+import { settingsState } from './initState';
 
 export const settingsReducer = (draft, action) => {
 	switch (action.type) {
@@ -55,6 +58,10 @@ export const settingsReducer = (draft, action) => {
 				),
 				1
 			);
+			break;
+		}
+		case RESET: {
+			draft = settingsState;
 			break;
 		}
 		default:
