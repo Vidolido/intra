@@ -34,6 +34,8 @@ const SettingsForm = ({ data }) => {
 	const setFormState = useCallback(
 		(data) => {
 			const { groupName, collection, collectionType } = data;
+
+			// Овде сакав да менувам
 			const payload = {
 				groupName,
 				collection: {
