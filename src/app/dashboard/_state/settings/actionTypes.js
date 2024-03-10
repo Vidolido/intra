@@ -1,5 +1,6 @@
 export const SET_LANGUAGE = 'SET_LANGUAGE';
 
+export const SET_STATE = 'SET_STATE';
 export const ADD_GROUPNAME = 'ADD_GROUPNAME';
 export const SET_COLLECTION_TYPE = 'SET_COLLECTION_TYPE';
 export const ADD_TO_COLLECTION = 'ADD_TO_COLLECTION';

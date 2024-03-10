@@ -1,17 +1,20 @@
 import mongoose, { Schema } from 'mongoose';
 
-const translatedStringsSchema = new mongoose.Schema(
-	{
-		language: String,
-		value: String,
-	},
-	{ _id: false, default: undefined }
-);
+// const translatedStringsSchema = new mongoose.Schema(
+// 	{
+// 		language: String,
+// 		value: String,
+// 	},
+// 	{ _id: false, default: undefined }
+// );
 
 const settingsSchema = new mongoose.Schema({
 	groupName: {
 		type: Schema.Types.Mixed,
 		// default: undefined,
+	},
+	collectionType: {
+		type: String,
 	},
 	single: {
 		type: String,

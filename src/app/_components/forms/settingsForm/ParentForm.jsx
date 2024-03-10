@@ -1,14 +1,17 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
+// server actions
+import { createSetting } from '@/app/_actions/settingsActions';
+
 // state/context
 import { useSettingsContext } from '@/app/dashboard/_state/settings/settingsContext';
 import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
-import { SubmitButton } from '../submitButton/SubmitButton';
-
-// server actions
-import { createSetting } from '@/app/_actions/settingsActions';
+import { settingsState } from '@/app/dashboard/_state/settings/initState';
 import { RESET } from '@/app/dashboard/_state/settings/actionTypes';
+
+// components
+import { SubmitButton } from '../submitButton/SubmitButton';
 
 const ParentForm = ({ children }) => {
 	const state = useSettingsContext();
@@ -25,10 +28,9 @@ const ParentForm = ({ children }) => {
 	const sendState = createSetting.bind(null, state);
 	return (
 		<form
-			action={(e) => {
+			action={() => {
 				sendState();
-				// dispatch({ type: RESET });
-				console.log(e.form, 'the form');
+				dispatch({ type: RESET, payload: settingsState });
 				router.push('/dashboard/settings');
 			}}
 			onKeyDown={handleOnKeyDown}

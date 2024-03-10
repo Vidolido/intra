@@ -6,9 +6,8 @@ import {
 	RESET,
 	SET_COLLECTION_TYPE,
 	SET_LANGUAGE,
+	SET_STATE,
 } from './actionTypes';
-
-import { settingsState } from './initState';
 
 export const settingsReducer = (draft, action) => {
 	switch (action.type) {
@@ -23,11 +22,11 @@ export const settingsReducer = (draft, action) => {
 			draft.collectionType = action.payload;
 
 			// Да го средам ова на друг начин
-			draft.collection = {
-				single: [],
-				translatedString: [],
-				limit: [],
-			};
+			// draft.collection = {
+			// 	single: [],
+			// 	translatedString: [],
+			// 	limit: [],
+			// };
 			break;
 		}
 		case ADD_TO_COLLECTION: {
@@ -60,8 +59,20 @@ export const settingsReducer = (draft, action) => {
 			);
 			break;
 		}
+		case SET_STATE: {
+			draft.groupName = action.payload.groupName;
+			draft.collection = action.payload.collection;
+			draft.collectionType = action.payload.collectionType;
+			break;
+		}
 		case RESET: {
-			draft = settingsState;
+			draft.groupName = {};
+			draft.collection = {
+				single: [],
+				translatedString: [],
+				limit: [],
+			};
+			draft.collectionType = '';
 			break;
 		}
 		default:

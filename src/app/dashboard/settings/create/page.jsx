@@ -1,17 +1,11 @@
-// state/context
-import { SettingsContextProvider } from '../../_state/settings/settingsContext';
-
 //components
 import SettingsForm from '@/app/_components/forms/settingsForm/SettingsForm';
 
-const Create = () => {
+export default function Create() {
 	return (
 		<div className='w-1/2 px-2'>
-			{/* <SettingsContextProvider> */}
-			<SettingsForm />
-			{/* </SettingsContextProvider> */}
+			<h3>Create a new Setting</h3>
+			<SettingsForm data={undefined} />
 		</div>
 	);
-};
-
-export default Create;
+}

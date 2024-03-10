@@ -8,7 +8,7 @@ export async function getData() {
 		next: { tags: ['collection'], revalidate: 10 },
 	});
 	if (!res.ok) {
-		throw new Error('Failed to fetch data: ' + res.error);
+		throw new Error('Failed to fetch data: ' + res.statusText);
 	}
 
 	return await res.json();

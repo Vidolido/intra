@@ -16,6 +16,7 @@ function readyForInsert(data) {
 		let newItem = {
 			groupName: data.groupName,
 			[data.collectionType]: currentValue,
+			collectionType: data.collectionType,
 		};
 		acc.push(newItem);
 		return acc;

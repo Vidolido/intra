@@ -35,7 +35,6 @@ export default memo(function Single({ data }) {
 
 	const handleSave = useCallback(
 		(e) => {
-			// console.log(e, 'THE E');
 			if (!inputRef.current.value) return;
 
 			if (!inputRef.current.value && e.key === 'Enter') {
@@ -64,7 +63,6 @@ export default memo(function Single({ data }) {
 	);
 
 	const handleOnChange = (e) => {
-		// console.log(e);
 		if (!inputRef.current.value) return;
 
 		if (!inputRef.current.value && e.key === 'Enter') {
@@ -87,7 +85,7 @@ export default memo(function Single({ data }) {
 				ref={inputRef}
 				disabled={!canEdit && 'disabled'}
 				className='inline-block w-3/4 rounded px-3 py-1 hover:border-red-200 focus:outline-none border-2 border-slate-100 border-opacity-90'
-				defaultValue={data?.item}
+				defaultValue={data?.item || data[data.collectionType]}
 				onChange={handleOnChange}
 				onKeyDown={handleKeyDown}
 			/>

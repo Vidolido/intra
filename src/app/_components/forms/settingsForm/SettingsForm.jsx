@@ -1,10 +1,14 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import { useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 
 // state/constext
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
-import { useSettingsContext } from '@/app/dashboard/_state/settings/settingsContext';
+import {
+	useSettingsContext,
+	useSettingsDispatchContext,
+} from '@/app/dashboard/_state/settings/settingsContext';
+import { RESET, SET_STATE } from '@/app/dashboard/_state/settings/actionTypes';
 
 // components
 import AddGroupName from './AddGroupName';
@@ -19,18 +23,39 @@ import LanguageInput from './collections/LanguageInput';
 import Limit from './collections/Limit';
 // components
 
-const SettingsForm = () => {
+const SettingsForm = ({ data }) => {
 	const { placeholder, topHeading, editHeading } = useStaticSettingsContext();
 	const { groupName, collectionType, collection } = useSettingsContext();
+	const dispatch = useSettingsDispatchContext();
 
 	const searchParams = useSearchParams();
 	const lang = searchParams.get('lang');
 
-	const headingRef = useRef(null);
-	//   console.log(collection);
+	const setFormState = useCallback(
+		(data) => {
+			const { groupName, collection, collectionType } = data;
+			const payload = {
+				groupName,
+				collection: {
+					[collectionType]: [...collection],
+				},
+				collectionType,
+			};
+
+			dispatch({ type: SET_STATE, payload });
+		},
+		[dispatch]
+	);
+	useEffect(() => {
+		if (data) {
+			setFormState(data);
+		} else {
+			dispatch({ type: RESET });
+		}
+	}, [data, setFormState, dispatch]);
 	return (
 		<>
-			<h3>{topHeading[lang]}</h3>
+			{/* <h3>{topHeading[lang]}</h3> */}
 			<ParentForm>
 				{Object.keys(groupName).length === 0 ? (
 					<>
@@ -53,10 +78,9 @@ const SettingsForm = () => {
 					<FormCollection>
 						{collection[collectionType] &&
 							collection[collectionType].map((data) => {
-								// console.log(data, 'item in map');
 								switch (collectionType) {
 									case 'single': {
-										return <Single key={data?.id} data={data} />;
+										return <Single key={data?.id || data?._id} data={data} />;
 									}
 									case 'translatedString': {
 										return <LanguageInput key={data?.id} data={data} />;
