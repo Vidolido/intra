@@ -38,7 +38,7 @@ const AddGroupName = () => {
       type: ADD_GROUPNAME,
       payload: {
         language: selectRef.current.value,
-        value: inputRef.current.value,
+        value: inputRef.current.value.toLowerCase(),
       },
     });
   };
@@ -48,7 +48,7 @@ const AddGroupName = () => {
       <input
         ref={inputRef}
         type='text'
-        className=' border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
+        className='capitalize border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
       />
       <select
         ref={selectRef}

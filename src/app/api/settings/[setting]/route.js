@@ -1,25 +1,33 @@
 'use server';
-import { connect } from '@/../conn';
-
-import Settings from '@/app/_models/(settings)/Settings';
-import { editGroupedSettings } from '../aggregation';
-import { unstable_noStore as noStore } from 'next/cache';
 import { cookies } from 'next/headers';
+import { unstable_noStore as noStore } from 'next/cache';
 
-export async function GET(request, { params, searchParams }) {
-	// noStore();
-	cookies();
-	const { nextUrl } = request;
-	const lang = nextUrl.searchParams.get('lang');
-	const setting = params.setting;
+// connection/moddels
+import { connect } from '@/../conn';
+import Settings from '@/app/_models/(settings)/Settings';
 
-	try {
-		await connect();
-		const setingForEdit = await Settings.aggregate(
-			editGroupedSettings(lang, setting)
-		);
-		return Response.json(...setingForEdit);
-	} catch (error) {
-		throw Error('Error: ' + error, 'THE SECOND ERROR');
-	}
+// agregations
+import { editGroupedSettings } from '../aggregation';
+
+export async function GET(request, { params }) {
+  // noStore();
+  cookies();
+
+  const { nextUrl } = request;
+  const lang = nextUrl.searchParams.get('lang');
+  const { setting } = params;
+
+  try {
+    await connect();
+
+    // console.log(lang, setting, 'THESE ARE THE TWO [setting] route');
+
+    const settingForEddit = await Settings.aggregate(
+      editGroupedSettings(lang, setting)
+    );
+    // console.log(settingForEddit, 'SETTING FOR EDIT');
+    return Response.json(...settingForEddit);
+  } catch (error) {
+    throw Error('Error: ' + error, 'THE SECOND ERROR');
+  }
 }
