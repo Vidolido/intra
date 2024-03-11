@@ -12,7 +12,7 @@ const Languages = () => {
 	// Прави проблем кога ќе се стисне истиот линк
 	// да пробам да најдам друг начин за ова
 	useEffect(() => {
-		router.push(`?lang=${language}`);
+		router.replace(`?lang=${language}`);
 	}, [router, pathname, language]);
 
 	const handleOnLangChange = (e) => {

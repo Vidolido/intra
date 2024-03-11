@@ -1,12 +1,12 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 
 // state/constext
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
 import {
-  useSettingsContext,
-  useSettingsDispatchContext,
+	useSettingsContext,
+	useSettingsDispatchContext,
 } from '@/app/dashboard/_state/settings/settingsContext';
 import { RESET, SET_STATE } from '@/app/dashboard/_state/settings/actionTypes';
 
@@ -24,87 +24,93 @@ import Limit from './collections/Limit';
 // components
 
 const SettingsForm = ({ data }) => {
-  const state = useSettingsContext();
-  const { placeholder, topHeading, editHeading } = useStaticSettingsContext();
-  const { groupName, collectionType, collection } = useSettingsContext();
-  const dispatch = useSettingsDispatchContext();
+	const state = useSettingsContext();
 
-  const searchParams = useSearchParams();
-  const lang = searchParams.get('lang');
+	const { placeholder, topHeading, editHeading } = useStaticSettingsContext();
+	const { groupName, collectionType, collection } = useSettingsContext();
+	const dispatch = useSettingsDispatchContext();
 
-  const setFormState = useCallback(
-    (data) => {
-      const { groupName, collection, collectionType } = data;
+	const router = useRouter();
+	const dynamicRoute = router.asPath;
 
-      const payload = {
-        groupName,
-        collection,
-        collectionType,
-      };
-      dispatch({ type: SET_STATE, payload });
-    },
-    [dispatch]
-  );
+	const searchParams = useSearchParams();
+	const lang = searchParams.get('lang');
 
-  useEffect(() => {
-    if (data !== undefined) {
-      setFormState(data);
-    } else {
-      dispatch({ type: RESET });
-    }
-  }, [data, setFormState, dispatch]);
+	const setFormState = useCallback(
+		(data) => {
+			const { groupName, collection, collectionType } = data;
 
-  // console.log(state, 'THE STATE in SETTINGS FORM');
-  // console.log(data, 'THE DATA in SETTINGS FORM');
+			const payload = {
+				groupName,
+				collection,
+				collectionType,
+			};
+			dispatch({ type: SET_STATE, payload });
+		},
+		[dispatch]
+	);
 
-  return (
-    <>
-      {/* <h3>{topHeading[lang]}</h3> */}
-      <ParentForm>
-        {groupName && Object?.keys(groupName).length === 0 ? (
-          <>
-            <h3>{placeholder[lang]}</h3>
-            <AddGroupName />
-          </>
-        ) : (
-          <>
-            <h3>{editHeading[lang]} </h3>
-            <EditGroupName groupName={groupName} />
-          </>
-        )}
-        {groupName && Object?.keys(groupName).length > 0 && (
-          <hr className='m-5' />
-        )}
-        {groupName && Object?.keys(groupName).length > 0 && (
-          <RadioButtons collectionType={collectionType} />
-        )}
+	useEffect(() => dispatch({ type: RESET }), [dynamicRoute, dispatch]);
 
-        {collectionType && <CollectionInput />}
-        {collectionType && (
-          <FormCollection>
-            {collection[collectionType] &&
-              collection[collectionType].map((data) => {
-                switch (collectionType) {
-                  case 'single': {
-                    return <Single key={data?.id || data?._id} data={data} />;
-                  }
-                  case 'translatedString': {
-                    return (
-                      <LanguageInput key={data?.id || data?._id} data={data} />
-                    );
-                  }
-                  case 'limit': {
-                    return <Limit key={data?.id || data?._id} data={data} />;
-                  }
-                  default:
-                    return;
-                }
-              })}
-          </FormCollection>
-        )}
-      </ParentForm>
-    </>
-  );
+	useEffect(() => data && setFormState(data), [data, setFormState]);
+	// useEffect(() => {
+	// 	if (data !== undefined) {
+	// 		setFormState(data);
+	// 	} else {
+	// 		dispatch({ type: RESET });
+	// 	}
+	// }, [data, setFormState, dispatch]);
+	console.log(state, 'THE STATE in SETTINGS FORM');
+	// console.log(data, 'THE DATA in SETTINGS FORM');
+
+	return (
+		<>
+			{/* <h3>{topHeading[lang]}</h3> */}
+			<ParentForm>
+				{groupName && Object?.keys(groupName).length === 0 ? (
+					<>
+						<h3>{placeholder[lang]}</h3>
+						<AddGroupName />
+					</>
+				) : (
+					<>
+						<h3>{editHeading[lang]} </h3>
+						<EditGroupName groupName={groupName} />
+					</>
+				)}
+				{groupName && Object?.keys(groupName).length > 0 && (
+					<hr className='m-5' />
+				)}
+				{groupName && Object?.keys(groupName).length > 0 && (
+					<RadioButtons collectionType={collectionType} />
+				)}
+
+				{collectionType && <CollectionInput />}
+				{collectionType && (
+					<FormCollection>
+						{collection[collectionType] &&
+							collection[collectionType].map((data) => {
+								switch (collectionType) {
+									case 'single': {
+										return <Single key={data?.id || data?._id} data={data} />;
+									}
+									case 'translatedString': {
+										return (
+											<LanguageInput key={data?.id || data?._id} data={data} />
+										);
+									}
+									case 'limit': {
+										return <Limit key={data?.id || data?._id} data={data} />;
+									}
+									default:
+										return;
+								}
+							})}
+					</FormCollection>
+				)}
+			</ParentForm>
+		</>
+	);
 };
 
 export default SettingsForm;
