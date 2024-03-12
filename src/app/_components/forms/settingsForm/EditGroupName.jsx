@@ -6,125 +6,139 @@ import { useSearchParams } from 'next/navigation';
 import { ADD_GROUPNAME } from '@/app/dashboard/_state/settings/actionTypes';
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
 import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
+import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 
 const EditGroupName = ({ groupName }) => {
-	const { languages, editButtonLabels, saveButtonLabels } =
-		useStaticSettingsContext();
-	const dispatch = useSettingsDispatchContext();
+  const { languages, editButtonLabels, saveButtonLabels } =
+    useStaticSettingsContext();
+  const dispatch = useSettingsDispatchContext();
 
-	const searchParams = useSearchParams();
-	const lang = searchParams.get('lang');
+  const globalState = useGlobalStateContext();
+  const lang = globalState.language;
 
-	// local state
-	const [language, setLanguage] = useState(lang ? lang : 'en');
-	// const [language, setLanguage] = useState('');
-	const [canEdit, setCanEdit] = useState(false);
-	const [input, setInput] = useState('');
+  // console.log(lang, 'globalLanguage in EDIT GROUP');
 
-	useEffect(() => {
-		if (groupName && lang) {
-			// console.log(groupName, lang, 'OVIE GI GLEDAM');
-			// let localState = groupName[lang];
+  // const searchParams = useSearchParams();
+  // const lang = searchParams.get('lang');
 
-			let localState =
-				groupName && Object.entries(groupName).filter((e) => e[0] === lang);
-			// let localState = groupName && Object.entries(groupName)[0];
-			console.log(localState, 'LOCAL STATE IN USEEFFECT');
-			// console.log(groupName[lang], 'groupName in useEffect');
-			// setInput(groupName[lang]);
-			// setLanguage(lang);
-			setInput(localState[0][1]);
-			setLanguage(localState[0][0]);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+  // local state
+  const [language, setLanguage] = useState(lang || 'en');
+  // const [language, setLanguage] = useState(lang || 'en');
+  // const [language, setLanguage] = useState('');
+  const [canEdit, setCanEdit] = useState(false);
+  const [input, setInput] = useState('');
 
-	const handleOnLangChange = (e) => {
-		setLanguage(e.target.value);
-		console.log(groupName, 'in handleOnLangChange');
-		groupName[e.target.value] === undefined
-			? setInput('')
-			: setInput(groupName[e.target.value]);
-	};
+  useEffect(() => {
+    // if (groupName && lang) {
+    console.log(groupName, lang, 'OVIE GI GLEDAM');
+    // let localState = groupName[lang];
+    let localState;
 
-	const handleEdit = (e) => {
-		e.preventDefault();
-		setCanEdit(true);
-	};
+    if (groupName[lang] === undefined) {
+      let tempLang = Object.keys(groupName).filter((e) => e === lang);
 
-	const handleSave = useCallback(
-		(e) => {
-			e.preventDefault();
-			if (!input) return;
+      localState = Object.entries(groupName).filter((e) => e[0] === tempLang);
+    } else {
+      console.log('IT IS NOT');
+      localState = Object.entries(groupName).filter((e) => e[0] === language);
+    }
 
-			dispatch({
-				type: ADD_GROUPNAME,
-				payload: { language, value: input },
-			});
-			setCanEdit(false);
-		},
-		[input, language, dispatch]
-	);
+    setInput(localState[0][1]);
+    setLanguage(localState[0][0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
-	console.log(groupName, 'gropName in EDIT GROUP NAME');
-	console.log(input, 'THE INPUT');
+  const handleOnLangChange = (e) => {
+    setLanguage(e.target.value);
+    // console.log(groupName, 'in handleOnLangChange');
+    console.log(groupName, 'GROUPNAME IN HANGLE ON LANG CHANGE ');
+    groupName[e.target.value] === undefined
+      ? setInput('')
+      : setInput(groupName[e.target.value]);
+  };
 
-	return (
-		<label className='flex flex-col gap-2'>
-			<input
-				disabled={!canEdit && 'disabled'}
-				type='text'
-				className='capitalize border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
-				value={input}
-				onChange={(e) => setInput(e.target.value)}
-				onKeyDown={(e) => {
-					if (e.key === 'Enter') {
-						console.log(e.key);
-					}
-				}}
-			/>
-			<select
-				disabled={!canEdit && 'disabled'}
-				className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'
-				onChange={handleOnLangChange}
-				defaultValue={language}>
-				{languages.map((lang, i) => (
-					<option key={i} value={lang}>
-						{lang}
-					</option>
-				))}
-			</select>
-			{/* {!canEdit && (
+  const handleEdit = (e) => {
+    e.preventDefault();
+    setCanEdit(true);
+  };
+
+  const handleSave = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!input) return;
+
+      dispatch({
+        type: ADD_GROUPNAME,
+        payload: { language, value: input },
+      });
+      setCanEdit(false);
+    },
+    [input, language, dispatch]
+  );
+
+  //   console.log(groupName, 'gropName in EDIT GROUP NAME');
+  //   console.log(input, 'THE INPUT');
+
+  return (
+    <label className='flex flex-col gap-2'>
+      <input
+        disabled={!canEdit && 'disabled'}
+        type='text'
+        className='capitalize border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            console.log(e.key);
+          }
+        }}
+      />
+      <select
+        disabled={!canEdit && 'disabled'}
+        className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'
+        onChange={handleOnLangChange}
+        defaultValue={language}>
+        {languages.map((lang, i) => (
+          <option key={i} value={lang}>
+            {lang}
+          </option>
+        ))}
+      </select>
+      {/* {!canEdit && (
 				<h2 className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'>
 					{groupName[language]}
 				</h2>
 			)} */}
-			{!canEdit && (
-				<button
-					type='button'
-					onClick={handleEdit}
-					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
-					{editButtonLabels[lang]}
-				</button>
-			)}
-			{canEdit && (
-				<button
-					type='button'
-					onClick={handleSave}
-					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
-					{saveButtonLabels[lang]}
-				</button>
-			)}
-		</label>
-	);
+      {!canEdit && (
+        <button
+          type='button'
+          onClick={handleEdit}
+          className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
+          {editButtonLabels[lang]}
+        </button>
+      )}
+      {canEdit && (
+        <button
+          type='button'
+          onClick={handleSave}
+          className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
+          {saveButtonLabels[lang]}
+        </button>
+      )}
+    </label>
+  );
 };
 
 export default memo(EditGroupName, (prev, next) => {
-	console.log(prev, 'previous');
-	console.log(next, 'next');
-	if (
-		(!prev.groupName && next.groupName) ||
-		(prev.groupName && !next.groupName)
-	)
-		true;
+  console.log(prev.groupName, 'previous');
+  console.log(next.groupName, 'next');
+  //   if (
+  //     (!prev.groupName[lang] && next.groupName[lang]) ||
+  //     (prev.groupName[lang] && !next.groupName[lang])
+  //   )
+  //     true;
+  if (prev.groupName !== next.groupName) {
+    console.log('it ran');
+    return true;
+  }
 });

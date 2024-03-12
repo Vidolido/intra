@@ -50,6 +50,7 @@ export default async function Edit({ params, searchParams }) {
 
   const data = setDataForFrontEnd(await getSettingGroup(settingForDb, lang));
   console.log(settingForDb, 'settingForDB in [setting]/page');
+  console.log(lang, 'lang in [setting]/page');
   return (
     <div className='w-1/2 px-2'>
       <h2>Edit Setting</h2>
