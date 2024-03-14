@@ -22,11 +22,10 @@ export const dynamicParams = true;
 // Работи само со ова(приметив каснење, да видам дали ќе се случи пак), но ќе остаам да видам уште некој ден. 11.03.2024
 export const revalidate = 0;
 
-export default async function Settings({ searchParams }) {
+export default async function Settings() {
   const data = await getData();
 
-  //   console.log(searchParams, 'THE SEARCH PARAMS');
-  //   console.log(data, 'in settings page');
+  // console.log(data, 'in settings page');
   return (
     <div className='flex flex-row flex-wrap justify-center align-middle gap-16'>
       <Suspense fallback={<div>Loading...</div>}>

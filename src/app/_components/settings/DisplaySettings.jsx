@@ -1,21 +1,15 @@
 'use server';
-import Link from 'next/link';
 
 import DeleteButton from './DeleteButton';
+import DisplayHeadingText from '../smallComponents/DisplayHeadingText';
+import EditLink from '../smallComponents/EditLink';
+import TranslatedString from '../smallComponents/TranslatedString';
 
-export default async function DisplaySettings({ setting, language }) {
-  const { lang } = language;
-  // const searchParams = useSearchParams();
-  // const lang = searchParams.get('lang');
-  console.log(setting.groupName, 'in DISPLAY SETTINGS');
-  console.log(language, 'the language');
-  console.log(lang);
-  console.log(setting.groupName[lang], 'the GroupName');
-
+export default async function DisplaySettings({ setting }) {
   return (
     <section className='flex flex-col min-w-[300px] min-h-[400px] max-h-[700px] border-2 border-grey-50 border-opacity-60 p-2 rounded'>
       <h2 className='capitalize text-2xl font-bold'>
-        {setting.groupName && setting?.groupName[lang]}
+        <DisplayHeadingText groupName={setting.groupName} />
       </h2>
       <ul className='px-2 py-1 mt-4 mb-5'>
         {setting?.collection.map((collectionItem) => {
@@ -28,9 +22,10 @@ export default async function DisplaySettings({ setting, language }) {
               )}
               {collectionItem.translatedString && (
                 <span className='block border-b-2 px-1'>
-                  {collectionItem?.translatedString[lang]}
+                  <TranslatedString item={collectionItem.translatedString} />
                 </span>
               )}
+
               {collectionItem.limit && (
                 <span className='block border-b-2 px-1'>
                   {collectionItem?.limit?.from &&
@@ -48,26 +43,7 @@ export default async function DisplaySettings({ setting, language }) {
           <DeleteButton settings={setting.collection} />
           {/* href-от знае да направи проблеми, треба да проверам неколку опции
   				за да видам од кои причини се случува. */}
-          {/* <Link
-            className='bg-red-500 hover:bg-red-700 text-white font-bold py-[0.3rem] px-4 rounded'
-            href={`/dashboard/settings/${setting.groupName[lang]
-              .toLowerCase()
-              .split(' ')
-              .join('-')}`}>
-            Edit
-          </Link> */}
-          <Link
-            className='bg-red-500 hover:bg-red-700 text-white font-bold py-[0.3rem] px-4 rounded'
-            href={`/dashboard/settings/${setting.groupName[lang]}`}>
-            Edit
-          </Link>
-          {/* <Link
-            className='bg-red-500 hover:bg-red-700 text-white font-bold py-[0.3rem] px-4 rounded'
-            href={`/dashboard/settings/${setting.groupName[lang]
-              .split(' ')
-              .join('-')}`}>
-            Edit
-          </Link> */}
+          <EditLink groupName={setting.groupName} />
         </div>
       </div>
     </section>

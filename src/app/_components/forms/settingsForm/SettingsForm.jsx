@@ -8,6 +8,7 @@ import {
   useSettingsContext,
   useSettingsDispatchContext,
 } from '@/app/dashboard/_state/settings/settingsContext';
+import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 import { RESET, SET_STATE } from '@/app/dashboard/_state/settings/actionTypes';
 
 // components
@@ -21,7 +22,6 @@ import CollectionInput from './CollectionInput';
 import Single from './collections/Single';
 import LanguageInput from './collections/LanguageInput';
 import Limit from './collections/Limit';
-import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 // components
 
 const SettingsForm = ({ data }) => {

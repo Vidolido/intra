@@ -16,33 +16,25 @@ const EditGroupName = ({ groupName }) => {
   const globalState = useGlobalStateContext();
   const lang = globalState.language;
 
-  // console.log(lang, 'globalLanguage in EDIT GROUP');
-
-  // const searchParams = useSearchParams();
-  // const lang = searchParams.get('lang');
-
   // local state
   const [language, setLanguage] = useState(lang || 'en');
-  // const [language, setLanguage] = useState(lang || 'en');
-  // const [language, setLanguage] = useState('');
   const [canEdit, setCanEdit] = useState(false);
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    // if (groupName && lang) {
-    console.log(groupName, lang, 'OVIE GI GLEDAM');
-    // let localState = groupName[lang];
     let localState;
 
     if (groupName[lang] === undefined) {
       let tempLang = Object.keys(groupName).filter((e) => e === lang);
 
-      localState = Object.entries(groupName).filter((e) => e[0] === tempLang);
+      // localState = Object.entries(groupName).filter((e) => e[0] === tempLang);
+      // localState = Object.values(groupName)[0].toString().split(' ').join('-');
+      localState = Object.entries(groupName).toString().split(' ').join('-');
     } else {
-      console.log('IT IS NOT');
+      // console.log('IT IS NOT');
       localState = Object.entries(groupName).filter((e) => e[0] === language);
     }
-
+    console.log(localState, 'LOCAL STATE IN EDIT GROUP NAME');
     setInput(localState[0][1]);
     setLanguage(localState[0][0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,8 +43,9 @@ const EditGroupName = ({ groupName }) => {
   const handleOnLangChange = (e) => {
     setLanguage(e.target.value);
     // console.log(groupName, 'in handleOnLangChange');
-    console.log(groupName, 'GROUPNAME IN HANGLE ON LANG CHANGE ');
-    groupName[e.target.value] === undefined
+    // console.log(groupName, 'GROUPNAME IN HANGLE ON LANG CHANGE ');
+    // groupName[e.target.value] === undefined
+    !groupName[e.target.value]
       ? setInput('')
       : setInput(groupName[e.target.value]);
   };
@@ -76,8 +69,7 @@ const EditGroupName = ({ groupName }) => {
     [input, language, dispatch]
   );
 
-  //   console.log(groupName, 'gropName in EDIT GROUP NAME');
-  //   console.log(input, 'THE INPUT');
+  // Оваа компонента доколку нема податок за одреден јазик, кога се прави ажурирање на името на групата, GroupName може да биде празно.
 
   return (
     <label className='flex flex-col gap-2'>
@@ -130,15 +122,15 @@ const EditGroupName = ({ groupName }) => {
 };
 
 export default memo(EditGroupName, (prev, next) => {
-  console.log(prev.groupName, 'previous');
-  console.log(next.groupName, 'next');
+  // console.log(prev.groupName, 'previous');
+  // console.log(next.groupName, 'next');
   //   if (
   //     (!prev.groupName[lang] && next.groupName[lang]) ||
   //     (prev.groupName[lang] && !next.groupName[lang])
   //   )
   //     true;
   if (prev.groupName !== next.groupName) {
-    console.log('it ran');
+    // console.log('it ran');
     return true;
   }
 });
