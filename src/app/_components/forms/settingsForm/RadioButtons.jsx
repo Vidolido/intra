@@ -5,11 +5,14 @@ import { useSearchParams } from 'next/navigation';
 import { SET_COLLECTION_TYPE } from '@/app/dashboard/_state/settings/actionTypes';
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
 import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
+import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 
 export default memo(
   function RadioButtons({ collectionType }) {
     const { radioButtonsTitle, radioButtonTypes } = useStaticSettingsContext();
     const dispatch = useSettingsDispatchContext();
+
+    const { language } = useGlobalStateContext();
 
     const searchParams = useSearchParams();
     const lang = searchParams.get('lang');
@@ -24,7 +27,7 @@ export default memo(
     // Да ги средам HTML елементите
     return (
       <fieldset>
-        <legend>{radioButtonsTitle[lang]}</legend>
+        <legend>{radioButtonsTitle[language]}</legend>
         <div className='flex flex-row gap-2'>
           {Object?.entries(radioButtonTypes).map((type, i) => {
             return (
@@ -39,7 +42,7 @@ export default memo(
                   onChange={handleCollectionType}
                 />
                 <label htmlFor={type[0]} className='cursor-pointer'>
-                  {type[1][lang]}
+                  {type[1][language]}
                 </label>
               </div>
             );

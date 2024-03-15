@@ -15,7 +15,7 @@ export const settingsReducer = (draft, action) => {
       return { ...draft, language: action.payload };
     }
     case ADD_GROUPNAME: {
-      console.log(action.payload, 'ADD_GROUPNAME IN REDUCER');
+      // console.log(action.payload, 'ADD_GROUPNAME IN REDUCER');
       draft.groupName[action.payload.language] = action.payload.value;
       break;
     }
@@ -35,7 +35,7 @@ export const settingsReducer = (draft, action) => {
       break;
     }
     case EDIT_COLLECTION_ITEM: {
-      console.log(action.payload, 'REDUCER');
+      // console.log(action.payload, 'REDUCER');
       const index = draft.collection[draft.collectionType].findIndex(
         (item) => item.id === action.payload.id
       );
@@ -61,7 +61,7 @@ export const settingsReducer = (draft, action) => {
       break;
     }
     case SET_STATE: {
-      console.log(action.payload, 'PAYLOAD in REDUCER');
+      // console.log(action.payload, 'PAYLOAD in REDUCER');
 
       draft.groupName = action.payload.groupName;
       draft.collection = action.payload.collection;

@@ -2,11 +2,11 @@ import { StaticSettingsContextProvider } from '../_state/settings/staticStateCon
 import { SettingsContextProvider } from '../_state/settings/settingsContext';
 
 const SettingsLayout = ({ children }) => {
-	return (
-		<StaticSettingsContextProvider>
-			<SettingsContextProvider>{children}</SettingsContextProvider>
-		</StaticSettingsContextProvider>
-	);
+  return (
+    // <StaticSettingsContextProvider>
+    <SettingsContextProvider>{children}</SettingsContextProvider>
+    // </StaticSettingsContextProvider>
+  );
 };
 
 export default SettingsLayout;
