@@ -32,6 +32,7 @@ const settingsSchema = new mongoose.Schema({
 			default: undefined,
 		},
 	},
+	sector: String,
 });
 
 const Settings =

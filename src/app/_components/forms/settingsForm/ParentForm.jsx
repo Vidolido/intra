@@ -7,17 +7,22 @@ import { createSetting } from '@/app/_actions/settingsActions';
 // state/context
 import { useSettingsContext } from '@/app/dashboard/_state/settings/settingsContext';
 import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
-import { settingsState } from '@/app/dashboard/_state/settings/initState';
 import { RESET } from '@/app/dashboard/_state/settings/actionTypes';
 
 // components
 import { SubmitButton } from '../submitButton/SubmitButton';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { revalidateTag } from 'next/cache';
 
 const ParentForm = ({ children }) => {
 	const state = useSettingsContext();
 	const dispatch = useSettingsDispatchContext();
 	const router = useRouter();
+
+	useEffect(() => {
+		dispatch({ type: RESET });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const formRef = useRef(null);
 
@@ -34,7 +39,8 @@ const ParentForm = ({ children }) => {
 			ref={formRef}
 			action={() => {
 				sendState();
-				dispatch({ type: RESET, payload: settingsState });
+
+				// revalidateTag('setting');
 				formRef.current?.reset();
 				router.push('/dashboard/settings');
 			}}

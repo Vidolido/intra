@@ -7,19 +7,23 @@ import {
 	DELETE_FROM_COLLECTION,
 	EDIT_COLLECTION_ITEM,
 } from '@/app/dashboard/_state/settings/actionTypes';
+import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
 import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
 
 export default memo(function LanguageInput({ data }) {
+	const globalState = useGlobalStateContext();
+	const lang = globalState.language;
 	const { languages, editButtonLabels, saveButtonLabels, deleteButtonLabels } =
 		useStaticSettingsContext();
 	const dispatch = useSettingsDispatchContext();
 
-	const searchParams = useSearchParams();
-	const lang = searchParams.get('lang');
+	// const searchParams = useSearchParams();
+	// const lang = searchParams.get('lang');
 
 	// local state
-	const [language, setLanguage] = useState(lang ? lang : null);
+	// const [language, setLanguage] = useState(lang ? lang : null);
+	const [language, setLanguage] = useState(lang || null);
 	const [canEdit, setCanEdit] = useState(false);
 	const [input, setInput] = useState('');
 
