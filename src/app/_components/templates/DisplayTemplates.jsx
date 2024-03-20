@@ -16,13 +16,11 @@ const colors = {
 // export default function DisplayTemplates({ data }) {
 export default async function DisplayTemplates({ data }) {
 	const groupedItems = displatData(data);
-	console.log(groupedItems);
+	// console.log(groupedItems);
 	return (
 		<div className='flex flex-wrap gap-6'>
 			{!Object.keys(groupedItems).length && <h2>No data</h2>}
 			{Object.entries(groupedItems).map(([collectionName, collection], i) => {
-				let bg = 'bg-[#' + colors[collectionName] + ']';
-
 				return (
 					<section
 						key={i}

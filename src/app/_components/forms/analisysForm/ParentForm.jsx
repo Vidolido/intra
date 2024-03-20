@@ -1,3 +1,5 @@
+'use client';
+
 import SubmitButton from '../submitButton/SubmitButton';
 
 export default function ParentForm({ children }) {

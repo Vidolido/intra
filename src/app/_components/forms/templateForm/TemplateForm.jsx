@@ -20,7 +20,7 @@ import CollectionItems from './CollectionItems';
 // components
 
 export default function TemplateForm({ data }) {
-	// const state = useTemplatesContext();
+	const state = useTemplatesContext();
 	const { language } = useGlobalStateContext();
 	const { addButtonLabels } = useStaticSettingsContext();
 	const { templateData } = useTemplatesContext();
@@ -30,7 +30,7 @@ export default function TemplateForm({ data }) {
 		dispatch({ type: ADD_TEMPLATE_ITEM });
 	}, [dispatch]);
 
-	// console.log(state, 'the state');
+	console.log(state, 'the state');
 	// console.log(data, 'the original data');
 	return (
 		<ParentForm>

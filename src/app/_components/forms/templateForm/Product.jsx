@@ -11,6 +11,7 @@ const Product = () => {
 
 	useEffect(() => {
 		dispatch({ type: SET_PRODUCT, payload: selectRef.current.value });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleOnChange = useCallback(() => {

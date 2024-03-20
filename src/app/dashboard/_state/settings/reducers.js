@@ -69,7 +69,7 @@ export const settingsReducer = (draft, action) => {
 			break;
 		}
 		case RESET: {
-			console.log('it ran');
+			// console.log('it ran');
 			draft.groupName = {};
 			draft.collection = {
 				single: [],

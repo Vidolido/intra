@@ -1,5 +1,3 @@
-const Analisys = () => {
+export default async function Analisys() {
 	return <div>Analisys</div>;
-};
-
-export default Analisys;
+}

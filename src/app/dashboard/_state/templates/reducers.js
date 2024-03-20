@@ -9,7 +9,7 @@ import {
 export const templatesReducer = (draft, action) => {
 	switch (action.type) {
 		case SET_ANALISYS_TYPE: {
-			console.log(action.payload, 'it RAN');
+			// console.log(action.payload, 'it RAN');
 			draft.analisysType = action.payload;
 			break;
 		}
