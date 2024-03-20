@@ -18,18 +18,3 @@ export const analisysState = {
 		date: '',
 	},
 };
-
-// {
-//     property: 'id',
-//     measurementUnit: 'id',
-//     limit: 'id',
-//     method: 'id',
-//     result: 'number || float || text',
-// },
-// {
-//     property: 'id',
-//     measurementUnit: 'id',
-//     limit: 'id',
-//     method: 'id',
-//     result: 'number || float || text',
-// },

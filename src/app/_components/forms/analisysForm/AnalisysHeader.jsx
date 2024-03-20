@@ -1,5 +1,5 @@
 'use client';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 
 // action
 import { getTemplate } from '@/app/_actions/analisysActions';
@@ -20,14 +20,9 @@ export default memo(function AnalisysHeader() {
 	const state = useAnalisysContext();
 	const dispatch = useAnalisysDispatchContext();
 
-	const [product, setProduct] = useState('');
 	const productRef = useRef(null);
 	const analisysRef = useRef(null);
-	// useEffect(() => {
-	// 	const setData = async () => {
 
-	// 	}
-	// })
 	useEffect(() => {
 		const setTemplateData = async () => {
 			dispatch({ type: SET_PRODUCT, payload: productRef.current.value });
@@ -46,23 +41,14 @@ export default memo(function AnalisysHeader() {
 
 	const hanldeOnProductChange = useCallback(async () => {
 		dispatch({ type: SET_PRODUCT, payload: productRef.current.value });
-		const test = await getTemplate(
-			productRef.current.value,
-			analisysRef.current.value
-		);
-		// console.log(test);
+		await getTemplate(productRef.current.value, analisysRef.current.value);
 	}, [dispatch]);
 
 	const hanldeOnAnalisysChange = useCallback(async () => {
 		dispatch({ type: SET_ANALISYS_TYPE, payload: analisysRef.current.value });
-		const test = await getTemplate(
-			productRef.current.value,
-			analisysRef.current.value
-		);
-		// console.log(JSON.parse(test));
+		await getTemplate(productRef.current.value, analisysRef.current.value);
 	}, [dispatch]);
 
-	console.log(state, 'ovoj');
 	return (
 		<>
 			<fieldset>

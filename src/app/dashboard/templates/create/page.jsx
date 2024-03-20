@@ -34,5 +34,3 @@ export default async function Create() {
 		</div>
 	);
 }
-
-// export default Create;

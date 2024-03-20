@@ -56,11 +56,7 @@ export default async function Edit({ params, searchParams }) {
 	const lang = searchParams.lang || 'en'; // Место англиски, треба да биде избран стандарден јазик од база
 
 	const data = setDataForFrontEnd(await getSettingGroup(settingForDb, lang));
-	// console.log(settingForDb, 'settingForDB in [setting]/page');
-	// console.log(lang, 'lang in [setting]/page');
 
-	// console.log(data, 'THE DATA in [setting]');
-	// console.log(params, 'THE PARAMS');
 	return (
 		<div className='w-1/2 px-2'>
 			<h2>Edit Setting</h2>

@@ -40,9 +40,7 @@ export default function CollectionItems({ data }) {
 		},
 		[language]
 	);
-	// console.log(data, 'the data in collectionItems');
-	// console.log(templateData, 'the templateData in collectionItems');
-	// console.log(collectionItems, 'the collectionItems');
+
 	return (
 		<div className='flex gap-16'>
 			{data &&
