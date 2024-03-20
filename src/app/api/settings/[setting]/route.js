@@ -8,7 +8,7 @@ import {
 
 // connection/moddels
 import { connect } from '@/../conn';
-import Settings from '@/app/_models/(settings)/Settings';
+import Settings from '@/app/_models/Settings';
 
 // agregations
 import { editGroupedSettings } from '../aggregation';

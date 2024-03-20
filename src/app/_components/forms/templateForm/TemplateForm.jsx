@@ -1,7 +1,8 @@
 'use client';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { Suspense, useCallback, useState } from 'react';
 
 // state/context
+import { ADD_TEMPLATE_ITEM } from '@/app/dashboard/_state/templates/actionTypes';
 import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
 import {
@@ -10,37 +11,31 @@ import {
 } from '@/app/dashboard/_state/templates/templatesContext';
 
 // components
-import CertificateType from './CertificateType';
+import AnalysisType from './AnalysisType';
 import ParentForm from './ParentForm';
 import Product from './Product';
 import TemplateInput from './TemplateInput';
-import { ADD_TEMPLATE_ITEM } from '@/app/dashboard/_state/templates/actionTypes';
 import FormCollection from './FormCollection';
 import CollectionItems from './CollectionItems';
 // components
 
 export default function TemplateForm({ data }) {
+	// const state = useTemplatesContext();
 	const { language } = useGlobalStateContext();
 	const { addButtonLabels } = useStaticSettingsContext();
-	const state = useTemplatesContext();
+	const { templateData } = useTemplatesContext();
 	const dispatch = useTemplatesDispatchContext();
-	//   console.log(data, 'in templateForm');
-	const { templateData } = state;
-	const [insertData, setInsertData] = useState([]);
-	// const [insertData, setInsertData] = useState(null);
-	// const [templateData, setTemplateData] = useState([]);
 
 	const handleOnAdd = useCallback(() => {
-		dispatch({ type: ADD_TEMPLATE_ITEM, payload: insertData });
-		setInsertData([]);
-	}, [insertData, dispatch]);
+		dispatch({ type: ADD_TEMPLATE_ITEM });
+	}, [dispatch]);
 
 	// console.log(state, 'the state');
 	// console.log(data, 'the original data');
 	return (
 		<ParentForm>
 			<fieldset className='flex gap-2'>
-				<CertificateType />
+				<AnalysisType />
 				<Product />
 			</fieldset>
 			<fieldset className='flex gap-2'>
@@ -50,7 +45,6 @@ export default function TemplateForm({ data }) {
 							key={index}
 							groupName={items.groupName}
 							collection={items.collection}
-							setInsertData={setInsertData}
 						/>
 					))}
 				<button
@@ -61,9 +55,11 @@ export default function TemplateForm({ data }) {
 				</button>
 			</fieldset>
 			<hr className='m-5' />
-			<FormCollection>
-				{templateData.length > 0 && <CollectionItems data={data} />}
-			</FormCollection>
+			<Suspense>
+				<FormCollection>
+					{templateData.length > 0 && <CollectionItems data={data} />}
+				</FormCollection>
+			</Suspense>
 		</ParentForm>
 	);
 }

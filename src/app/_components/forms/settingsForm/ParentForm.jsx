@@ -1,18 +1,17 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 
 // server actions
 import { createSetting } from '@/app/_actions/settingsActions';
 
 // state/context
+import { RESET } from '@/app/dashboard/_state/settings/actionTypes';
 import { useSettingsContext } from '@/app/dashboard/_state/settings/settingsContext';
 import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
-import { RESET } from '@/app/dashboard/_state/settings/actionTypes';
 
 // components
-import { SubmitButton } from '../submitButton/SubmitButton';
-import { useEffect, useRef } from 'react';
-import { revalidateTag } from 'next/cache';
+import SubmitButton from '../submitButton/SubmitButton';
 
 const ParentForm = ({ children }) => {
 	const state = useSettingsContext();

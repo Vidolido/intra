@@ -1,10 +1,32 @@
-const Templates = () => {
-  return (
-    <div className='w-1/2 px-2'>
-      <h3>Templates</h3>
-      {/* <TemplateForm */}
-    </div>
-  );
-};
+import DisplayTemplates from '@/app/_components/templates/DisplayTemplates';
+import { Suspense } from 'react';
+import Loading from '../loading';
 
-export default Templates;
+export async function getTemplates() {
+	const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/templates`, {
+		next: { tags: ['templates'], revalidate: 3600, cache: 'no-store' },
+	});
+
+	if (!res.ok) {
+		throw new Error('Failed to fetch data: ' + res);
+	}
+
+	return await res.json();
+}
+
+// export const revalidate = 0;
+
+export default async function Templates() {
+	const data = await getTemplates();
+
+	// console.log(data, 'template data');
+
+	return (
+		<div>
+			<h3>Templates</h3>
+			<Suspense fallback={<Loading />}>
+				<DisplayTemplates data={data} />
+			</Suspense>
+		</div>
+	);
+}

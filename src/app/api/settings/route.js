@@ -1,6 +1,6 @@
 import { connect } from '@/../conn';
 
-import Settings from '@/app/_models/(settings)/Settings';
+import Settings from '@/app/_models/Settings';
 import { getGroupedSettings } from './aggregation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { cookies } from 'next/headers';

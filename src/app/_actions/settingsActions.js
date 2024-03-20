@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache';
 import { connect } from '@/../conn';
 
 // moddel
-import Settings from '@/app/_models/(settings)/Settings';
+import Settings from '@/app/_models/Settings';
 
 // <<helper functions
 function readyForInsert(data) {

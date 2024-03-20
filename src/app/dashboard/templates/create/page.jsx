@@ -18,7 +18,7 @@ export async function getTemplateData() {
 // export const dynamicParams = true;
 
 // Работи само со ова(приметив каснење, да видам дали ќе се случи пак), но ќе остаам да видам уште некој ден. 11.03.2024
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export default async function Create() {
 	const data = await getTemplateData();

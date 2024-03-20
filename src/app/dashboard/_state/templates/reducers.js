@@ -1,7 +1,22 @@
-import { ADD_TEMPLATE_ITEM, SET_INPUT } from './actionTypes';
+import {
+	ADD_TEMPLATE_ITEM,
+	RESET,
+	SET_ANALISYS_TYPE,
+	SET_INPUT,
+	SET_PRODUCT,
+} from './actionTypes';
 
 export const templatesReducer = (draft, action) => {
 	switch (action.type) {
+		case SET_ANALISYS_TYPE: {
+			console.log(action.payload, 'it RAN');
+			draft.analisysType = action.payload;
+			break;
+		}
+		case SET_PRODUCT: {
+			draft.product = action.payload;
+			break;
+		}
 		case SET_INPUT: {
 			const index = draft.inputData.findIndex(
 				(item) => JSON.stringify(item[0]) === JSON.stringify(action.payload[0])
@@ -19,7 +34,11 @@ export const templatesReducer = (draft, action) => {
 			draft.templateData.push(draft.inputData);
 			break;
 		}
+		case RESET: {
+			draft.templateData = [];
+			break;
+		}
 		default:
-			return draft;
+			return;
 	}
 };

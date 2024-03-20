@@ -4,8 +4,9 @@ import { useFormStatus } from 'react-dom';
 // state/context
 import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
+import { memo } from 'react';
 
-export function SubmitButton() {
+export default memo(function SubmitButton() {
 	const { saveButtonLabels } = useStaticSettingsContext();
 
 	const { language } = useGlobalStateContext();
@@ -24,4 +25,4 @@ export function SubmitButton() {
 			{saveButtonLabels[language]}
 		</button>
 	);
-}
+});

@@ -14,6 +14,11 @@ export const getGroupedSettings = [
 			collection: 1,
 		},
 	},
+	{
+		$sort: {
+			groupName: -1,
+		},
+	},
 ];
 
 export const editGroupedSettings = (lang, setting) => {
@@ -40,6 +45,11 @@ export const editGroupedSettings = (lang, setting) => {
 				groupName: '$_id',
 				collection: 1,
 				collectionType: 1,
+			},
+		},
+		{
+			$sort: {
+				groupName: -1,
 			},
 		},
 	];

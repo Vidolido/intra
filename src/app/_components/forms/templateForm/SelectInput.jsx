@@ -51,19 +51,21 @@ const SelectInput = ({ collection }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const handleSelectChange = () => {
+	const handleSelectChange = useCallback(() => {
 		dispatch({
 			type: SET_INPUT,
 			payload: [groupName, selectRef.current.value],
 		});
-	};
+	}, [groupName, dispatch]);
 
+	// Тука да додадам уште едно поле, доколку корисникот сака полето да остане празно
 	return (
 		<select
 			ref={selectRef}
 			onChange={handleSelectChange}
 			className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'>
 			{collection && collection.map(checkForType)}
+			<option value='empty'> </option>
 		</select>
 	);
 };

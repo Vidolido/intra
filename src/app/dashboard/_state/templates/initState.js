@@ -1,6 +1,7 @@
 export const templatesState = {
-	templateType: '',
+	analisysType: '',
 	product: '',
+	note: '',
 	inputData: [],
 	templateData: [],
 };

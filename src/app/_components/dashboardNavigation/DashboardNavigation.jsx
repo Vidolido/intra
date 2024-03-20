@@ -3,8 +3,8 @@ import DashLinks from './dashLinks/DashLinks';
 // od baza
 const links = [
 	{
-		title: 'Certificates',
-		path: 'certificates',
+		title: 'Analisys',
+		path: 'analisys',
 	},
 	{
 		title: 'Templates',
