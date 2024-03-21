@@ -17,7 +17,7 @@ export function getItemWithId(data, templateData) {
 	return newTemplateData;
 }
 
-export function displatData(data) {
+export function displayData(data) {
 	let newData = data.reduce((acc, currentValue) => {
 		if (!acc[currentValue.product]) {
 			acc[currentValue.product] = [currentValue];

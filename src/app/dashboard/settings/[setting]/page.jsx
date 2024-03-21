@@ -15,7 +15,6 @@ export async function getSettingGroup(setting, lang) {
 		if (!res.ok) {
 			throw new Error('Faliled to fetch.statusText data: ' + res);
 		}
-		// const json = await res.json();
 		return await res.json();
 	} catch (error) {
 		console.log(error);
