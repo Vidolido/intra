@@ -2,6 +2,134 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  /* UNL-95 */
+  .product-blue-border {
+    border: 2px solid #daeef3;
+  }
+  .product-blue-border:hover {
+    border: 2px solid #95b3d7;
+  }
+  .product-blue-border:hover .product-blue {
+    background-color: #95b3d7;
+  }
+  .product-blue {
+    background-color: #daeef3;
+  }
+  .product-blue:hover {
+    background-color: #95b3d7;
+  }
+  /* UNL-95 */
+
+  /* UNL-98 */
+  .product-green-border {
+    border: 2px solid #ebf1de;
+  }
+  .product-green-border:hover {
+    border: 2px solid #c4d79b;
+  }
+  .product-green-border:hover .product-green {
+    background-color: #c4d79b;
+  }
+  .product-green {
+    background-color: #ebf1de;
+  }
+  .product-green:hover {
+    background-color: #c4d79b;
+  }
+  /* UNL-98 */
+
+  /* ULSD */
+  .product-yellow-border {
+    border: 2px solid #ffffcc;
+  }
+  .product-yellow-border:hover {
+    border: 2px solid #ffff00;
+  }
+  .product-yellow-border:hover .product-yellow {
+    background-color: #ffff00;
+  }
+  .product-yellow {
+    background-color: #ffffcc;
+  }
+  .product-yellow:hover {
+    background-color: #ffff00;
+  }
+  /* ULSD */
+
+  /* JET A1 */
+  .product-grey-border {
+    border: 2px solid #efefef;
+  }
+  .product-grey-border:hover {
+    border: 2px solid #efefef;
+  }
+  .product-grey-border:hover .product-grey {
+    background-color: #efefef;
+  }
+  .product-grey {
+    background-color: #efefef;
+  }
+  .product-grey:hover {
+    background-color: #efefef;
+  }
+  /* JET A1 */
+
+  /* FUEL OIL */
+  .product-black-border {
+    border: 2px solid #d9d9d9;
+  }
+  .product-black-border:hover {
+    border: 2px solid #a6a6a6;
+  }
+  .product-black-border:hover .product-black {
+    background-color: #a6a6a6;
+  }
+  .product-black {
+    background-color: #d9d9d9;
+  }
+  .product-black:hover {
+    background-color: #a6a6a6;
+  }
+  /* FUEL OIL */
+
+  /* HGO */
+  .product-red-border {
+    border: 2px solid #f2dcdb;
+  }
+  .product-red-border:hover {
+    border: 2px solid #da9694;
+  }
+  .product-red-border:hover .product-red {
+    background-color: #da9694;
+  }
+  .product-red {
+    background-color: #f2dcdb;
+  }
+  .product-red:hover {
+    background-color: #da9694;
+  }
+  /* HGO */
+
+  /* LPG */
+  .product-purple-border {
+    border: 2px solid #e4dfec;
+  }
+  .product-purple-border:hover {
+    border: 2px solid #ccc0da;
+  }
+  .product-purple-border:hover .product-purple {
+    background-color: #ccc0da;
+  }
+  .product-purple {
+    background-color: #e4dfec;
+  }
+  .product-purple:hover {
+    background-color: #ccc0da;
+  }
+  /* LPG */
+}
+
 * {
   margin: 0;
   padding: 0;
