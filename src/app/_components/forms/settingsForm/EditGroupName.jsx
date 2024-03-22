@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 // state/constext
 import { ADD_GROUPNAME } from '@/app/dashboard/_state/settings/actionTypes';
@@ -15,43 +15,39 @@ const EditGroupName = ({ groupName }) => {
   const globalState = useGlobalStateContext();
   const lang = globalState.language;
 
+  const inputRef = useRef(null);
+  const selectRef = useRef(null);
+
   // local state
   const [language, setLanguage] = useState(lang || null);
   const [canEdit, setCanEdit] = useState(false);
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    if (!groupName) return;
-
     if (groupName) {
-      const payload =
-        groupName[language] &&
-        groupName[language].toString().split(' ').join('-');
-      // console.log(payload, 'the payload else');
-      setInput(payload);
-      setLanguage(language);
-    } else {
-      // console.log(groupName);
-      const payload = Object.entries(groupName)[0];
-      // console.log(payload, 'the payload if');
-      setLanguage(payload[0]);
-      setInput(payload[1]);
+      inputRef.current.value = groupName[lang];
+      selectRef.current.value = lang;
     }
+  });
 
-    // if (!groupName && !groupName[language]) {
-    //   const payload = Object.entries(groupName)[0];
-    //   console.log(payload, 'the payload if');
-    //   setLanguage(payload[0]);
-    //   setInput(payload[1]);
-    // } else {
-    //   const payload =
-    //     groupName[language] &&
-    //     groupName[language].toString().split(' ').join('-');
-    //   console.log(payload, 'the payload else');
-    //   setInput(payload);
-    //   setLanguage(language);
-    // }
-  }, [groupName, language]);
+  // useEffect(() => {
+  //   console.log(groupName, 'groupName in EditGroup useEffect');
+  //   console.log(inputRef.current, 'inputRef in EditGroup useEffect');
+  //   console.log(selectRef.current, 'selectRef in EditGroup useEffect');
+  //   if (!groupName) return;
+
+  //   if (groupName) {
+  //     const payload =
+  //       groupName[language] &&
+  //       groupName[language].toString().split(' ').join('-');
+  //     setInput(payload);
+  //     setLanguage(language);
+  //   } else {
+  //     const payload = Object.entries(groupName)[0];
+  //     setLanguage(payload[0]);
+  //     setInput(payload[1]);
+  //   }
+  // }, [groupName, language]);
 
   //   useEffect(() => {
   //     // console.log(groupName, 'OVOA GO GLEDAM');
@@ -88,8 +84,12 @@ const EditGroupName = ({ groupName }) => {
 
       dispatch({
         type: ADD_GROUPNAME,
-        payload: { language, value: input },
+        payload: {
+          language: selectRef.current.value,
+          value: selectRef.current.value,
+        },
       });
+      // payload: { language, value: input },
       setCanEdit(false);
     },
     [input, language, dispatch]
@@ -102,7 +102,8 @@ const EditGroupName = ({ groupName }) => {
 
   return (
     <label className='flex flex-col gap-2'>
-      <input
+      {/* <input
+        ref={inputRef}
         disabled={!canEdit && 'disabled'}
         type='text'
         className='capitalize border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
@@ -113,12 +114,35 @@ const EditGroupName = ({ groupName }) => {
             console.log(e.key);
           }
         }}
+      /> */}
+      <input
+        ref={inputRef}
+        disabled={!canEdit && 'disabled'}
+        type='text'
+        className='capitalize border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            console.log(e.key);
+          }
+        }}
       />
-      <select
+      {/* <select
+        ref={selectRef}
         disabled={!canEdit && 'disabled'}
         className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'
         onChange={handleOnLangChange}
         defaultValue={language}>
+        {languages.map((lang, i) => (
+          <option key={i} value={lang}>
+            {lang}
+          </option>
+        ))}
+      </select> */}
+      <select
+        ref={selectRef}
+        disabled={!canEdit && 'disabled'}
+        className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'
+        defaultValue={lang}>
         {languages.map((lang, i) => (
           <option key={i} value={lang}>
             {lang}
@@ -145,7 +169,7 @@ const EditGroupName = ({ groupName }) => {
   );
 };
 
-export default EditGroupName;
+export default memo(EditGroupName);
 
 // export default memo(EditGroupName, (prev, next) => {
 // 	// console.log(prev.groupName, 'previous');

@@ -33,10 +33,6 @@ const SettingsForm = ({ data }) => {
 
   const { language } = globalState;
 
-  // ОВА ДА ГО СТАВАМ НА ДРУГО МЕСТО
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => dispatch({ type: RESET }), []);
-
   const setFormState = (data) => {
     const { groupName, collection, collectionType } = data;
 
@@ -54,6 +50,12 @@ const SettingsForm = ({ data }) => {
   //   );
 
   //   useEffect(() => data && setFormState(data), [data, groupName, setFormState]);
+  // ОВА ДА ГО СТАВАМ НА ДРУГО МЕСТО
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    console.log('it ran');
+    dispatch({ type: RESET });
+  }, [data]);
 
   useEffect(() => data && setFormState(data), [data]);
 
@@ -114,9 +116,9 @@ const SettingsForm = ({ data }) => {
     </>
   );
 };
-
-export default memo(SettingsForm, (prev, next) => {
-  // console.log(prev, 'previous');
-  // console.log(next, 'next');
-  // return true;
-});
+export default SettingsForm;
+// export default memo(SettingsForm, (prev, next) => {
+//   // console.log(prev, 'previous');
+//   // console.log(next, 'next');
+//   // return true;
+// });

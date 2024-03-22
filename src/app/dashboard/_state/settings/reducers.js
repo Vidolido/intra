@@ -12,7 +12,9 @@ import {
 export const settingsReducer = (draft, action) => {
   switch (action.type) {
     case SET_LANGUAGE: {
-      return { ...draft, language: action.payload };
+      draft.language = action.payload;
+      break;
+      // return { ...draft, language: action.payload };
     }
     case ADD_GROUPNAME: {
       // console.log(action.payload, 'ADD_GROUPNAME IN REDUCER');
@@ -61,9 +63,9 @@ export const settingsReducer = (draft, action) => {
       break;
     }
     case SET_STATE: {
-      // console.log(action.payload, 'PAYLOAD in REDUCER');
+      console.log(action.payload, 'PAYLOAD in REDUCER');
 
-      draft.groupName = { ...action.payload.groupName };
+      draft.groupName = action.payload.groupName;
 
       draft.collection[action.payload.collectionType] =
         action.payload.collection[action.payload.collectionType];
@@ -72,7 +74,7 @@ export const settingsReducer = (draft, action) => {
       break;
     }
     case RESET: {
-      // console.log('it ran');
+      console.log('it ran again', action);
       draft.groupName = {};
       draft.collection = {
         single: [],

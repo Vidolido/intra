@@ -1,20 +1,19 @@
 'use server';
 
 import DeleteButton from './DeleteButton';
-// import DisplayHeadingText from '../smallComponents/DisplayHeadingText';
 import EditLink from '../smallComponents/EditLink';
 import TranslatedString from '../smallComponents/TranslatedString';
 
 export default async function DisplaySettings({ setting }) {
-  // console.log(setting, 'setting in Display Settings');
+  console.log(setting, 'setting in Display Settings');
+  const { groupName, collection } = setting;
   return (
     <section className='flex flex-col min-w-[300px] min-h-[400px] max-h-[700px] border-2 border-grey-50 border-opacity-60 p-2 rounded'>
       <h2 className='capitalize text-2xl font-bold'>
-        {/* <DisplayHeadingText groupName={setting.groupName} /> */}
-        <TranslatedString item={setting.groupName} />
+        <TranslatedString item={groupName} />
       </h2>
       <ul className='px-2 py-1 mt-4 mb-5'>
-        {setting?.collection.map((collectionItem) => {
+        {collection.map((collectionItem) => {
           return (
             <li key={collectionItem._id}>
               {collectionItem.single && (
@@ -45,7 +44,7 @@ export default async function DisplaySettings({ setting }) {
           <DeleteButton settings={setting.collection} />
           {/* href-от знае да направи проблеми, треба да проверам неколку опции
   				за да видам од кои причини се случува. */}
-          <EditLink groupName={setting.groupName} />
+          <EditLink groupName={groupName} />
         </div>
       </div>
     </section>
