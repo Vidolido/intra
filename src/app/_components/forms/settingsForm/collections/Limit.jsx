@@ -26,7 +26,7 @@ export default function Limit({ data }) {
   const [inputs, setInputs] = useState(initialState);
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
     setInputs(data.item);
   }, [data]);
 

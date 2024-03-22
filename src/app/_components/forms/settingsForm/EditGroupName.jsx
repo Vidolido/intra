@@ -8,106 +8,141 @@ import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/sett
 import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 
 const EditGroupName = ({ groupName }) => {
-	const { languages, editButtonLabels, saveButtonLabels } =
-		useStaticSettingsContext();
-	const dispatch = useSettingsDispatchContext();
+  const { languages, editButtonLabels, saveButtonLabels } =
+    useStaticSettingsContext();
+  const dispatch = useSettingsDispatchContext();
 
-	const globalState = useGlobalStateContext();
-	const lang = globalState.language;
+  const globalState = useGlobalStateContext();
+  const lang = globalState.language;
 
-	// local state
-	const [language, setLanguage] = useState(lang || null);
-	const [canEdit, setCanEdit] = useState(false);
-	const [input, setInput] = useState('');
+  // local state
+  const [language, setLanguage] = useState(lang || null);
+  const [canEdit, setCanEdit] = useState(false);
+  const [input, setInput] = useState('');
 
-	useEffect(() => {
-		// console.log(groupName, 'OVOA GO GLEDAM');
-		// Тука вади грешка
-		let localState = !groupName[lang]
-			? Object.entries(groupName).toString().split(' ').join('-')
-			: Object.entries(groupName).filter((e) => e[0] === language);
+  useEffect(() => {
+    if (!groupName) return;
 
-		// console.log(Object.entries(groupName), 'Object.entries');
+    if (groupName) {
+      const payload =
+        groupName[language] &&
+        groupName[language].toString().split(' ').join('-');
+      // console.log(payload, 'the payload else');
+      setInput(payload);
+      setLanguage(language);
+    } else {
+      // console.log(groupName);
+      const payload = Object.entries(groupName)[0];
+      // console.log(payload, 'the payload if');
+      setLanguage(payload[0]);
+      setInput(payload[1]);
+    }
 
-		// console.log(!localState.length, 'LOCAL STATE IN EDIT GROUP NAME');
+    // if (!groupName && !groupName[language]) {
+    //   const payload = Object.entries(groupName)[0];
+    //   console.log(payload, 'the payload if');
+    //   setLanguage(payload[0]);
+    //   setInput(payload[1]);
+    // } else {
+    //   const payload =
+    //     groupName[language] &&
+    //     groupName[language].toString().split(' ').join('-');
+    //   console.log(payload, 'the payload else');
+    //   setInput(payload);
+    //   setLanguage(language);
+    // }
+  }, [groupName, language]);
 
-		setInput(!localState.length ? '' : localState[0][1]);
-		setLanguage(!localState.length ? lang : localState[0][0]);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [groupName]);
+  //   useEffect(() => {
+  //     // console.log(groupName, 'OVOA GO GLEDAM');
+  //     // Тука вади грешка
+  //     let localState = !groupName[lang]
+  //       ? Object.entries(groupName).toString().split(' ').join('-')
+  //       : Object.entries(groupName).filter((e) => e[0] === language);
 
-	const handleOnLangChange = (e) => {
-		setLanguage(e.target.value);
-		!groupName[e.target.value]
-			? setInput('')
-			: setInput(groupName[e.target.value]);
-	};
+  //     // console.log(Object.entries(groupName), 'Object.entries');
 
-	const handleEdit = (e) => {
-		e.preventDefault();
-		setCanEdit(true);
-	};
+  //     // console.log(!localState.length, 'LOCAL STATE IN EDIT GROUP NAME');
 
-	const handleSave = useCallback(
-		(e) => {
-			e.preventDefault();
-			if (!input) return;
+  //     setInput(!localState.length ? '' : localState[0][1]);
+  //     setLanguage(!localState.length ? lang : localState[0][0]);
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   }, [groupName]);
 
-			dispatch({
-				type: ADD_GROUPNAME,
-				payload: { language, value: input },
-			});
-			setCanEdit(false);
-		},
-		[input, language, dispatch]
-	);
+  const handleOnLangChange = (e) => {
+    setLanguage(e.target.value);
+    !groupName[e.target.value]
+      ? setInput('')
+      : setInput(groupName[e.target.value]);
+  };
 
-	// Оваа компонента доколку нема податок за одреден јазик, кога се прави ажурирање на името на групата, GroupName може да биде празно.
-	// console.log(state, 'state in EditGroupName');
+  const handleEdit = (e) => {
+    e.preventDefault();
+    setCanEdit(true);
+  };
 
-	return (
-		<label className='flex flex-col gap-2'>
-			<input
-				disabled={!canEdit && 'disabled'}
-				type='text'
-				className='capitalize border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
-				value={input}
-				onChange={(e) => setInput(e.target.value)}
-				onKeyDown={(e) => {
-					if (e.key === 'Enter') {
-						console.log(e.key);
-					}
-				}}
-			/>
-			<select
-				disabled={!canEdit && 'disabled'}
-				className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'
-				onChange={handleOnLangChange}
-				defaultValue={language}>
-				{languages.map((lang, i) => (
-					<option key={i} value={lang}>
-						{lang}
-					</option>
-				))}
-			</select>
-			{!canEdit && (
-				<button
-					type='button'
-					onClick={handleEdit}
-					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
-					{editButtonLabels[lang]}
-				</button>
-			)}
-			{canEdit && (
-				<button
-					type='button'
-					onClick={handleSave}
-					className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
-					{saveButtonLabels[lang]}
-				</button>
-			)}
-		</label>
-	);
+  const handleSave = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!input) return;
+
+      dispatch({
+        type: ADD_GROUPNAME,
+        payload: { language, value: input },
+      });
+      setCanEdit(false);
+    },
+    [input, language, dispatch]
+  );
+
+  // Оваа компонента доколку нема податок за одреден јазик, кога се прави ажурирање на името на групата, GroupName може да биде празно.
+  // console.log(state, 'state in EditGroupName');
+  // console.log(groupName, 'the groupname');
+  // console.log(input, language, 'inputs in component');
+
+  return (
+    <label className='flex flex-col gap-2'>
+      <input
+        disabled={!canEdit && 'disabled'}
+        type='text'
+        className='capitalize border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none'
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            console.log(e.key);
+          }
+        }}
+      />
+      <select
+        disabled={!canEdit && 'disabled'}
+        className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'
+        onChange={handleOnLangChange}
+        defaultValue={language}>
+        {languages.map((lang, i) => (
+          <option key={i} value={lang}>
+            {lang}
+          </option>
+        ))}
+      </select>
+      {!canEdit && (
+        <button
+          type='button'
+          onClick={handleEdit}
+          className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
+          {editButtonLabels[lang]}
+        </button>
+      )}
+      {canEdit && (
+        <button
+          type='button'
+          onClick={handleSave}
+          className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/4'>
+          {saveButtonLabels[lang]}
+        </button>
+      )}
+    </label>
+  );
 };
 
 export default EditGroupName;

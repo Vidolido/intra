@@ -1,16 +1,17 @@
 'use server';
 
 import DeleteButton from './DeleteButton';
-import DisplayHeadingText from '../smallComponents/DisplayHeadingText';
+// import DisplayHeadingText from '../smallComponents/DisplayHeadingText';
 import EditLink from '../smallComponents/EditLink';
 import TranslatedString from '../smallComponents/TranslatedString';
 
 export default async function DisplaySettings({ setting }) {
-  //   console.log(setting, 'setting in Display Settings');
+  // console.log(setting, 'setting in Display Settings');
   return (
     <section className='flex flex-col min-w-[300px] min-h-[400px] max-h-[700px] border-2 border-grey-50 border-opacity-60 p-2 rounded'>
       <h2 className='capitalize text-2xl font-bold'>
-        <DisplayHeadingText groupName={setting.groupName} />
+        {/* <DisplayHeadingText groupName={setting.groupName} /> */}
+        <TranslatedString item={setting.groupName} />
       </h2>
       <ul className='px-2 py-1 mt-4 mb-5'>
         {setting?.collection.map((collectionItem) => {

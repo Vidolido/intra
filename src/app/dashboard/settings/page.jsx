@@ -1,41 +1,41 @@
-// 'use server';
-// export const runtime = 'edge';
 import { Suspense } from 'react';
+
+import { getSettings } from '@/app/_actions/settingsActions';
 
 // components
 import DisplaySettings from '@/app/_components/settings/DisplaySettings';
 
-export async function getData() {
-	const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings`, {
-		next: { tags: ['collection'], revalidate: 10 },
-	});
-	if (!res.ok) {
-		throw new Error('Failed to fetch data: ' + res.statusText);
-	}
+// export async function getSettings() {
+//   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings`, {
+//     next: { tags: ['collection'], revalidate: 3600 },
+//   });
+//   if (!res.ok) {
+//     throw new Error('Failed to fetch data: ' + res.statusText);
+//   }
 
-	return await res.json();
-}
+//   return await res.json();
+// }
 
 // Да проверам дали кје работи без овие
 // export const dynamic = 'force-dynamic';
 // export const dynamicParams = true;
 
 // Работи само со ова(приметив каснење, да видам дали ќе се случи пак), но ќе остаам да видам уште некој ден. 11.03.2024
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export default async function Settings() {
-	const data = await getData();
-
-	// console.log(data, 'in settings page');
-	return (
-		<div className='flex flex-row flex-wrap justify-center align-middle gap-16'>
-			<Suspense fallback={<div>Loading...</div>}>
-				{!data.length ? (
-					<h2>There are no settings available.</h2>
-				) : (
-					data?.map((item) => <DisplaySettings key={item} setting={item} />)
-				)}
-			</Suspense>
-		</div>
-	);
+  // const data = await getSettings();
+  const data = JSON.parse(await getSettings());
+  // console.log(data, 'in settings page');
+  return (
+    <div className='flex flex-row flex-wrap justify-center align-middle gap-16'>
+      <Suspense fallback={<div>Loading...</div>}>
+        {!data.length ? (
+          <h2>There are no settings available.</h2>
+        ) : (
+          data.map((item) => <DisplaySettings key={item} setting={item} />)
+        )}
+      </Suspense>
+    </div>
+  );
 }

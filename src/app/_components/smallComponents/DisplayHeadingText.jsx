@@ -1,13 +1,24 @@
 'use client';
+import { useEffect, useState } from 'react';
+
 // state/context
 import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
 
 const HeadingText = ({ groupName }) => {
-  const globalState = useGlobalStateContext();
-  const { language } = globalState;
-  // console.log(groupName, 'in heading text smaallComp');
+  const { language } = useGlobalStateContext();
 
-  return groupName[language];
+  const [returnValue, setReturnValue] = useState(null);
+
+  useEffect(() => {
+    if (!groupName[language]) {
+      const payload = Object.entries(groupName)[0];
+      setReturnValue(payload[1]);
+    } else {
+      setReturnValue(groupName[language]);
+    }
+  }, [language]);
+
+  return returnValue;
 };
 
 export default HeadingText;
