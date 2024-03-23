@@ -6,6 +6,7 @@ export const settingsState = {
 		translatedString: [],
 		limit: [],
 	},
-	sector: 'laboratory', // Треба да направам селект поле за ова
 	collectionType: '',
+	sector: 'laboratory', // Треба да направам селект поле за ова
+	shouldUpdate: false,
 };

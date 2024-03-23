@@ -3,17 +3,29 @@ import { Suspense } from 'react';
 // components
 import SettingsForm from '@/app/_components/forms/settingsForm/SettingsForm';
 
-// get data from database
+export async function generateStaticParams() {
+	const settings = await fetch(
+		`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings`
+	).then((res) => res.json());
+
+	return settings.map((setting) => {
+		return Object.entries(setting.groupName).map(([key, value]) => ({
+			language: key,
+			slug: value,
+		}));
+	});
+}
+
 export async function getSettingGroup(setting, lang) {
 	try {
 		const res = await fetch(
 			`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings/${setting}?lang=${lang}`,
 			{
-				next: { tags: ['setting'], revalidate: 10 },
+				next: { tags: ['setting'], revalidate: 60 },
 			}
 		);
 		if (!res.ok) {
-			throw new Error('Faliled to fetch.statusText data: ' + res);
+			throw new Error('Faliled to fetch.statusText data: ' + res.data);
 		}
 		return await res.json();
 	} catch (error) {
@@ -43,11 +55,11 @@ function setDataForFrontEnd(data) {
 }
 // helper functions >>
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 // Работи само со ова(приметив каснење, да видам дали ќе се случи пак), но ќе остаам да видам уште некој ден. 11.03.2024
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export default async function Edit({ params, searchParams }) {
 	const settingForDb = params.setting.toLowerCase().split('-').join(' ');
@@ -58,9 +70,9 @@ export default async function Edit({ params, searchParams }) {
 
 	return (
 		<div className='w-1/2 px-2'>
-			<h2>Edit Setting</h2>
+			{/* <h2>Edit Setting</h2> */}
 			<Suspense fallback={<span>Loading...</span>}>
-				<SettingsForm data={data} />
+				<SettingsForm data={data} shouldUpdate={true} />
 			</Suspense>
 		</div>
 	);

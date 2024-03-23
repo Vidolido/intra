@@ -1,27 +1,20 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 // server actions
-import { createSetting } from '@/app/_actions/settingsActions';
+import { createSetting, updateSetting } from '@/app/_actions/settingsActions';
 
 // state/context
-import { RESET } from '@/app/dashboard/_state/settings/actionTypes';
 import { useSettingsContext } from '@/app/dashboard/_state/settings/settingsContext';
-import { useSettingsDispatchContext } from '@/app/dashboard/_state/settings/settingsContext';
 
 // components
 import SubmitButton from '../submitButton/SubmitButton';
 
 const ParentForm = ({ children }) => {
 	const state = useSettingsContext();
-	const dispatch = useSettingsDispatchContext();
+	const { shouldUpdate } = state;
 	const router = useRouter();
-
-	useEffect(() => {
-		dispatch({ type: RESET });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	const formRef = useRef(null);
 
@@ -31,16 +24,16 @@ const ParentForm = ({ children }) => {
 			e.stopPropagation();
 		}
 	};
-	// console.log(state, 'THE STATE IN PARENT');
-	const sendState = createSetting.bind(null, state);
+
+	const sendState = !shouldUpdate
+		? createSetting.bind(null, state)
+		: updateSetting.bind(null, state);
+
 	return (
 		<form
 			ref={formRef}
 			action={() => {
 				sendState();
-
-				// revalidateTag('setting');
-				formRef.current?.reset();
 				router.push('/dashboard/settings');
 			}}
 			onKeyDown={handleOnKeyDown}
