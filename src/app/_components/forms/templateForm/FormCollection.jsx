@@ -6,5 +6,5 @@ const FormCollection = ({ children }) => {
 	return <fieldset className='flex flex-col gap-2'>{children}</fieldset>;
 };
 
-// export default memo(FormCollection);
-export default FormCollection;
+export default memo(FormCollection);
+// export default FormCollection;

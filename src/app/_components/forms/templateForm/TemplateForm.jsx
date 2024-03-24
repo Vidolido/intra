@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useState } from 'react';
 // state/context
 import {
 	ADD_TEMPLATE_ITEM,
+	RESET,
 	SET_STATE,
 } from '@/app/dashboard/_state/templates/actionTypes';
 import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
@@ -23,29 +24,49 @@ import CollectionItems from './CollectionItems';
 import Loading from '@/app/dashboard/loading';
 // components
 
-export default function TemplateForm({ data, template }) {
+export default function TemplateForm({ data, template, shouldUpdate }) {
 	const state = useTemplatesContext();
 	const { language } = useGlobalStateContext();
 	const { addButtonLabels } = useStaticSettingsContext();
-	const { templateData } = useTemplatesContext();
+	const { analisysType, product, templateData } = useTemplatesContext();
 	const dispatch = useTemplatesDispatchContext();
+
+	const setFormState = (template, shouldUpdate) => {
+		const { _id, analisysType, product, templateData } = template;
+
+		const payload = {
+			_id,
+			analisysType,
+			product,
+			templateData,
+			shouldUpdate,
+		};
+		dispatch({ type: SET_STATE, payload });
+	};
+	useEffect(() => {
+		if (!template) {
+			dispatch({ type: RESET });
+		}
+	}, [template]);
 
 	useEffect(() => {
 		if (template) {
-			dispatch({ type: SET_STATE, payload: template });
+			dispatch({ type: RESET });
+			setFormState(template, shouldUpdate);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [template]);
+	}, [template, shouldUpdate]);
 
 	const handleOnAdd = useCallback(() => {
 		dispatch({ type: ADD_TEMPLATE_ITEM });
 	}, [dispatch]);
-
+	// console.log(state, 'in template Form');
+	// console.log(template, 'template in template Form');
 	return (
 		<ParentForm>
 			<fieldset className='flex gap-2'>
-				<AnalysisType />
-				<Product />
+				<AnalysisType analisysType={analisysType} />
+				<Product product={product} />
 			</fieldset>
 			<fieldset className='flex gap-2'>
 				{data &&

@@ -14,7 +14,6 @@ export function getItemWithId(data, templateData) {
 		});
 		return newItem;
 	});
-	console.log(newTemplateData, 'newTemplate');
 	return newTemplateData;
 }
 

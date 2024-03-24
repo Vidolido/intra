@@ -1,17 +1,20 @@
 'use client';
 
 import { SET_ANALISYS_TYPE } from '@/app/dashboard/_state/templates/actionTypes';
-import { useTemplatesDispatchContext } from '@/app/dashboard/_state/templates/templatesContext';
-import { memo, useCallback, useEffect, useRef } from 'react';
+import {
+	useTemplatesContext,
+	useTemplatesDispatchContext,
+} from '@/app/dashboard/_state/templates/templatesContext';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 const AnalysisType = () => {
+	const { analisysType, shouldUpdate } = useTemplatesContext();
 	const dispatch = useTemplatesDispatchContext();
 
 	const selectRef = useRef(null);
 
 	useEffect(() => {
-		dispatch({ type: SET_ANALISYS_TYPE, payload: selectRef.current.value });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		selectRef.current.value = analisysType;
 	}, []);
 
 	const handleOnChange = useCallback(() => {
@@ -32,4 +35,4 @@ const AnalysisType = () => {
 	);
 };
 
-export default memo(AnalysisType);
+export default AnalysisType;

@@ -60,13 +60,15 @@ export default function CollectionItems({ data }) {
 		},
 		[language]
 	);
-	const handleOnClick = (index) => {
+	const handleOnClick = (index, row) => {
 		let filtered = collectionItems.filter((item, i) => i !== index);
-		console.log(filtered, 'these');
+		// console.log(filtered, 'these');
+		// console.log(row, 'are the rows');
 		setCollectionItems(filtered);
-		dispatch({ type: DELETE_TEMPLATE_ITEM, payload: index });
+		dispatch({ type: DELETE_TEMPLATE_ITEM, payload: { index, row } });
 	};
-	// console.log(collectionItems);
+	console.log(collectionItems, 'collll');
+	console.log(templateData);
 	return (
 		<div className='flex flex-col gap-2 w-10/12'>
 			<div className='flex flex-row border w-10/12'>
@@ -80,6 +82,7 @@ export default function CollectionItems({ data }) {
 					})}
 			</div>
 			{collectionItems.map((row, rowIndex) => {
+				console.log(row, rowIndex, 'OVIE OCLLECTION');
 				return (
 					<div key={rowIndex} className='flex justify-between'>
 						<div className='flex flex-row justify-around w-10/12'>
@@ -90,7 +93,7 @@ export default function CollectionItems({ data }) {
 						<button
 							type='button'
 							className='bg-slate-500 hover:bg-slate-700 text-white font-bold py-1 px-2 rounded'
-							onClick={() => handleOnClick(rowIndex)}>
+							onClick={() => handleOnClick(rowIndex, row)}>
 							{deleteButtonLabels[language]}
 						</button>
 					</div>

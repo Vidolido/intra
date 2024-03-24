@@ -16,7 +16,7 @@ export async function getTemplates() {
 	return await res.json();
 }
 
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export default async function Templates() {
 	const data = await getTemplates();

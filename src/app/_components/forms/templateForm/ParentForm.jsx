@@ -1,12 +1,11 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 // server actions
-import { createTemplate } from '@/app/_actions/temlatesActions';
+import { createTemplate, updateTemplate } from '@/app/_actions/temlatesActions';
 
 // state/context
-import { RESET } from '@/app/dashboard/_state/templates/actionTypes';
 import {
 	useTemplatesContext,
 	useTemplatesDispatchContext,
@@ -14,26 +13,31 @@ import {
 
 // components
 import SubmitButton from '../submitButton/SubmitButton';
+import { RESET } from '@/app/dashboard/_state/templates/actionTypes';
 
 const ParentForm = ({ children }) => {
-	const { analisysType, product, templateData } = useTemplatesContext();
+	const state = useTemplatesContext();
 	const dispatch = useTemplatesDispatchContext();
+	const { shouldUpdate } = state;
 	const router = useRouter();
 
-	// Да видам дали ова треба тука или може да иде во акцијата.
+	const formRef = useRef(null);
+
 	useEffect(() => {
 		dispatch({ type: RESET });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const payload = { analisysType, product, templateData };
-	const sendState = createTemplate.bind(null, payload);
+	const sendState = !shouldUpdate
+		? createTemplate.bind(null, state)
+		: updateTemplate.bind(null, state);
 
-	// console.log(state);
+	console.log(state, 'in parent form');
 	return (
 		<form
+			ref={formRef}
 			action={() => {
 				sendState();
+				formRef.current.reset();
 				router.push('/dashboard/templates');
 			}}
 			className='flex w-full flex-col border-2 border-grey-50 border-opacity-60 rounded p-2 bg-gray-50 gap-2'>

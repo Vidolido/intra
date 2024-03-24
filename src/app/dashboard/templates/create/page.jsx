@@ -29,7 +29,7 @@ export default async function Create() {
 		<div className='w-10/12 px-2'>
 			<h3>Create a new Template</h3>
 			<Suspense fallback={<span>Loading...</span>}>
-				<TemplateForm data={data} template={null} />
+				<TemplateForm data={data} template={null} shouldUpdate={false} />
 			</Suspense>
 		</div>
 	);

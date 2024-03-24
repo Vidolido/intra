@@ -6,12 +6,14 @@ import { connect } from '@/../conn';
 import Templates from '@/app/_models/Templates';
 
 export async function GET(req, { params }) {
-	// headers();
+	cookies();
 	const { template } = params;
 
 	try {
 		await connect();
 		const newTemplate = await Templates.findOne({ _id: template });
+		revalidatePath('/dashboard/templates', 'page');
+
 		revalidateTag('template');
 		return Response.json(newTemplate);
 	} catch (error) {
