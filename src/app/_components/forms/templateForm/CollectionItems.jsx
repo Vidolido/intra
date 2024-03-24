@@ -1,65 +1,101 @@
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+// state/constext
+import { DELETE_TEMPLATE_ITEM } from '@/app/dashboard/_state/templates/actionTypes';
 import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
-import { useTemplatesContext } from '@/app/dashboard/_state/templates/templatesContext';
+import { useStaticSettingsContext } from '@/app/dashboard/_state/settings/staticStateContext';
+import {
+	useTemplatesContext,
+	useTemplatesDispatchContext,
+} from '@/app/dashboard/_state/templates/templatesContext';
+
+// <<helper functions
 import { getItemWithId } from '@/app/utls/templateFunctions';
-import { useCallback, useMemo } from 'react';
+// helper functions>>
 
 export default function CollectionItems({ data }) {
-  const { language } = useGlobalStateContext();
-  const { templateData } = useTemplatesContext();
+	const { language } = useGlobalStateContext();
+	const { deleteButtonLabels } = useStaticSettingsContext();
+	const { templateData } = useTemplatesContext();
+	const dispatch = useTemplatesDispatchContext();
 
-  const collectionItems = useMemo(
-    () => getItemWithId(data, templateData),
-    [data, templateData]
-  );
+	//local state
+	const [collectionItems, setCollectionItems] = useState([]);
 
-  const checkForType = useCallback(
-    (item, index) => {
-      let optionValues = '';
-      if (typeof item[item.collectionType] !== 'object')
-        optionValues = item[item.collectionType];
+	// const collectionItems = useMemo(
+	// 	() => getItemWithId(data, templateData),
+	// 	[data, templateData]
+	// );
 
-      if (
-        typeof item[item.collectionType] === 'object' &&
-        item[item.collectionType][language]
-      )
-        optionValues = item[item.collectionType][language];
+	useEffect(() => {
+		let items = getItemWithId(data, templateData);
+		setCollectionItems(items);
+	}, [data, templateData]);
 
-      if (
-        typeof item[item.collectionType] === 'object' &&
-        !item[item.collectionType][language]
-      )
-        optionValues = `${item[item.collectionType].from} - ${
-          item[item.collectionType].to
-        }`;
+	const checkForType = useCallback(
+		(item, index) => {
+			let optionValues = '';
+			if (typeof item[item.collectionType] !== 'object')
+				optionValues = item[item.collectionType];
 
-      return <span key={index}>{optionValues}</span>;
-    },
-    [language]
-  );
+			if (
+				typeof item[item.collectionType] === 'object' &&
+				item[item.collectionType][language]
+			)
+				optionValues = item[item.collectionType][language];
 
-  // console.log(data, 'the data');
-  // console.log(collectionItems);
+			if (
+				typeof item[item.collectionType] === 'object' &&
+				!item[item.collectionType][language]
+			)
+				optionValues = `${item[item.collectionType].from} - ${
+					item[item.collectionType].to
+				}`;
 
-  return (
-    <div className='flex gap-16'>
-      {data &&
-        data.map((item, index) => {
-          return (
-            <div key={index} className='flex flex-col border'>
-              <h3 className='capitalize'>{item?.groupName[language]}</h3>
-              {collectionItems.length > 0 &&
-                collectionItems.map((collectionItem, i) => {
-                  const [_, collItem] = collectionItem.find(
-                    (itemToFind) =>
-                      JSON.stringify(itemToFind[0]) ===
-                      JSON.stringify(item.groupName)
-                  );
-
-                  return checkForType(collItem, i);
-                })}
-            </div>
-          );
-        })}
-    </div>
-  );
+			return (
+				<p key={index} className='w-full'>
+					{optionValues}
+				</p>
+			);
+		},
+		[language]
+	);
+	const handleOnClick = (index) => {
+		let filtered = collectionItems.filter((item, i) => i !== index);
+		console.log(filtered, 'these');
+		setCollectionItems(filtered);
+		dispatch({ type: DELETE_TEMPLATE_ITEM, payload: index });
+	};
+	// console.log(collectionItems);
+	return (
+		<div className='flex flex-col gap-2 w-10/12'>
+			<div className='flex flex-row border w-10/12'>
+				{data &&
+					data.map((item, index) => {
+						return (
+							<h3 key={index} className='capitalize w-full'>
+								{item?.groupName[language]}
+							</h3>
+						);
+					})}
+			</div>
+			{collectionItems.map((row, rowIndex) => {
+				return (
+					<div key={rowIndex} className='flex justify-between'>
+						<div className='flex flex-row justify-around w-10/12'>
+							{row.map(([_, item], index) => {
+								return checkForType(item, index);
+							})}
+						</div>
+						<button
+							type='button'
+							className='bg-slate-500 hover:bg-slate-700 text-white font-bold py-1 px-2 rounded'
+							onClick={() => handleOnClick(rowIndex)}>
+							{deleteButtonLabels[language]}
+						</button>
+					</div>
+				);
+			})}
+		</div>
+	);
 }

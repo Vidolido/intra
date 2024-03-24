@@ -9,10 +9,11 @@ export async function generateStaticParams() {
 	).then((res) => res.json());
 
 	return settings.map((setting) => {
-		return Object.entries(setting.groupName).map(([key, value]) => ({
-			language: key,
-			slug: value,
+		let payload = Object.entries(setting.groupName).map((item) => ({
+			setting: item[1],
 		}));
+
+		return { ...payload };
 	});
 }
 
@@ -21,7 +22,7 @@ export async function getSettingGroup(setting, lang) {
 		const res = await fetch(
 			`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings/${setting}?lang=${lang}`,
 			{
-				next: { tags: ['setting'], revalidate: 60 },
+				next: { tags: ['setting'], revalidate: 3600 },
 			}
 		);
 		if (!res.ok) {
@@ -55,13 +56,14 @@ function setDataForFrontEnd(data) {
 }
 // helper functions >>
 
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
+// export const dynamic = 'force-dynamic';
+// export const dynamicParams = true;
 
 // Работи само со ова(приметив каснење, да видам дали ќе се случи пак), но ќе остаам да видам уште некој ден. 11.03.2024
 // export const revalidate = 0;
 
 export default async function Edit({ params, searchParams }) {
+	console.log(params, 'the params');
 	const settingForDb = params.setting.toLowerCase().split('-').join(' ');
 
 	const lang = searchParams.lang || 'en'; // Место англиски, треба да биде избран стандарден јазик од база

@@ -1,6 +1,7 @@
 export function getItemWithId(data, templateData) {
-	const newTemplateData = templateData.map((item) => {
-		let newItem = item.map(([groupName, id]) => {
+	// Тука да исхендлам ерори, доколку некое не се совпаѓа, да пријавам на рецепција.
+	const newTemplateData = templateData.map((templateItem) => {
+		let newItem = templateItem.map(([groupName, id]) => {
 			let findCollection = data.find(
 				(item) => JSON.stringify(item.groupName) === JSON.stringify(groupName)
 			);
@@ -13,7 +14,7 @@ export function getItemWithId(data, templateData) {
 		});
 		return newItem;
 	});
-
+	console.log(newTemplateData, 'newTemplate');
 	return newTemplateData;
 }
 

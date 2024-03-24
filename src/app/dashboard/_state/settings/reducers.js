@@ -18,7 +18,6 @@ export const settingsReducer = (draft, action) => {
 			break;
 		}
 		case ADD_GROUPNAME: {
-			// console.log(action.payload, 'ADD_GROUPNAME IN REDUCER');
 			draft.groupName[action.payload.language] = action.payload.value;
 			break;
 		}
@@ -38,7 +37,6 @@ export const settingsReducer = (draft, action) => {
 			break;
 		}
 		case EDIT_COLLECTION_ITEM: {
-			// console.log(action.payload, 'REDUCER');
 			const index = draft.collection[draft.collectionType].findIndex(
 				(item) => item.id === action.payload.id
 			);
@@ -58,7 +56,6 @@ export const settingsReducer = (draft, action) => {
 			break;
 		}
 		case DELETE_FROM_COLLECTION: {
-			// console.log(action, 'DELETE REDUC');
 			draft.collection[draft.collectionType].splice(
 				draft.collection[draft.collectionType].findIndex(
 					(item) => item.id === action.payload
@@ -68,8 +65,6 @@ export const settingsReducer = (draft, action) => {
 			break;
 		}
 		case SET_STATE: {
-			// console.log(action.payload, 'PAYLOAD in REDUCER');
-
 			draft.groupName = action.payload.groupName;
 
 			draft.collection[action.payload.collectionType] =
@@ -80,12 +75,10 @@ export const settingsReducer = (draft, action) => {
 			break;
 		}
 		case SHOULD_UPDATE: {
-			// console.log(action, ' action in REDUCER');
 			draft.shouldUpdate = action.payload;
 		}
 
 		case RESET: {
-			// console.log('it ran again', action);
 			draft.groupName = {};
 			draft.collection = {
 				single: [],

@@ -1,10 +1,12 @@
-import DisplayTemplates from '@/app/_components/templates/DisplayTemplates';
 import { Suspense } from 'react';
 import Loading from '../loading';
 
+// components
+import DisplayTemplates from '@/app/_components/templates/DisplayTemplates';
+
 export async function getTemplates() {
 	const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/templates`, {
-		next: { tags: ['templates'], revalidate: 3600, cache: 'no-store' },
+		next: { tags: ['templates'], revalidate: 3600 },
 	});
 
 	if (!res.ok) {
@@ -14,7 +16,7 @@ export async function getTemplates() {
 	return await res.json();
 }
 
-// export const revalidate = 0;
+export const revalidate = 0;
 
 export default async function Templates() {
 	const data = await getTemplates();
