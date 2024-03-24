@@ -25,10 +25,10 @@ import Loading from '@/app/dashboard/loading';
 // components
 
 export default function TemplateForm({ data, template, shouldUpdate }) {
-	const state = useTemplatesContext();
+	// const state = useTemplatesContext();
 	const { language } = useGlobalStateContext();
 	const { addButtonLabels } = useStaticSettingsContext();
-	const { analisysType, product, templateData } = useTemplatesContext();
+	const { templateData } = useTemplatesContext();
 	const dispatch = useTemplatesDispatchContext();
 
 	const setFormState = (template, shouldUpdate) => {
@@ -47,6 +47,7 @@ export default function TemplateForm({ data, template, shouldUpdate }) {
 		if (!template) {
 			dispatch({ type: RESET });
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [template]);
 
 	useEffect(() => {
@@ -60,13 +61,11 @@ export default function TemplateForm({ data, template, shouldUpdate }) {
 	const handleOnAdd = useCallback(() => {
 		dispatch({ type: ADD_TEMPLATE_ITEM });
 	}, [dispatch]);
-	// console.log(state, 'in template Form');
-	// console.log(template, 'template in template Form');
 	return (
 		<ParentForm>
 			<fieldset className='flex gap-2'>
-				<AnalysisType analisysType={analisysType} />
-				<Product product={product} />
+				<AnalysisType />
+				<Product />
 			</fieldset>
 			<fieldset className='flex gap-2'>
 				{data &&

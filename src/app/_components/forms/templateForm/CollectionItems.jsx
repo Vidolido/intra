@@ -62,13 +62,9 @@ export default function CollectionItems({ data }) {
 	);
 	const handleOnClick = (index, row) => {
 		let filtered = collectionItems.filter((item, i) => i !== index);
-		// console.log(filtered, 'these');
-		// console.log(row, 'are the rows');
 		setCollectionItems(filtered);
 		dispatch({ type: DELETE_TEMPLATE_ITEM, payload: { index, row } });
 	};
-	console.log(collectionItems, 'collll');
-	console.log(templateData);
 	return (
 		<div className='flex flex-col gap-2 w-10/12'>
 			<div className='flex flex-row border w-10/12'>
@@ -82,7 +78,6 @@ export default function CollectionItems({ data }) {
 					})}
 			</div>
 			{collectionItems.map((row, rowIndex) => {
-				console.log(row, rowIndex, 'OVIE OCLLECTION');
 				return (
 					<div key={rowIndex} className='flex justify-between'>
 						<div className='flex flex-row justify-around w-10/12'>

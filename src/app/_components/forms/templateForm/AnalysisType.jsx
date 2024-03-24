@@ -5,27 +5,31 @@ import {
 	useTemplatesContext,
 	useTemplatesDispatchContext,
 } from '@/app/dashboard/_state/templates/templatesContext';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 const AnalysisType = () => {
-	const { analisysType, shouldUpdate } = useTemplatesContext();
+	const { analisysType } = useTemplatesContext();
 	const dispatch = useTemplatesDispatchContext();
 
 	const selectRef = useRef(null);
 
 	useEffect(() => {
-		selectRef.current.value = analisysType;
-	}, []);
+		if (!analisysType)
+			dispatch({ type: SET_ANALISYS_TYPE, payload: selectRef.current.value });
+	});
 
-	const handleOnChange = useCallback(() => {
-		// console.log(e);
-		dispatch({ type: SET_ANALISYS_TYPE, payload: selectRef.current.value });
-	}, [dispatch]);
+	const handleOnChange = useCallback(
+		(e) => {
+			dispatch({ type: SET_ANALISYS_TYPE, payload: e.target.value });
+		},
+		[dispatch]
+	);
 	return (
 		<label>
 			<h3>Analysis Type</h3>
 			<select
 				ref={selectRef}
+				value={analisysType}
 				onChange={handleOnChange}
 				className='border-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 focus:outline-none cursor-pointer'>
 				<option value='Certificate'>Certificate</option>

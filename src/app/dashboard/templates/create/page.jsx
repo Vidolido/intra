@@ -23,8 +23,6 @@ export const revalidate = 0;
 export default async function Create() {
 	const data = await getTemplateData();
 
-	// console.log(data);
-
 	return (
 		<div className='w-10/12 px-2'>
 			<h3>Create a new Template</h3>
