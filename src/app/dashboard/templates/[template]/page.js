@@ -11,7 +11,7 @@ export async function generateStaticParams() {
 	).then((res) => res.json());
 
 	return templates.map((template) => ({
-		template: template._id,
+		template: template._id.toString(),
 	}));
 }
 
@@ -30,7 +30,7 @@ export async function generateStaticParams() {
 // 	return await res.json();
 // }
 export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
+// export const dynamicParams = true;
 
 export const revalidate = 0;
 export default async function EditTemplate({ params }) {

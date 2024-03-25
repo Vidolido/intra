@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext } from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 import { useImmerReducer } from 'use-immer';
 
 import { analisysState } from './initState';
@@ -12,8 +12,10 @@ export const AnalisysDispatchContext = createContext();
 export const AnalisysContextProvider = ({ children }) => {
 	const [state, dispatch] = useImmerReducer(analisysReducer, analisysState);
 
+	// const contextState = useMemo(() => ({ ...state }), [state]);
 	return (
 		<AnalisysContext.Provider value={state}>
+			{/* <AnalisysContext.Provider value={contextState}> */}
 			<AnalisysDispatchContext.Provider value={dispatch}>
 				{children}
 			</AnalisysDispatchContext.Provider>

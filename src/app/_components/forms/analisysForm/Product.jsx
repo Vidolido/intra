@@ -1,16 +1,12 @@
 'use client';
-import { useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 
 // state/context
-import { SET_PRODUCT } from '@/app/dashboard/_state/templates/actionTypes';
-import {
-	useTemplatesContext,
-	useTemplatesDispatchContext,
-} from '@/app/dashboard/_state/templates/templatesContext';
+import { SET_PRODUCT } from '@/app/dashboard/_state/analisys/actionTypes';
+import { useAnalisysDispatchContext } from '@/app/dashboard/_state/analisys/analisysContext';
 
-const Product = () => {
-	const { product } = useTemplatesContext();
-	const dispatch = useTemplatesDispatchContext();
+const Product = ({ product }) => {
+	const dispatch = useAnalisysDispatchContext();
 
 	const selectRef = useRef(null);
 
@@ -19,12 +15,11 @@ const Product = () => {
 			dispatch({ type: SET_PRODUCT, payload: selectRef.current.value });
 	});
 
-	const handleOnChange = useCallback(
-		(e) => {
-			dispatch({ type: SET_PRODUCT, payload: e.target.value });
-		},
-		[dispatch]
-	);
+	const handleOnChange = useCallback(() => {
+		dispatch({ type: SET_PRODUCT, payload: selectRef.current.value });
+	}, [dispatch]);
+
+	// console.log(state.header, 'state in Product.jsx');
 	return (
 		<label>
 			<h3>Product</h3>
@@ -45,4 +40,4 @@ const Product = () => {
 	);
 };
 
-export default Product;
+export default memo(Product);

@@ -12,7 +12,7 @@ export async function GET(req, { params }) {
 	try {
 		await connect();
 		const newTemplate = await Templates.findOne({ _id: template });
-		revalidatePath('/dashboard/templates', 'page');
+		// revalidatePath('/dashboard/templates', 'page');
 
 		revalidateTag('template');
 		return Response.json(newTemplate);

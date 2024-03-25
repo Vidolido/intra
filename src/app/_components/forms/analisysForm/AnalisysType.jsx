@@ -1,16 +1,12 @@
 'use client';
-import { useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 
 // state/context
-import { SET_ANALISYS_TYPE } from '@/app/dashboard/_state/templates/actionTypes';
-import {
-	useTemplatesContext,
-	useTemplatesDispatchContext,
-} from '@/app/dashboard/_state/templates/templatesContext';
+import { SET_ANALISYS_TYPE } from '@/app/dashboard/_state/analisys/actionTypes';
+import { useAnalisysDispatchContext } from '@/app/dashboard/_state/analisys/analisysContext';
 
-const AnalysisType = () => {
-	const { analisysType } = useTemplatesContext();
-	const dispatch = useTemplatesDispatchContext();
+const AnalysisType = ({ analisysType }) => {
+	const dispatch = useAnalisysDispatchContext();
 
 	const selectRef = useRef(null);
 
@@ -19,12 +15,12 @@ const AnalysisType = () => {
 			dispatch({ type: SET_ANALISYS_TYPE, payload: selectRef.current.value });
 	});
 
-	const handleOnChange = useCallback(
-		(e) => {
-			dispatch({ type: SET_ANALISYS_TYPE, payload: e.target.value });
-		},
-		[dispatch]
-	);
+	const handleOnChange = useCallback(() => {
+		dispatch({ type: SET_ANALISYS_TYPE, payload: selectRef.current.value });
+	}, [dispatch]);
+
+	// console.log(state.header, 'state in AnalysisType.jsx');
+
 	return (
 		<label>
 			<h3>Analysis Type</h3>
@@ -40,4 +36,4 @@ const AnalysisType = () => {
 	);
 };
 
-export default AnalysisType;
+export default memo(AnalysisType);

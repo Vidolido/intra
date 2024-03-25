@@ -1,12 +1,18 @@
 'use client';
-
-import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
-// state/context
-import { useAnalisysContext } from '@/app/dashboard/_state/analisys/analisysContext';
 import { useCallback } from 'react';
+
+// state/context
+import { useGlobalStateContext } from '@/app/_globalState/globalStateContext';
+import {
+	useAnalisysContext,
+	useAnalisysDispatchContext,
+} from '@/app/dashboard/_state/analisys/analisysContext';
+import { SET_ANALISYS_RESULT } from '@/app/dashboard/_state/analisys/actionTypes';
 
 export default function TemlpateData() {
 	const { language } = useGlobalStateContext();
+	const dispatch = useAnalisysDispatchContext();
+	// const state = useAnalisysContext();
 	const { templates } = useAnalisysContext();
 
 	const checkForType = useCallback(
@@ -37,19 +43,33 @@ export default function TemlpateData() {
 		},
 		[language]
 	);
+	// console.log(state.header);
+	const handleBlur = useCallback(
+		(e, row, index) => {
+			if (!e.target.value) return;
+			let items = row.map((rowItem) => rowItem[1]);
+			// const payload = [...items, { result: e.target.value, index }];
+			const payload = { index, row: [...items, { result: e.target.value }] };
+			dispatch({ type: SET_ANALISYS_RESULT, payload });
+		},
+		[dispatch]
+	);
 
-	console.log(templates, 'the template data');
-	return templates.map((firstLayer) => {
-		return firstLayer.map((secondLayer, i) => {
+	return templates?.map((firstLayer) => {
+		// console.log(firstLayer, 'the first layer');
+		return firstLayer.map((secondLayer, index) => {
+			// console.log(secondLayer, 'the secondLayer');
+
 			return (
 				<div
-					key={i}
+					key={index}
 					className='flex justify-between items-center border-2 hover:border-red-200 rounded'>
 					{secondLayer.map(([groupName, item], i) => {
 						// console.log(item, 'now these');
 						return checkForType(item, i);
 					})}
 					<input
+						onBlur={(e) => handleBlur(e, secondLayer, index)}
 						type='text'
 						className='w-1/3 border-l-2 border-grey-50 border-opacity-60 rounded px-3 py-1 hover:border-red-200 '
 					/>

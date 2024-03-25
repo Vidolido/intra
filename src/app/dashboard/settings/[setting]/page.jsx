@@ -13,7 +13,7 @@ export async function generateStaticParams() {
 			setting: item[1].toString().split(' ').join('-'),
 			lang: item[0],
 		}));
-		console.log(payload, 'THE PAYLOAD');
+		// console.log(...payload, 'THE PAYLOAD');
 		return { ...payload };
 	});
 }
@@ -24,7 +24,6 @@ export async function getSettingGroup(setting, lang) {
 			`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings/${setting}?lang=${lang}`,
 			{
 				next: { tags: ['setting'], revalidate: 3600 },
-				cache: 'no-store',
 			}
 		);
 		if (!res.ok) {
@@ -65,7 +64,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function Edit({ params, searchParams }) {
-	console.log(params, 'the params');
+	// console.log(params, 'the params');
 	const settingForDb = params.setting.toLowerCase().split('-').join(' ');
 
 	const lang = searchParams.lang || 'en'; // Место англиски, треба да биде избран стандарден јазик од база
