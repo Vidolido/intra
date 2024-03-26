@@ -4,80 +4,81 @@ import { Suspense } from 'react';
 import SettingsForm from '@/app/_components/forms/settingsForm/SettingsForm';
 
 export async function generateStaticParams() {
-	const settings = await fetch(
-		`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings`
-	).then((res) => res.json());
+  const settings = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/settings`
+  ).then((res) => res.json());
 
-	return settings.map((setting) => {
-		let payload = Object.entries(setting.groupName).map((item) => ({
-			setting: item[1].toString().split(' ').join('-'),
-			lang: item[0],
-		}));
-		// console.log(...payload, 'THE PAYLOAD');
-		return { ...payload };
-	});
+  console.log(settings);
+
+  return settings.map((setting) => {
+    return Object.entries(setting.groupName).map((item) => ({
+      setting: item[1],
+    }));
+    // console.log(...payload, 'THE PAYLOAD');
+    // return { ...payload };
+  });
 }
 
 export async function getSettingGroup(setting, lang) {
-	try {
-		const res = await fetch(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings/${setting}?lang=${lang}`,
-			{
-				next: { tags: ['setting'], revalidate: 3600 },
-			}
-		);
-		if (!res.ok) {
-			throw new Error('Faliled to fetch.statusText data: ' + res.data);
-		}
-		return await res.json();
-	} catch (error) {
-		console.log(error);
-		return new Error('Error: ' + error);
-	}
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/settings/${setting}?lang=${lang}`,
+      {
+        next: { tags: ['setting'], revalidate: 3600 },
+      }
+    );
+    if (!res.ok) {
+      throw new Error('Faliled to fetch.statusText data: ' + res.data);
+    }
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+    return new Error('Error: ' + error);
+  }
 }
 
 // << helper functions
 function setDataForFrontEnd(data) {
-	let collection = data?.collection?.reduce((acc, currentValue) => {
-		let value = {
-			id: currentValue._id,
-			item: currentValue[data.collectionType],
-		};
-		acc.push(value);
-		return acc;
-	}, []);
+  let collection = data?.collection?.reduce((acc, currentValue) => {
+    let value = {
+      id: currentValue._id,
+      item: currentValue[data.collectionType],
+    };
+    acc.push(value);
+    return acc;
+  }, []);
 
-	const payload = {
-		groupName: data.groupName,
-		collectionType: data.collectionType,
-		collection: { [data.collectionType]: collection },
-	};
+  const payload = {
+    groupName: data.groupName,
+    collectionType: data.collectionType,
+    collection: { [data.collectionType]: collection },
+  };
 
-	return payload;
+  return payload;
 }
 // helper functions >>
 
 export const dynamic = 'force-dynamic';
-// export const dynamicParams = true;
+export const dynamicParams = true;
 
 // Работи само со ова(приметив каснење, да видам дали ќе се случи пак), но ќе остаам да видам уште некој ден. 11.03.2024
 export const revalidate = 0;
 
 export default async function Edit({ params, searchParams }) {
-	// console.log(params, 'the params');
-	const settingForDb = params.setting.toLowerCase().split('-').join(' ');
+  // console.log(params, 'the params');
+  const settingForDb = params.setting.toLowerCase().split('-').join(' ');
 
-	const lang = searchParams.lang || 'en'; // Место англиски, треба да биде избран стандарден јазик од база
-	// const lang = 'en';
+  const lang = searchParams.lang || 'en'; // Место англиски, треба да биде избран стандарден јазик од база
+  // const lang = 'en';
 
-	const data = setDataForFrontEnd(await getSettingGroup(settingForDb, lang));
+  const data = setDataForFrontEnd(await getSettingGroup(settingForDb, lang));
 
-	return (
-		<div className='w-1/2 px-2'>
-			{/* <h2>Edit Setting</h2> */}
-			<Suspense fallback={<span>Loading...</span>}>
-				<SettingsForm data={data} shouldUpdate={true} />
-			</Suspense>
-		</div>
-	);
+  return (
+    <div className='w-1/2 px-2'>
+      {/* <h2>Edit Setting</h2> */}
+      <Suspense fallback={<span>Loading...</span>}>
+        <SettingsForm data={data} shouldUpdate={true} />
+      </Suspense>
+    </div>
+  );
 }
