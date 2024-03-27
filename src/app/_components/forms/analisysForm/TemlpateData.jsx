@@ -54,12 +54,11 @@ export default function TemlpateData() {
 		},
 		[dispatch]
 	);
-
+	// console.log(templates, 'the  template is');
 	return templates?.map((firstLayer) => {
-		// console.log(firstLayer, 'the first layer');
-		return firstLayer.map((secondLayer, index) => {
+		// console.log(firstLayer.templateData, 'the first layer');
+		return firstLayer?.templateData.map((secondLayer, index) => {
 			// console.log(secondLayer, 'the secondLayer');
-
 			return (
 				<div
 					key={index}

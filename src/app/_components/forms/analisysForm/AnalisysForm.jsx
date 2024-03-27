@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 
 // actions
-import { getTemplate } from '@/app/_actions/analisysActions';
+// import { getTemplate } from '@/app/_actions/analisysActions';
 
 // state/context
 import { SET_TEMPLATES } from '@/app/dashboard/_state/analisys/actionTypes';
@@ -18,18 +18,34 @@ import TemlpateData from './TemlpateData';
 
 // export const revalidate = 0;
 
-export default function AnalisysForm() {
+export default function AnalisysForm({ templates }) {
 	const dispatch = useAnalisysDispatchContext();
 	const state = useAnalisysContext();
-	const { product, analisysType } = state;
+	const { product, analisysType, temlpateData } = state;
 
 	useEffect(() => {
 		const setTemplateData = async () => {
-			let templates = JSON.parse(await getTemplate(product, analisysType));
-			dispatch({ type: SET_TEMPLATES, payload: templates });
+			let template = templates.filter(
+				(item) => item.product === product && item.analisysType === analisysType
+			);
+			// console.log(template, 'in useEffect');
+			dispatch({ type: SET_TEMPLATES, payload: template });
 		};
+
 		setTemplateData();
-	}, [product, analisysType, dispatch]);
+	}, [product, analisysType]);
+	// console.log(templates);
+
+	// useEffect(() => {
+	// 	const setTemplateData = async () => {
+	// 		let templates = JSON.parse(await getTemplate(product, analisysType));
+	// 		dispatch({ type: SET_TEMPLATES, payload: templates });
+	// 	};
+	// 	setTemplateData();
+	// }, [product, analisysType, dispatch]);
+
+	// console.log(product, analisysType, 'OVIJA GI GLEAM');
+	// console.log(state);
 	return (
 		<ParentForm>
 			<div className='flex gap-2'>

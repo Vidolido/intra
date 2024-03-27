@@ -5,7 +5,7 @@ const nextConfig = {
 			fullUrl: true,
 		},
 	},
-	crossOrigin: 'anonymous',
+	// crossOrigin: 'anonymous',
 };
 
 export default nextConfig;

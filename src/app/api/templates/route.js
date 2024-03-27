@@ -10,11 +10,10 @@ export async function GET() {
 	try {
 		await connect();
 		const getTemplates = await Templates.find({});
-		// console.log(getTemplates, 'the templates');
-		// revalidatePath('/dashboard/templates', 'page');
 		revalidateTag('templates');
 		return Response.json(getTemplates);
 	} catch (error) {
+		console.log(error);
 		throw Error('Error: ' + error, 'TEMPLATES GET ERROR');
 	}
 }

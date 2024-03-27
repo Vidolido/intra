@@ -24,7 +24,7 @@ export default function ParentForm({ children }) {
 	};
 
 	const sendState = createAnalisys.bind(null, state);
-	console.log(state, 'in parent');
+	// console.log(state, 'in parent');
 	return (
 		<form
 			action={() => {

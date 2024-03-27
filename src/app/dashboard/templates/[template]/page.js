@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 	});
 }
 
-export async function getTemplate(template) {
+export async function getTemplateById(template) {
 	const res = await fetch(
 		`${process.env.NEXT_PUBLIC_BASE_URL}/api/templates/${template}`,
 		{
@@ -30,7 +30,7 @@ export async function getTemplate(template) {
 	}
 
 	// од тука тргнав await
-	return res.json();
+	return await res.json();
 }
 
 export const dynamic = 'force-dynamic';
@@ -39,7 +39,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export default async function EditTemplate({ params }) {
 	const { template } = params;
-	const templateData = await getTemplate(template);
+	const templateData = await getTemplateById(template);
 	const getTemplateSettings = await getTemplateData(template);
 
 	return (

@@ -33,7 +33,7 @@ export async function getSettingGroup(setting, lang) {
 		}
 		return await res.json();
 	} catch (error) {
-		console.log(error);
+		console.log(error, 'this is the error');
 		return new Error('Error: ' + error);
 	}
 }
@@ -65,7 +65,7 @@ export const dynamicParams = true;
 export const revalidate = 0;
 
 export default async function Edit({ params, searchParams }) {
-	console.log(params, 'the params');
+	// console.log(params, 'the params');
 	const settingForDb = params.setting.toLowerCase().split('-').join(' ');
 
 	const lang = searchParams.lang || 'en'; // Место англиски, треба да биде избран стандарден јазик од база

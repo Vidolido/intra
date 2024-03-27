@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+'use client';
+import { useCallback, useEffect, useState } from 'react';
 
 // state/constext
 import { DELETE_TEMPLATE_ITEM } from '@/app/dashboard/_state/templates/actionTypes';
@@ -9,28 +10,31 @@ import {
 	useTemplatesDispatchContext,
 } from '@/app/dashboard/_state/templates/templatesContext';
 
-// <<helper functions
-import { getItemWithId } from '@/app/utls/templateFunctions';
-// helper functions>>
+// // <<helper functions
+// import { getItemWithId } from '@/app/utls/templateFunctions';
+// // helper functions>>
 
 export default function CollectionItems({ data }) {
 	const { language } = useGlobalStateContext();
 	const { deleteButtonLabels } = useStaticSettingsContext();
-	const { templateData } = useTemplatesContext();
 	const dispatch = useTemplatesDispatchContext();
+	const { templateData } = useTemplatesContext();
+	const state = useTemplatesContext();
 
 	//local state
-	const [collectionItems, setCollectionItems] = useState([]);
+	// const [collectionItems, setCollectionItems] = useState([]);
 
 	// const collectionItems = useMemo(
 	// 	() => getItemWithId(data, templateData),
 	// 	[data, templateData]
 	// );
 
-	useEffect(() => {
-		let items = getItemWithId(data, templateData);
-		setCollectionItems(items);
-	}, [data, templateData]);
+	// useEffect(() => {
+	// let items = getItemWithId(data, templateData);
+	// setCollectionItems(items);
+	// 	setCollectionItems(templateData);
+	// }, [templateData]);
+	// }, [data, templateData]);
 
 	const checkForType = useCallback(
 		(item, index) => {
@@ -61,10 +65,12 @@ export default function CollectionItems({ data }) {
 		[language]
 	);
 	const handleOnClick = (index, row) => {
-		let filtered = collectionItems.filter((item, i) => i !== index);
-		setCollectionItems(filtered);
+		// let filtered = templateData.filter((item, i) => i !== index);
+		// setCollectionItems(filtered);
 		dispatch({ type: DELETE_TEMPLATE_ITEM, payload: { index, row } });
 	};
+
+	// console.log(state, 'the state in CollectionItems');
 	return (
 		<div className='flex flex-col gap-2 w-10/12'>
 			<div className='flex flex-row border w-10/12'>
@@ -77,7 +83,7 @@ export default function CollectionItems({ data }) {
 						);
 					})}
 			</div>
-			{collectionItems.map((row, rowIndex) => {
+			{templateData.map((row, rowIndex) => {
 				return (
 					<div key={rowIndex} className='flex justify-between'>
 						<div className='flex flex-row justify-around w-10/12'>
