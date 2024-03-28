@@ -8,31 +8,33 @@ import { connect } from '@/../conn';
 // model
 import Templates from '../_models/Templates';
 
-export async function getTemplate(template) {
-  headers();
+// export async function getTemplate(template) {
+//   headers();
 
-  try {
-    await connect();
-    const newTemplate = await Templates.findOne({ _id: template });
-    revalidatePath('/dashboard/templates', 'page');
+//   try {
+//     await connect();
+//     const newTemplate = await Templates.findOne({ _id: template });
+//     revalidatePath('/dashboard/templates', 'page');
 
-    revalidateTag('template');
-    return JSON.stringify(newTemplate);
-  } catch (error) {
-    throw Error('Error: ' + error, 'TEMPLATES GET ERROR');
-  }
-}
+//     revalidateTag('template');
+//     return JSON.stringify(newTemplate);
+//   } catch (error) {
+//     throw Error('Error: ' + error, 'TEMPLATES GET ERROR');
+//   }
+// }
 
 export async function createTemplate(formData) {
   // Да проверам убаво дали навистина ми треба ова
-  headers();
   // console.log(formData);
+  headers();
   try {
     await connect();
     await Templates.create(formData);
 
     revalidateTag('templates');
+    // revalidatePath('/dashboard/templates', 'page');
   } catch (error) {
+    console.log(error);
     throw Error('Could not create template in database: ' + error);
   }
 }
