@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	h1 {
+		@apply text-3xl font-bold;
+	}
+	h2 {
+		@apply text-2xl font-bold;
+	}
+	h3 {
+		@apply text-xl font-bold;
+	}
+	h4 {
+		@apply text-lg font-bold;
+	}
+	h5 {
+		@apply text-base font-bold;
+	}
+	h6 {
+		@apply text-sm font-bold;
+	}
+}
+
+@layer components {
+	.selectInput {
+		@apply border-2 border-grey-100 border-opacity-60 rounded px-2 py-[1px] hover:border-red-200 focus:outline-none cursor-pointer;
+	}
+	.redButton {
+		@apply bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-semibold pt-[1px] pb-[3px] px-5 rounded;
+	}
+	.inputField {
+		@apply border-2 border-grey-50 border-opacity-60 rounded px-2 py-[1px] hover:border-red-200 focus:outline-none uppercase;
+	}
+}
