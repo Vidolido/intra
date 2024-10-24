@@ -1,4 +1,9 @@
+import { ReactNode } from 'react';
+
 // types.ts
+export interface RootLayoutProps {
+	children: ReactNode;
+}
 //--navigation
 export interface LanguageLabels {
 	[key: string]: string;
