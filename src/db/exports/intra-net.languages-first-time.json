@@ -1,0 +1,21 @@
+[{
+  "_id": {
+    "$oid": "6656eed3b12adae590481cfe"
+  },
+  "language": "en",
+  "locale": "en-EN"
+},
+{
+  "_id": {
+    "$oid": "6656eee0b12adae590481cff"
+  },
+  "language": "mk",
+  "locale": "mk-MK"
+},
+{
+  "_id": {
+    "$oid": "6656eee8b12adae590481d00"
+  },
+  "language": "gr",
+  "locale": "el-GR"
+}]

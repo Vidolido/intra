@@ -1,45 +1,51 @@
-import { ReadonlyURLSearchParams } from 'next/navigation';
+import { Model, ObjectId } from 'mongoose';
 import { ReactNode } from 'react';
+import { Settings } from './zod/settingSchema';
+import { BusinessSchema } from './zod/businessAreaSchema';
 
 // types.ts
 export interface RootLayoutProps {
-  children: ReactNode;
+	children: ReactNode;
 }
 
-// SearchParams props
-export function getSearchParam<T = string>(
-  searchParams: ReadonlyURLSearchParams,
-  key: string
-): T | undefined {
-  const value = searchParams.get(key);
-  return value as T | undefined;
-}
+export type Params = LanguageLabels;
+export type SearchParamsProps = Record<string, string | string[]>;
 
 //--navigation
-export interface LanguageLabels {
-  [key: string]: string;
-}
+export type LanguageLabels = {
+	[key: string]: string;
+};
 
-export interface LinkItem {
-  label: LanguageLabels;
-  path: string;
-}
+export type LinkItem = {
+	label: LanguageLabels;
+	path: string;
+};
 
-export interface LinkContents {
-  label: LanguageLabels;
-  path: string;
-  additionalLinks?: LinkItem[] | null;
-}
+export type LinkContents = LinkItem & {
+	additionalLinks?: LinkItem[] | null;
+};
 
-export interface LinksStateTypes {
-  [key: string]: LinkContents;
-}
+export type LinksStateTypes = {
+	[key: string]: LinkContents;
+};
 
-export interface LinksProps {
-  link: LinkItem;
-  location: string;
-}
+export type LinksProps = {
+	link: LinkItem;
+	location: string;
+};
 export type LinksType = {
-  links: LinkItem | LinkItem[];
+	links: LinkItem | LinkItem[];
 };
 //--navigation
+
+// Setting page.js
+
+// models
+//BusinessArea
+export interface BusinesAreasDocument extends BusinessSchema, Document {}
+export type BusinessModel = Model<BusinesAreasDocument>;
+//BusinessArea
+//Settings
+export interface SettingsDocument extends Settings, Document {}
+export type SettingsModel = Model<SettingsDocument>;
+//Settings

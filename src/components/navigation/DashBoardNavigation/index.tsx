@@ -1,7 +1,7 @@
 // import Links from './Links';
 
 import { LinksStateTypes } from '@/types/types';
-import Links from '../Links';
+import Links from '../shared/Links';
 
 const links: LinksStateTypes = {
 	laboratory: {
