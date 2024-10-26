@@ -1,8 +1,8 @@
-import { BusinesAreasDocument, BusinessModel } from '@/types/types';
+import { BusinessAreasDocument, BusinessModel } from '@/types/types';
 import mongoose, { Schema } from 'mongoose';
 
 const businessAreaSchema: Schema = new Schema<
-	BusinesAreasDocument,
+	BusinessAreasDocument,
 	BusinessModel
 >(
 	{
@@ -27,14 +27,21 @@ const businessAreaSchema: Schema = new Schema<
 			default: false,
 		},
 	},
-	{ _id: true }
+	{ strict: true }
 );
 
 businessAreaSchema.index({ documentStatus: 1 });
 businessAreaSchema.index({ isDeleted: 1 });
 
+// const BusinessArea =
+// 	mongoose.models.BusinessArea ||
+// 	mongoose.model('BusinessArea', businessAreaSchema);
+
 const BusinessArea =
-	mongoose.models.BusinessArea ||
-	mongoose.model('BusinessArea', businessAreaSchema);
+	(mongoose.models.BusinessArea as BusinessModel) ||
+	mongoose.model<BusinessAreasDocument, BusinessModel>(
+		'BusinessArea',
+		businessAreaSchema
+	);
 
 export default BusinessArea;

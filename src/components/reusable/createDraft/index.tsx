@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // types
@@ -9,13 +10,10 @@ type ActionStatus = {
 };
 
 // state/actions
-// import { makeDraftSetting } from '@/data-access/settings/makeDraftSetting';
-import { makeDraft, ActionResponseSchema } from '@/data-acceess/makeDraft';
-import { useState } from 'react';
+import { makeDraft } from '@/data-acceess/makeDraft';
 
 // components
 import ErrorMsg from '../ErrorMsg';
-// import ErrorMsg from '@/components/reusable/ErrorMsg';
 
 const CreateDraft = () => {
 	const [actionStatus, setActionStatus] = useState<ActionStatus>({
@@ -26,22 +24,21 @@ const CreateDraft = () => {
 	const router = useRouter();
 
 	const handdleClick = async () => {
-		console.log('THIS SHITNOW');
-		// const { error, success } = await makeDraft();
-		// router.push(`/dashboard/settings/create?_id=${success._id}`);
 		try {
 			setActionStatus((prev) => ({ ...prev, isLoading: true, error: null }));
-			const response = await makeDraft();
+			const response = await makeDraft('Setting');
 
-			console.log(response, 'the response');
+			// console.log(response, 'the response');
 
-			if (response.success) {
+			if (response.success != null) {
 				setActionStatus({
 					error: null,
 					success: true,
 					isLoading: false,
 				});
-				router.push(`/dashboard/settings/create?_id=${response?.success?._id}`);
+				router.push(
+					`/dashboard/settings/create?_id=${response?.data?._id.toString()}`
+				);
 			} else {
 				setActionStatus({
 					error:
@@ -65,7 +62,11 @@ const CreateDraft = () => {
 
 	return (
 		<>
-			{actionStatus?.error && <ErrorMsg msg={actionStatus?.error} />}
+			{actionStatus?.error && (
+				<p>
+					<ErrorMsg msg={actionStatus?.error} />
+				</p>
+			)}
 			<button
 				type='button'
 				onClick={handdleClick}

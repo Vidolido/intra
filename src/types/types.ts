@@ -2,6 +2,8 @@ import { Model, ObjectId } from 'mongoose';
 import { ReactNode } from 'react';
 import { Settings } from './zod/settingSchema';
 import { BusinessSchema } from './zod/businessAreaSchema';
+import { LanguageSchema } from './zod/languagesSchema';
+// import { LanguagesSchema } from './zod/languagesSchema';
 
 // types.ts
 export interface RootLayoutProps {
@@ -38,14 +40,24 @@ export type LinksType = {
 };
 //--navigation
 
-// Setting page.js
-
 // models
+//Languages
+export interface LanguagesDocument extends LanguageSchema, Document {}
+export type LanguageModel = Model<LanguagesDocument>;
+//Languages
 //BusinessArea
-export interface BusinesAreasDocument extends BusinessSchema, Document {}
-export type BusinessModel = Model<BusinesAreasDocument>;
+export interface BusinessAreasDocument extends BusinessSchema, Document {}
+export type BusinessModel = Model<BusinessAreasDocument>;
 //BusinessArea
 //Settings
 export interface SettingsDocument extends Settings, Document {}
 export type SettingsModel = Model<SettingsDocument>;
 //Settings
+// models
+
+// Forms
+export type SettingsHeaderFormState = {
+	message: string | null;
+	success: boolean | null;
+	error: boolean | null;
+};

@@ -5,7 +5,7 @@
 import { BusinessModel, SettingsDocument } from '@/types/types';
 
 // components
-import CreateDraft from '@/components/reusable/createDraft';
+import CreateDraft from '@/components/reusable/CreateDraft';
 
 // import DisplayDraftSettings from './(page)/DisplayDraftSettings';
 interface SettingsPageProps {
@@ -14,12 +14,11 @@ interface SettingsPageProps {
 	published: SettingsDocument[];
 }
 
-// const SettingsPage = ({
-// 	businessAreas,
-// 	drafts,
-// 	published,
-// }: SettingsPageProps) => {
-const SettingsPage = () => {
+const SettingsPage = ({
+	businessAreas,
+	drafts,
+	published,
+}: SettingsPageProps) => {
 	return (
 		<div className='w-full'>
 			<CreateDraft />

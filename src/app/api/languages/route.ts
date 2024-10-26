@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 // connection/moddels/database functions
 import connection from '@/db/connection';
-import BusinessArea from '@/db/models/BusinessArea';
+import Language from '@/db/models/Language';
 import { SearchParamsPayload } from '@/types/zod/types';
 
 export async function GET(request: NextRequest) {
@@ -21,10 +21,12 @@ export async function GET(request: NextRequest) {
 
 	try {
 		await connection();
-		const businessAreas = await BusinessArea.find({ ...payload });
+		const languages = await Language.find({ ...payload })
+			.lean()
+			.exec();
 
 		revalidatePath('/');
-		return NextResponse.json({ businessAreas }, { status: 200 });
+		return NextResponse.json({ languages }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 500 });
 	}

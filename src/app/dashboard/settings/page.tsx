@@ -9,21 +9,21 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 const page = async () => {
-	// const { businessAreas } = await getBusinessAreas();
-	// const { settings: drafts } = await getSettings({
-	// 	isDeleted: 'false',
-	// });
-	// const { settings: published } = await getSettings({
-	// 	documentStatus: 'published',
-	// 	isDeleted: 'false',
-	// });
+	const { businessAreas } = await getBusinessAreas();
+	const { settings: drafts } = await getSettings({
+		isDeleted: 'false',
+	});
+	const { settings: published } = await getSettings({
+		documentStatus: 'published',
+		isDeleted: 'false',
+	});
 
 	return (
 		<>
 			<SettingsPage
-			// businessAreas={businessAreas}
-			// drafts={drafts}
-			// published={published}
+				businessAreas={businessAreas}
+				drafts={drafts}
+				published={published}
 			/>
 		</>
 	);

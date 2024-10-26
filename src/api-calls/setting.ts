@@ -18,3 +18,16 @@ export async function getSettings(searchQuery?: SearchParamsProps) {
 
 	return res.json();
 }
+
+export async function getSettingById(_id: string) {
+	const res = await fetch(
+		`${process.env.NEXT_PUBLIC_BASE_URL}/api/settings/${_id}`
+	);
+
+	if (!res.ok) {
+		console.log(res);
+		throw new Error('Failed to get setting from db. Reason: ' + res);
+	}
+
+	return res.json();
+}

@@ -5,34 +5,30 @@ import { revalidatePath } from 'next/cache';
 // connection/models/db functions
 import connection from '@/db/connection';
 import Setting from '@/db/models/Setting';
-import Sector from '@/db/models/BusinessArea';
+import BusinessArea from '@/db/models/BusinessArea';
 import { revalidatePaths } from '@/functions/reavalidatePaths';
+import { SearchParamsPayload } from '@/types/zod/types';
 
 export async function GET(request: NextRequest) {
-	console.log('THIS SHIT HAPPEND');
-	let documentStatus =
-		request?.nextUrl?.searchParams?.get('documentStatus') || 'draft';
+	const searchParams = request.nextUrl.searchParams;
+	const isDeleted = searchParams.get('isDeleted') === 'false' ? false : true;
 
-	let isDeleted = request?.nextUrl?.searchParams?.get('isDeleted') || false;
+	const payload = Array.from(searchParams.entries()).reduce(
+		(acc: SearchParamsPayload, [key, value]) => {
+			acc[key] = key === 'isDeleted' ? isDeleted : value;
+			return acc;
+		},
+		{}
+	);
+
 	try {
 		await connection();
-		// await Sector
-		let settings = await Setting.find({ documentStatus, isDeleted })
-			.populate('sector')
+		let settings = await Setting.find({ ...payload })
+			.populate('businessArea')
 			.sort({
 				$natural: -1,
 			});
-		console.log(settings, 'the settings');
 		revalidatePaths(['/dashboard/settings', '/dashboard/laboratory/documents']);
-		// settings = settings.map(serializeMongoDocuments);
-
-		// console.log(settings)
-		// const pathsToRevalidate = [
-		// 	'/dashboard/settings',
-		// 	'/dashboard/laboratory/documents',
-		// ];
-
-		// pathsToRevalidate.forEach((path) => revalidatePath(path, 'page'));
 
 		return NextResponse.json({ settings }, { status: 200 });
 		// return NextResponse.json(

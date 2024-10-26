@@ -31,9 +31,14 @@ export const SettingCollectionItemSchema = z.object({
 });
 
 export const SettingsCollectionSchema = z.object({
-	_id: z.instanceof(Types.ObjectId),
+	_id: z.union([z.instanceof(Types.ObjectId), z.string()]),
 	parameter: LanguageMapSchema,
-	collections: z.record(z.array(SettingCollectionItemSchema)),
+	collections: z.record(
+		z
+			.array(SettingCollectionItemSchema)
+			.length(0)
+			.or(z.array(SettingCollectionItemSchema))
+	),
 });
 
 export const SettingsSchema = z.object({
