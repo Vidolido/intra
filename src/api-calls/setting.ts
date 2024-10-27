@@ -1,10 +1,13 @@
 // types
-import { SearchParamsProps } from '@/types/types';
+// import { SearchParamsProps } from '@/types/typesTS';
 
 // helper
 import { queryParser } from '@/functions/queryParser';
+import { SearchQueryParams, SettingsResponse } from '@/types/type';
 
-export async function getSettings(searchQuery?: SearchParamsProps) {
+export async function getSettings(
+	searchQuery?: SearchQueryParams
+): Promise<SettingsResponse> {
 	const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/settings`;
 
 	let query = !searchQuery ? baseUrl : queryParser(baseUrl, searchQuery);

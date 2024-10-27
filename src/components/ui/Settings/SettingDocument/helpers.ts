@@ -7,7 +7,7 @@ import {
 	Settings,
 	SettingsCollection,
 } from '@/types/zod/settingSchema';
-import { SearchParamsPayload } from '@/types/zod/types';
+import { SearchParamsPayload } from '@/types/zod/typesZ';
 
 const ZOptions = z.object({
 	id: z.string(),
@@ -31,13 +31,13 @@ const ZParameter = z.object({
 	}),
 });
 const ZState = z.object({
-	optionsForSettings: ZOptionsState.nullable(),
-	initState: z
-		.object({
-			collections: z.array(z.any()).nullable(),
-			parameter: ZParameter.nullable(),
-		})
-		.nullable(),
+	// optionsForSettings: ZOptionsState.nullable(),
+	// initState: z
+	// 	.object({
+	// 		collections: z.array(z.any()).nullable(),
+	// 		parameter: ZParameter.nullable(),
+	// 	})
+	// 	.nullable(),
 	insertSettingsProps: z.object({
 		selected: z.string().nullable(),
 		parameterName: z.string(),
@@ -107,8 +107,8 @@ export const createServerState = (setting: Settings): State => {
 	const optionsSchema = setting?.optionsSchema;
 
 	return {
-		optionsForSettings: createOptionsState(settings),
-		initState: createInitialState(optionsSchema),
+		// optionsForSettings: createOptionsState(settings),
+		// initState: createInitialState(optionsSchema),
 		insertSettingsProps: {
 			selected: firstCollectionId,
 			parameterName:

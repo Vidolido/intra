@@ -1,5 +1,5 @@
 'use client';
-import { LinkItem, LinksType } from '@/types/types';
+import { LinkItem, LinksType } from '@/types/typesTS';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 

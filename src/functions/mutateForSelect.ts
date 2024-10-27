@@ -1,6 +1,6 @@
 // import { Document } from 'mongoose';
 
-import { LanguageLabels } from '@/types/types';
+import { LanguageLabels } from '@/types/typesTS';
 import { LanguageMapSchema, Languages } from '@/types/zod/settingSchema';
 import { Types } from 'mongoose';
 import { z } from 'zod';

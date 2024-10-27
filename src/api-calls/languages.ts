@@ -1,5 +1,5 @@
 // types
-import { SearchParamsProps } from '@/types/types';
+import { SearchParamsProps } from '@/types/typesTS';
 
 // helper
 import { queryParser } from '@/functions/queryParser';

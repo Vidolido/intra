@@ -1,14 +1,12 @@
 // components
-import HeaderForm from '@/components/forms/settings/HeaderForm';
-// import HeaderForm from './HeaderForm';
-// import OptionsSchema from './OptionsSchemaForm';
+import HeaderForm from '@/components/forms/settings/Header';
+import OptionsSchema from '@/components/forms/settings/OptionsSchema';
 // import InsertSettingsForm from './InsertSettingsForm';
 // import DisplaySettings from './DisplaySettings';
 
 // types
-import { BusinessAreasDocument, LanguagesDocument } from '@/types/types';
+import { BusinessAreasDocument, LanguagesDocument } from '@/types/typesTS';
 import { Settings } from '@/types/zod/settingSchema';
-import { createServerState } from './helpers';
 
 interface SettingDocumentProps {
 	title: string;
@@ -23,8 +21,6 @@ const SettingDocument = ({
 	businessAreas,
 	setting,
 }: SettingDocumentProps) => {
-	const clientComponentsState = createServerState(setting);
-
 	const hasName = setting?.settingName ? true : false;
 	const hasSchema = setting?.optionsSchema ? true : false;
 	const hasSettingsCollection = setting?.settings ? true : false;
@@ -39,14 +35,10 @@ const SettingDocument = ({
 						businessAreas={businessAreas}
 						setting={setting}
 					/>
-					{/* {setting.settingName && (
-						<OptionsSchema
-							setting={setting}
-							initState={initState}
-							languages={languages}
-						/>
+					{setting.settingName && (
+						<OptionsSchema setting={setting} languages={languages} />
 					)}
-					{setting.optionsSchema != null && (
+					{/* {setting.optionsSchema != null && (
 						<InsertSettingsForm
 							setting={setting}
 							insertSettingsProps={insertSettingsProps}

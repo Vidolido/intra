@@ -19,13 +19,11 @@ const page = async () => {
 	});
 
 	return (
-		<>
-			<SettingsPage
-				businessAreas={businessAreas}
-				drafts={drafts}
-				published={published}
-			/>
-		</>
+		<SettingsPage
+			businessAreas={businessAreas}
+			drafts={drafts}
+			published={published}
+		/>
 	);
 };
 

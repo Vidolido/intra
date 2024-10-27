@@ -9,7 +9,7 @@ import Setting from '@/db/models/Setting';
 import connection from '@/db/connection';
 
 // types
-import { SettingsHeaderFormState } from '@/types/types';
+import { SettingsHeaderFormState } from '@/types/typesTS';
 import { revalidatePaths } from '@/functions/reavalidatePaths';
 
 const HeaderSchema = z.object({
@@ -33,7 +33,7 @@ export async function saveSettingHeader(
 	formData: FormData
 ): Promise<SettingsHeaderFormState> {
 	// console.log(prevState, 'prevState');
-	console.log(formData, 'formDataAAAAAAAAAAAAAAAA');
+	// console.log(formData, 'formDataAAAAAAAAAAAAAAAA');
 	const _id = formData.get('document_id') as string;
 
 	if (!_id) {

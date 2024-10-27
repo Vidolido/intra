@@ -15,7 +15,6 @@ import { NormalInputProps } from '@/types/zod/reusable';
 
 const NormalInput = ({
 	data = null,
-	type = 'default',
 	extractData = null,
 	reset = null,
 	onChange,

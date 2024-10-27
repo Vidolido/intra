@@ -92,3 +92,6 @@ export interface NormalInputProps {
 	onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
 }
 // NormalInput
+// LanguageInput
+const ZLanguageInputData = z.object({});
+// LanguageInput

@@ -1,4 +1,4 @@
-import { BusinessAreasDocument, BusinessModel } from '@/types/types';
+import { BusinessAreasDocument, BusinessModel } from '@/types/type';
 import mongoose, { Schema } from 'mongoose';
 
 const businessAreaSchema: Schema = new Schema<
@@ -32,10 +32,6 @@ const businessAreaSchema: Schema = new Schema<
 
 businessAreaSchema.index({ documentStatus: 1 });
 businessAreaSchema.index({ isDeleted: 1 });
-
-// const BusinessArea =
-// 	mongoose.models.BusinessArea ||
-// 	mongoose.model('BusinessArea', businessAreaSchema);
 
 const BusinessArea =
 	(mongoose.models.BusinessArea as BusinessModel) ||

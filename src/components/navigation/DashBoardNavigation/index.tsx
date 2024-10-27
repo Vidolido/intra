@@ -1,6 +1,6 @@
 // import Links from './Links';
 
-import { LinksStateTypes } from '@/types/types';
+import { LinksStateTypes } from '@/types/typesTS';
 import Links from '../shared/Links';
 
 const links: LinksStateTypes = {
@@ -50,7 +50,7 @@ const links: LinksStateTypes = {
 	},
 };
 
-const DashboardNavigation: React.FC = () => {
+const DashboardNavigation = () => {
 	return (
 		<nav
 			id='dashboardNav'

@@ -3,7 +3,7 @@
 type ContextButtonProps = {
 	label: string;
 	onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-	type: string;
+	type: 'default' | 'edit' | 'delete';
 	classes: string;
 	formMethod: string;
 };

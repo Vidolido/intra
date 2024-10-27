@@ -1,5 +1,5 @@
 import { cn } from '@/functions/cn';
-import { LanguageLabels } from '@/types/types';
+import { LanguageLabels } from '@/types/typesTS';
 import { OptionType, SelectInputProps } from '@/types/zod/reusable';
 import { useEffect, useState } from 'react';
 
@@ -8,7 +8,6 @@ const SelectInput = ({
 	extractData,
 	reset,
 }: SelectInputProps) => {
-	console.log('se pushta');
 	const initializeOptions = (): OptionType[] => {
 		const defaultOptions: OptionType[] = [];
 
@@ -44,7 +43,6 @@ const SelectInput = ({
 	});
 
 	useEffect(() => {
-		console.log('a pali');
 		const newOptions = initializeOptions();
 		setOptions(newOptions);
 
@@ -55,7 +53,6 @@ const SelectInput = ({
 			options[0]._id != null &&
 			typeof newOptions[0]._id === 'string'
 		) {
-			console.log('ovdeka?');
 			setSelected(newOptions[0]._id?.toString());
 		}
 	}, [data?.state, data?.showEmptyOption]);
@@ -80,7 +77,7 @@ const SelectInput = ({
 	};
 
 	return (
-		<fieldset className={data?.classes}>
+		<fieldset className={cn(data?.classes)}>
 			{data?.label && (
 				<label
 					htmlFor={data?.id}

@@ -1,5 +1,5 @@
 import './globals.css';
-import { RootLayoutProps } from '@/types/types';
+import { RootLayoutProps } from '@/types/typesTS';
 // import HeaderNavigation from '@/components/navigation/HeaderNavigation';
 // import { VehicleContextProvider } from '@/state/vehicleContext';
 // import { ErrorContextProvider } from '@/state/ErrorContext';

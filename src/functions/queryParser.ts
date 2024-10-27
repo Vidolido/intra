@@ -1,20 +1,23 @@
+import { ApiError } from 'next/dist/server/api-utils';
 import { z } from 'zod';
+
+// types
 import {
-	QueryParser,
+	BaseUrl,
 	BaseUrlSchema,
-	QueryParserSchema,
-	APIError,
-} from '@/types/zod/types';
+	SeachQueryParamsSchema,
+	SearchQueryParams,
+} from '@/types/type';
 
 export function queryParser(
-	baseUrl: string,
-	searchParams: QueryParser | null
+	baseUrl: BaseUrl,
+	searchParams: SearchQueryParams | null
 ): string {
 	try {
 		BaseUrlSchema.parse(baseUrl);
 
 		if (searchParams) {
-			QueryParserSchema.parse(searchParams);
+			SeachQueryParamsSchema.parse(searchParams);
 		}
 		const url = new URL(baseUrl);
 
@@ -32,10 +35,9 @@ export function queryParser(
 		return url.toString();
 	} catch (error) {
 		if (error instanceof z.ZodError) {
-			throw new APIError(
-				`URL Building Error: ${error.errors.map((e) => e.message).join(', ')}`,
+			throw new ApiError(
 				400,
-				'INVALID_URL_PARAMS'
+				`URL Building Error: ${error.errors.map((e) => e.message).join(', ')}`
 			);
 		}
 		throw error;

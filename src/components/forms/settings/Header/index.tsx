@@ -18,7 +18,7 @@ import {
 	BusinessAreasDocument,
 	LanguagesDocument,
 	SettingsHeaderFormState,
-} from '@/types/types';
+} from '@/types/typesTS';
 import { Settings } from '@/types/zod/settingSchema';
 import { mutateForSelect } from '@/functions/mutateForSelect';
 import NormalInput from '@/components/reusable/Inputs/NormalInput';
@@ -74,7 +74,7 @@ const HeaderForm = ({ languages, businessAreas, setting }: HeaderFormProps) => {
 	return (
 		<form
 			action={formAction}
-			className='p-1 border border-slate-200 rounded w-fit min-w-72'>
+			className='p-1 border border-slate-200 rounded w-full min-w-72 mb-1'>
 			<input
 				type='text'
 				className='hidden'

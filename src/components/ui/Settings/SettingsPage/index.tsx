@@ -1,17 +1,16 @@
-// import { BusinessAreaDocument, BusinessAreaModel } from '@/types/types';
-// import CreateDraftButton from './(page)/CreateDraftButton';
 // import PublishedSettings from './(page)/PublishedSettings';
+// import DisplayDraftSettings from './(page)/DisplayDraftSettings';
+
 // types
-import { BusinessModel, SettingsDocument } from '@/types/types';
+import { BusinessAreas, Setting } from '@/types/type';
 
 // components
 import CreateDraft from '@/components/reusable/CreateDraft';
 
-// import DisplayDraftSettings from './(page)/DisplayDraftSettings';
 interface SettingsPageProps {
-	businessAreas: BusinessModel[];
-	drafts: SettingsDocument[];
-	published: SettingsDocument[];
+	businessAreas: BusinessAreas[];
+	drafts: Setting[];
+	published: Setting[];
 }
 
 const SettingsPage = ({

@@ -1,5 +1,4 @@
-import { LanguageModel } from '@/types/types';
-import { LanguageSchema } from '@/types/zod/languagesSchema';
+import { LanguageModel, LanguageSchema } from '@/types/type';
 import mongoose, { Schema } from 'mongoose';
 
 const languageSchema = new Schema({
@@ -14,9 +13,6 @@ const languageSchema = new Schema({
 		default: false,
 	},
 });
-
-// const Language =
-// 	mongoose.models.Language || mongoose.model('Language', languageSchema);
 
 const Language =
 	(mongoose.models.Language as LanguageModel) ||

@@ -2,76 +2,85 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-// types
-type ActionStatus = {
-	error: string | null;
-	success: boolean;
-	isLoading: boolean;
-};
-
 // state/actions
 import { makeDraft } from '@/data-acceess/makeDraft';
 
 // components
 import ErrorMsg from '../ErrorMsg';
 
+// types
+import { ActionResponse } from '@/types/type';
+
 const CreateDraft = () => {
-	const [actionStatus, setActionStatus] = useState<ActionStatus>({
+	const router = useRouter();
+	const [actionStatus, setActionStatus] = useState<ActionResponse>({
+		data: null,
+		success: null,
 		error: null,
-		success: false,
+		message: null,
+		component: null,
 		isLoading: false,
 	});
-	const router = useRouter();
 
 	const handdleClick = async () => {
+		setActionStatus((prev) => ({ ...prev, isLoading: true }));
 		try {
-			setActionStatus((prev) => ({ ...prev, isLoading: true, error: null }));
 			const response = await makeDraft('Setting');
 
-			// console.log(response, 'the response');
-
-			if (response.success != null) {
-				setActionStatus({
-					error: null,
-					success: true,
-					isLoading: false,
-				});
-				router.push(
-					`/dashboard/settings/create?_id=${response?.data?._id.toString()}`
-				);
-			} else {
-				setActionStatus({
-					error:
-						response.error?.document ||
-						response.error?.catch ||
-						'An unknown error occurred',
-					success: false,
-					isLoading: false,
-				});
+			if (!response) {
+				throw new Error('No response received from server');
 			}
-		} catch (error) {
-			console.log(error, 'THE ERROR');
+
+			if (response.success && response.data?._id) {
+				setActionStatus({
+					data: response.data,
+					success: true,
+					error: null,
+					message: response.message || 'Draft created successfully',
+					component: null,
+					isLoading: false,
+				});
+				router.push(`/dashboard/settings/create?_id=${response.data._id}`);
+				return;
+			}
+
 			setActionStatus({
-				error:
-					error instanceof Error ? error.message : 'An unknown error occurred',
+				data: null,
 				success: false,
+				error: true,
+				message: response.message || 'Failed to create draft',
+				component: 'createDraft',
+				isLoading: false,
+			});
+		} catch (error) {
+			const errorMessage =
+				error instanceof Error ? error.message : 'An unexpected error occurred';
+
+			setActionStatus({
+				data: null,
+				success: false,
+				error: true,
+				message: errorMessage,
+				component: 'createDraft',
 				isLoading: false,
 			});
 		}
 	};
 
+	const isLoading = actionStatus.isLoading;
+	const hasError =
+		actionStatus.error && actionStatus.component === 'createDraft';
 	return (
 		<>
-			{actionStatus?.error && (
-				<p>
-					<ErrorMsg msg={actionStatus?.error} />
-				</p>
+			{hasError && (
+				<ErrorMsg msg={actionStatus.message || 'An error occurred'} />
 			)}
 			<button
 				type='button'
 				onClick={handdleClick}
+				disabled={isLoading}
 				className='bg-red-500 disabled:bg-red-200 hover:bg-red-700 text-white font-semibold pt-[1px] pb-[3px] px-5 rounded'>
-				Add New Setting
+				{isLoading ? 'Creating...' : 'Add New Setting'}
 			</button>
 		</>
 	);

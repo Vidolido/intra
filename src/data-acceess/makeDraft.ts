@@ -1,15 +1,13 @@
 'use server';
-import { ApiError } from 'next/dist/server/api-utils';
 import { z } from 'zod';
+import { revalidatePaths } from '@/functions/reavalidatePaths';
 
 // connection/moddels/database functions
 import Setting from '@/db/models/Setting';
 import connection from '@/db/connection';
-import { revalidatePaths } from '@/functions/reavalidatePaths';
 
 // types
-import { ActionResponse } from '@/types/zod/types';
-import { SettingsSchema } from '@/types/zod/settingSchema';
+import { ActionResponse, SettingSchema } from '@/types/type';
 
 export async function makeDraft(draftType: string): Promise<ActionResponse> {
 	try {
@@ -20,18 +18,20 @@ export async function makeDraft(draftType: string): Promise<ActionResponse> {
 		});
 
 		let validatedDraft;
-
-		if (draftType === 'Setting') {
-			validatedDraft = SettingsSchema.parse(draft);
-		}
-
-		if (!validatedDraft) {
-			return {
-				success: null,
-				error: {
-					document: 'Failed to create draft setting.',
-				},
-			};
+		try {
+			validatedDraft = SettingSchema.parse(draft);
+		} catch (validationError) {
+			if (validationError instanceof z.ZodError) {
+				return {
+					data: null,
+					success: false,
+					error: true,
+					message: validationError.errors.map((e) => e.message).join(', '),
+					component: 'createDraft',
+					isLoading: false,
+				};
+			}
+			throw validationError;
 		}
 
 		revalidatePaths([
@@ -42,39 +42,45 @@ export async function makeDraft(draftType: string): Promise<ActionResponse> {
 		]);
 
 		return {
-			error: null,
-			success: true,
 			data: {
 				_id: validatedDraft?._id.toString(),
-				message: 'Successfully created draft template.',
 			},
+			success: true,
+			error: null,
+			message: 'Successfully created draft template.',
+			component: null,
+			isLoading: false,
 		};
 	} catch (error) {
-		console.error('Could not add draft setting to database:', error);
-
+		console.error('Could not add draft document to database:', error);
 		if (error instanceof z.ZodError) {
-			throw new ApiError(
-				400,
-				`Could not add draft setting to database: ${error.errors
-					.map((e) => e.message)
-					.join(', ')}`
-			);
+			return {
+				data: null,
+				success: false,
+				error: true,
+				message: error.errors.map((e) => e.message).join(', '),
+				component: 'createDraft',
+				isLoading: false,
+			};
 		}
 
 		if (error instanceof Error) {
 			return {
-				success: null,
-				error: {
-					catch: error.message,
-				},
+				data: null,
+				success: false,
+				error: true,
+				message: `Could not create draft setting to database: ${error.message}`,
+				component: 'createDraft',
+				isLoading: false,
 			};
 		}
-
 		return {
-			success: null,
-			error: {
-				catch: 'An unknown error occurred',
-			},
+			data: null,
+			success: false,
+			error: true,
+			message: `Something bad happend`,
+			component: 'createDraft',
+			isLoading: false,
 		};
 	}
 }

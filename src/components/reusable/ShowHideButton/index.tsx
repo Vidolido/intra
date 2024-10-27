@@ -12,7 +12,7 @@ const ShowHideButton = ({ heading, visible, onClick }: ShowHideButtonProps) => {
 			type='button'
 			onClick={onClick}
 			className='group flex justify-between items-center w-full'>
-			{heading && <h3 className='text-left'>{heading}</h3>}
+			{heading && <h4 className='text-left'>{heading}</h4>}
 			<ArrowSvg
 				className={`w-[22px] h-[22px] m-1 fill-red-500 group-hover:fill-red-300 ${
 					visible ? '' : 'rotate-180'

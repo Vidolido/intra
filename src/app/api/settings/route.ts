@@ -7,7 +7,7 @@ import connection from '@/db/connection';
 import Setting from '@/db/models/Setting';
 import BusinessArea from '@/db/models/BusinessArea';
 import { revalidatePaths } from '@/functions/reavalidatePaths';
-import { SearchParamsPayload } from '@/types/zod/types';
+import { SearchParamsPayload } from '@/types/zod/typesZ';
 
 export async function GET(request: NextRequest) {
 	const searchParams = request.nextUrl.searchParams;

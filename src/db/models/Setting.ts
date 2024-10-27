@@ -1,73 +1,82 @@
-import { SettingsDocument, SettingsModel } from '@/types/types';
+// import { SettingsDocument, SettingsModel } from '@/types/typesTS';
+import {
+	Collection,
+	Options,
+	Parameter,
+	SettingCollectionItem,
+	SettingsCollection,
+	SettingsDocument,
+	SettingsModel,
+} from '@/types/type';
 import mongoose, { Schema } from 'mongoose';
 
-const parameterSchema = new Schema(
+const parameterSchema = new Schema<Parameter>(
 	{
 		name: {
 			singular: {
 				type: Map,
 				of: String,
-				// required: true,
-				// validate: {
-				// 	validator: function (map: Map<string, string>) {
-				// 		return map.size > 0;
-				// 	},
-				// 	message: 'Singular name must have at least one language entry',
-				// },
+				required: true,
+				validate: {
+					validator: function (map: Map<string, string>) {
+						return map.size > 0;
+					},
+					message: 'Singular name must have at least one language entry',
+				},
 				default: undefined,
 			},
 			plural: {
 				type: Map,
 				of: String,
-				// required: true,
-				// validate: {
-				// 	validator: function (map: Map<string, string>) {
-				// 		return map.size > 0;
-				// 	},
-				// 	message: 'Plural name must have at least one language entry',
-				// },
-				// default: undefined,
+				required: true,
+				validate: {
+					validator: function (map: Map<string, string>) {
+						return map.size > 0;
+					},
+					message: 'Plural name must have at least one language entry',
+				},
+				default: undefined,
 			},
 		},
 	},
 	{ _id: false, strict: true }
 );
 
-const collectionSchema = new Schema(
+const collectionSchema = new Schema<Collection>(
 	{
 		name: {
 			type: Map,
 			of: String,
-			// validate: {
-			// 	validator: function (map: Map<string, string>) {
-			// 		return map.size > 0;
-			// 	},
-			// 	message: 'Collection name must have at least one language entry',
-			// },
-			// default: undefined,
+			validate: {
+				validator: function (map: Map<string, string>) {
+					return map.size > 0;
+				},
+				message: 'Collection name must have at least one language entry',
+			},
+			default: undefined,
 		},
 	},
 	{ _id: true, strict: true }
 );
 
-const optionsSchema = new Schema(
+const optionsSchema = new Schema<Options>(
 	{
 		parameter: {
 			type: parameterSchema,
-			// validate: {
-			// 	validator: function (map: Map<string, string>) {
-			// 		return map.size > 0;
-			// 	},
-			// 	message: 'Parameter name must have at least one language entry',
-			// },
-			// default: undefined,
+			validate: {
+				validator: function (map: Map<string, string>) {
+					return map.size > 0;
+				},
+				message: 'Parameter name must have at least one language entry',
+			},
+			default: undefined,
 		},
 		collections: [collectionSchema],
 	},
 	{ _id: false, strict: true }
 );
 
-const settingCollectionItemSchema = new Schema(
+const settingCollectionItemSchema = new Schema<SettingCollectionItem>(
 	{
 		inputType: {
 			type: String,
@@ -90,7 +99,7 @@ const settingCollectionItemSchema = new Schema(
 	{ _id: true, strict: true }
 );
 
-const settingsCollectionSchema = new Schema(
+const settingsCollectionSchema = new Schema<SettingsCollection>(
 	{
 		parameter: {
 			type: Map,
@@ -108,24 +117,24 @@ const settingsSchema: Schema = new Schema<SettingsDocument, SettingsModel>(
 	{
 		settingName: {
 			type: String,
-			// validate: {
-			// 	validator: function (v: string) {
-			// 		return v.length >= 2;
-			// 	},
-			// 	message: 'Setting name must be at least 2 characters long',
-			// },
+			validate: {
+				validator: function (v: string) {
+					return v.length >= 2;
+				},
+				message: 'Setting name must be at least 2 characters long',
+			},
 			default: undefined,
 		},
 		businessArea: {
 			type: Schema.Types.ObjectId,
 			ref: 'BusinessArea',
-			// required: true,
-			// validate: {
-			// 	validator: function (v: mongoose.Types.ObjectId) {
-			// 		return mongoose.Types.ObjectId.isValid(v);
-			// 	},
-			// 	message: 'Invalid Business Area ID',
-			// },
+			required: true,
+			validate: {
+				validator: function (v: mongoose.Types.ObjectId) {
+					return mongoose.Types.ObjectId.isValid(v);
+				},
+				message: 'Invalid Business Area ID',
+			},
 			default: undefined,
 		},
 		optionsSchema: {
