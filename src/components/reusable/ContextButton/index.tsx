@@ -1,12 +1,6 @@
 'use client';
 
-type ContextButtonProps = {
-	label: string;
-	onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-	type: 'default' | 'edit' | 'delete';
-	classes: string;
-	formMethod: string;
-};
+import { ContextButtonProps } from '@/types/type';
 
 type Types = {
 	[key: string]: string;

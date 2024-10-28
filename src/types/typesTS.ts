@@ -14,30 +14,30 @@ import { ReactNode } from 'react';
 // export type SearchParamsProps = Record<string, string | string[]>;
 
 //--navigation
-export type LanguageLabels = {
-	[key: string]: string;
-};
+// export type LanguageLabels = {
+// 	[key: string]: string;
+// };
 
-export type LinkItem = {
-	label: LanguageLabels;
-	path: string;
-};
+// export type LinkItem = {
+// 	label: LanguageLabels;
+// 	path: string;
+// };
 
-export type LinkContents = LinkItem & {
-	additionalLinks?: LinkItem[] | null;
-};
+// export type LinkContents = LinkItem & {
+// 	additionalLinks?: LinkItem[] | null;
+// };
 
-export type LinksStateTypes = {
-	[key: string]: LinkContents;
-};
+// export type LinksStateTypes = {
+// 	[key: string]: LinkContents;
+// };
 
-export type LinksProps = {
-	link: LinkItem;
-	location: string;
-};
-export type LinksType = {
-	links: LinkItem | LinkItem[];
-};
+// export type LinksProps = {
+// 	link: LinkItem;
+// 	location: string;
+// };
+// export type LinksType = {
+// 	links: LinkItem | LinkItem[];
+// };
 //--navigation
 
 // models
@@ -56,8 +56,8 @@ export type LinksType = {
 // models
 
 // Forms
-export type SettingsHeaderFormState = {
-	message: string | null;
-	success: boolean | null;
-	error: boolean | null;
-};
+// export type SettingsHeaderFormState = {
+// 	message: string | null;
+// 	success: boolean | null;
+// 	error: boolean | null;
+// };

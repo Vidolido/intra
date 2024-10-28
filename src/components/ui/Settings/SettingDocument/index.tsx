@@ -5,14 +5,12 @@ import OptionsSchema from '@/components/forms/settings/OptionsSchema';
 // import DisplaySettings from './DisplaySettings';
 
 // types
-import { BusinessAreasDocument, LanguagesDocument } from '@/types/typesTS';
-import { Settings } from '@/types/zod/settingSchema';
-
+import { BusinessAreas, Language, Setting } from '@/types/type';
 interface SettingDocumentProps {
 	title: string;
-	businessAreas: BusinessAreasDocument[];
-	languages: LanguagesDocument[];
-	setting: Settings;
+	businessAreas: BusinessAreas[];
+	languages: Language[];
+	setting: Setting;
 }
 
 const SettingDocument = ({
@@ -24,6 +22,8 @@ const SettingDocument = ({
 	const hasName = setting?.settingName ? true : false;
 	const hasSchema = setting?.optionsSchema ? true : false;
 	const hasSettingsCollection = setting?.settings ? true : false;
+
+	// console.log(businessAreas, 'business here');
 	return (
 		// <div className='min-w-[400px] max-w-[85%]'>
 		<div className='w-[85%]'>

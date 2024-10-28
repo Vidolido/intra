@@ -1,52 +1,46 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // state/actions
 import { saveOptionSchema } from '@/data-acceess/settings/saveOptionSchema';
+import { createOptionsSchemaState } from '@/components/ui/Settings/SettingDocument/helpers';
 
 // components
-// import ArrowSvg from '@/../public/arrow.svg';
-// import MainInput from './MainInput';
-// import AddCollections from './AddCollections';
-// import Collections from './Collections';
 import ErrorMsg from '@/components/reusable/ErrorMsg';
 import MainInput from './MainInput';
+import AddCollections from './AddCollections';
 import ShowHideButton from '@/components/reusable/ShowHideButton';
 import ContextButton from '@/components/reusable/ContextButton';
+import Collections from './Collections';
 
 // types
-import { Options, Settings } from '@/types/zod/settingSchema';
-import { LanguageSchema } from '@/types/zod/languagesSchema';
-import { createInitialState } from '@/components/ui/Settings/SettingDocument/helpers';
-import { ActionResponse, ResetComponentsData } from '@/types/zod/typesZ';
-
+import {
+	ActionResponse,
+	Language,
+	Options,
+	ResetComponentsData,
+	Setting,
+} from '@/types/type';
 type OptionsSchemaProps = {
-	setting: Settings;
-	languages: LanguageSchema[];
+	setting: Setting;
+	languages: Language[];
 };
-type Parameter = {
-	name: {
-		[key: string]: Record<string, string>;
-	};
-};
-type DataObj = {
-	[key: string]: string;
-};
+
 const OptionsSchema = ({ setting, languages }: OptionsSchemaProps) => {
-	let optionsSchema = setting.optionsSchema;
-	const [state, setState] = useState<Options | null>(() =>
-		createInitialState(optionsSchema)
+	let optionsSchema = setting.optionsSchema || undefined;
+
+	const [state, setState] = useState<Options>(() =>
+		createOptionsSchemaState(optionsSchema)
 	);
-	const [visible, setVisible] = useState(setting?.optionsSchema ? false : true);
-	// const [resetComponents, setResetComponents] = useState({
-	// 	submit: false,
-	// 	add: false,
-	// 	collections: false,
-	// });
+	const [visible, setVisible] = useState(optionsSchema ? false : true);
+
 	const [actionStatus, setActionStatus] = useState<ActionResponse>({
-		error: false,
-		success: true,
 		data: null,
+		success: null,
+		error: null,
+		message: null,
+		component: null,
+		isLoading: false,
 	});
 	const [resetComponents, setResetComponents] = useState<ResetComponentsData>({
 		singular: false,
@@ -55,55 +49,23 @@ const OptionsSchema = ({ setting, languages }: OptionsSchemaProps) => {
 		collection: '',
 	});
 
-	console.log(state, 'the state');
+	const submit = async () => {
+		const response = await saveOptionSchema(state, setting._id.toString());
 
-	const handleParameter = (
-		data: Parameter,
-		dataObj: { [key: string]: string }
-	) => {
-		console.log(data, dataObj);
+		console.log(response, 'THE RESPONSE');
+		// setActionStatus({
+		// 	data:
+		// 	error: error || null,
+		// 	success: success || null,
+		// });
+		setResetComponents({
+			singular: true,
+			plural: true,
+			collections: true,
+			collection: '',
+		});
 	};
-	const handleParameterChange = (data: Parameter, dataObj: DataObj) => {
-		const param: Parameter | undefined = state?.parameter;
-		const { _id, name } = dataObj;
-		// if (data != null && name.length > 0) {
-		// 	const newState: Parameter = { ...param };
-		// 	newState?.parameter[name] = data;
-		// }
-	};
-	// const handleParameterChange = (data, dataObj) => {
-	// let { name } = dataObj;
-	// let parameter: Parameter | null = (state && { ...state?.parameter }) || {};
-	// if (name && name.length > 0 && parameter != null) {
-	// 	parameter[name] = data;
-	// }
-	// };
-	// const [resetLanguage, setResetLanguage] = useState({
-	// 	submit: false,
-	// 	add: false,
-	// 	collections: false,
-	// });
-
-	// const handleCollectionsUpdate = (collections) => {
-	// 	setState((prev) => ({ ...prev, collections }));
-	// };
-	const submit = () => console.log('CLICKED');
-	// const submit = async () => {
-	// 	const { error, success } = await saveOptionSchema(
-	// 		state,
-	// 		setting._id.toString()
-	// 	);
-	// 	setActionStatus({
-	// 		error: error || null,
-	// 		success: success || null,
-	// 	});
-	// 	setResetLanguage({
-	// 		submit: true,
-	// 		add: true,
-	// 		collections: true,
-	// 	});
-	// };
-
+	console.log(state, 'THE STATE');
 	return (
 		<form className='flex flex-col gap-1 bg-slate-100 border-[1px] border-slate-100 p-1 rounded min-w-72 w-full mb-1'>
 			<input
@@ -123,43 +85,45 @@ const OptionsSchema = ({ setting, languages }: OptionsSchemaProps) => {
 						languages={languages}
 						actionStatus={actionStatus}
 						state={state}
-						setState={handleParameter}
+						setState={setState}
+						// handleParameter={handleParameter}
 						reset={{
 							resetData: resetComponents,
 							setReset: setResetComponents,
-							// resetType: 'submit',
 							components: ['singular', 'plural'],
 						}}
 					/>
-					{/* 
+
 					<AddCollections
 						languages={languages}
+						state={state}
 						setState={setState}
 						setActionStatus={setActionStatus}
 						reset={{
 							resetData: resetComponents,
 							setReset: setResetComponents,
-							resetType: 'add',
+							components: ['add-collections'],
 						}}
 					/>
 
-					{actionStatus?.error?.collections && (
-						<ErrorMsg msg={actionStatus?.error?.collections} />
-					)}
+					{actionStatus?.error &&
+						actionStatus.component === 'add-collections' && (
+							<ErrorMsg msg={actionStatus?.message} />
+						)}
 
 					{!!state?.collections.length && (
 						<Collections
 							languages={languages}
 							state={state}
 							setState={setState}
-							functions={{ handleCollectionsUpdate }}
+							setActionStatus={setActionStatus}
 							reset={{
 								resetData: resetComponents,
 								setReset: setResetComponents,
-								resetType: 'add',
+								components: ['collections'],
 							}}
 						/>
-					)} */}
+					)}
 					<ContextButton
 						label='Save Options Schema'
 						type='edit'

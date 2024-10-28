@@ -128,7 +128,6 @@ const settingsSchema: Schema = new Schema<SettingsDocument, SettingsModel>(
 		businessArea: {
 			type: Schema.Types.ObjectId,
 			ref: 'BusinessArea',
-			required: true,
 			validate: {
 				validator: function (v: mongoose.Types.ObjectId) {
 					return mongoose.Types.ObjectId.isValid(v);

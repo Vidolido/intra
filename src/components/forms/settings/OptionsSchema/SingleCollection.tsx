@@ -1,36 +1,68 @@
+// state/actions
+import { generateID } from '@/functions/generateID';
+
 // components
-import ContextButton from '@/components/buttons/ContextButton';
-import LanguageInput from '@/components/reusable/LanguageInput';
+import LanguageInput from '@/components/reusable/Inputs/LanguageInput';
+import ContextButton from '@/components/reusable/ContextButton';
+
+// types
+import { Dispatch, SetStateAction } from 'react';
+import {
+	ActionResponse,
+	Collection,
+	Language,
+	LanguageInputComponent,
+	LanguageMap,
+	Metadata,
+	Options,
+	Reset,
+} from '@/types/type';
+interface SingleCollectionProps {
+	languages: Language[];
+	_id: string;
+	collection: Collection;
+	state: Options;
+	setState: Dispatch<SetStateAction<Options>>;
+	setActionStatus: Dispatch<SetStateAction<ActionResponse>>;
+	reset: Reset;
+}
 
 const SingleCollection = ({
-	_id,
 	languages,
+	_id,
 	collection,
 	state,
-	functions,
+	setState,
+	setActionStatus,
 	reset,
-}) => {
-	let newCollection = { ...collection };
-	const handleCollectionData = (data, dataObj) => {
-		// let collection
-		newCollection = data;
-		let collections = [...state.collections];
-		collections.find((col) => col.id === dataObj.id).name = data;
-		functions.handleCollectionsUpdate(collections);
+}: SingleCollectionProps) => {
+	const handleCollectionData = (
+		data: LanguageInputComponent,
+		dataObj: Metadata
+	) => {
+		const { id } = dataObj;
+		const collections: Collection[] = [...state.collections];
 
-		console.log(collection, 'collection');
+		const index = collections.findIndex(
+			(col) => col?.id === id || (col?._id && col?._id.toString() === id)
+		);
+
+		if (index !== -1) {
+			collections[index] = {
+				...collections[index],
+				name: data as LanguageMap,
+			};
+		}
+
+		setState((prev) => ({ ...prev, collections }));
 	};
 
-	const handleDelete = (e) => {
+	const handleDelete = (collectionToDelete: Collection) => {
 		let filtered = state?.collections.filter(
-			(collection) => JSON.stringify(collection) !== JSON.stringify(e)
+			(collection) =>
+				JSON.stringify(collection) !== JSON.stringify(collectionToDelete)
 		);
-		functions.handleCollectionsUpdate(filtered);
-
-		reset.setReset((prev) => ({
-			...prev,
-			[reset.resetType]: true,
-		}));
+		setState((prev) => ({ ...prev, collections: filtered }));
 	};
 	return (
 		<div key={_id} className='flex gap-2'>
@@ -38,7 +70,7 @@ const SingleCollection = ({
 				languages={languages}
 				data={{
 					defaultLanguage: languages[0].language,
-					id: collection?._id || collection.id,
+					id: collection?._id?.toString() || collection.id,
 					state: collection?.name,
 				}}
 				extractData={handleCollectionData}

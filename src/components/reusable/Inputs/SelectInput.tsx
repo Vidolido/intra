@@ -1,7 +1,7 @@
-import { cn } from '@/functions/cn';
-import { LanguageLabels } from '@/types/typesTS';
-import { OptionType, SelectInputProps } from '@/types/zod/reusable';
 import { useEffect, useState } from 'react';
+import { cn } from '@/functions/cn';
+
+import { LanguageMap, OptionType, SelectInputProps } from '@/types/type';
 
 const SelectInput = ({
 	data = { state: [], showEmptyOption: false },
@@ -58,14 +58,14 @@ const SelectInput = ({
 	}, [data?.state, data?.showEmptyOption]);
 
 	useEffect(() => {
-		if (reset && reset?.resetData[reset.resetType]) {
+		if (reset && reset?.components.includes('select')) {
 			setSelected(options[0]?._id || null);
-			reset.setReset((prev: LanguageLabels) => ({
+			reset.setReset((prev: LanguageMap) => ({
 				...prev,
-				[reset.resetType]: false,
+				components: [],
 			}));
 		}
-	}, [reset?.resetData, reset?.resetType]);
+	}, [reset?.resetData, reset?.components]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const { value, id, name } = e.target;

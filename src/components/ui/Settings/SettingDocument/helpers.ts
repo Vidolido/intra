@@ -1,61 +1,15 @@
-import { z } from 'zod';
 import {
 	Collection,
 	Options,
+	OptionsState,
+	Setting,
 	SettingCollectionItem,
-	SettingCollectionItemSchema,
-	Settings,
-	SettingsCollection,
-} from '@/types/zod/settingSchema';
-import { SearchParamsPayload } from '@/types/zod/typesZ';
-
-const ZOptions = z.object({
-	id: z.string(),
-	showOptions: z.boolean(),
-	options: z.object({
-		edit: z.boolean(),
-		expand: z.boolean(),
-	}),
-});
-const ZOptionsState = z.array(ZOptions);
-type OptionsState = z.infer<typeof ZOptionsState>;
-
-const ZCollections = z.array(
-	z.record(z.string(), z.array(SettingCollectionItemSchema))
-);
-type Collections = z.infer<typeof ZCollections>;
-
-const ZParameter = z.object({
-	name: z.object({
-		singular: z.record(z.string(), z.string()),
-	}),
-});
-const ZState = z.object({
-	// optionsForSettings: ZOptionsState.nullable(),
-	// initState: z
-	// 	.object({
-	// 		collections: z.array(z.any()).nullable(),
-	// 		parameter: ZParameter.nullable(),
-	// 	})
-	// 	.nullable(),
-	insertSettingsProps: z.object({
-		selected: z.string().nullable(),
-		parameterName: z.string(),
-		collections: z.array(z.any()).nullable(),
-		state: z.object({
-			parameter: z.record(z.string(), z.any()),
-			collections: z
-				.record(z.string(), z.array(SettingCollectionItemSchema))
-				.optional()
-				.nullable(),
-		}),
-	}),
-});
-
-type State = z.infer<typeof ZState>;
+	State,
+} from '@/types/type';
+import { RmOptions } from 'fs';
 
 export const createOptionsState = (
-	settings: SettingsCollection[] | undefined | null = []
+	settings: Setting[] | undefined | null = []
 ): OptionsState | null => {
 	if (!settings) return null;
 
@@ -71,57 +25,74 @@ export const createOptionsState = (
 	);
 };
 
-export const createInitialState = (
-	optionsSchema: Options | null | undefined
-): Options | null => {
-	if (!optionsSchema) return null;
+// export const createInitialState = (
+// 	optionsSchema: Options | null | undefined
+// ): Options | null => {
+// 	if (!optionsSchema) return null;
+// 	return {
+// 		...optionsSchema,
+// 	};
+// };
+// export const createInitialState = (optionsSchema: Options): Options => {
+// 	// if (!optionsSchema) return null;
+// 	return {
+// 		...optionsSchema,
+// 	};
+// };
+
+// type CollectionsOuput = {
+// 	collections: {
+// 		[key: string]: SettingCollectionItem[];
+// 	};
+// };
+
+// export function createCollectionsState(
+// 	collections: Collection[] | null = null
+// ): CollectionsOuput | {} {
+// 	if (!collections) return {};
+
+// 	return collections.reduce(
+// 		(acc, collection) => ({
+// 			...acc,
+// 			[collection?._id.toString()]: [],
+// 		}),
+// 		{}
+// 	);
+// }
+export const createOptionsSchemaState = (
+	optionsSchema: Options | undefined
+): Options => {
 	return {
-		...optionsSchema,
+		parameter: optionsSchema?.parameter || {
+			name: {
+				singular: {},
+				plural: {},
+			},
+		},
+		collections: optionsSchema?.collections || [],
 	};
 };
 
-type InsertSettingsState = {
-	[key: string]: [] | SettingCollectionItem[];
-};
-
-export function createCollectionsState(
-	collections: Collection[] | null = null
-): InsertSettingsState | {} {
-	if (!collections) return {};
-
-	return collections.reduce(
-		(acc, collection) => ({
-			...acc,
-			[collection?._id.toString()]: [],
-		}),
-		{}
-	);
-}
-
-export const createServerState = (setting: Settings): State => {
+export const createServerState = (setting: Setting): State => {
 	const collections = setting?.optionsSchema?.collections || null;
 	const firstCollectionId = collections
 		? collections[0]?._id?.toString()
 		: null;
-	const settings = setting?.settings;
-	const optionsSchema = setting?.optionsSchema;
 
 	return {
-		// optionsForSettings: createOptionsState(settings),
-		// initState: createInitialState(optionsSchema),
 		insertSettingsProps: {
-			selected: firstCollectionId,
+			selected: firstCollectionId || null,
 			parameterName:
 				setting?.optionsSchema?.parameter?.name?.singular?.en || '',
 			collections: !collections ? [] : collections,
 
 			state: {
 				parameter: {},
-				collections: createCollectionsState(collections),
+				collections: createCollectionsState(collections) || {},
 			},
 		},
 	};
 };
 
-// Usage
-//   export const createState = createServerState(setting);
+// // Usage
+// //   export const createState = createServerState(setting);

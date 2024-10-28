@@ -1,25 +1,21 @@
-// import { Document } from 'mongoose';
+import { LanguageMap } from '@/types/type';
 
-import { LanguageLabels } from '@/types/typesTS';
-import { LanguageMapSchema, Languages } from '@/types/zod/settingSchema';
-import { Types } from 'mongoose';
-import { z } from 'zod';
+const getNestedValue = (obj: any, path: string) => {
+	return path.split('.').reduce((acc, part) => acc?.[part], obj);
+};
 
-export interface HasIdAndName {
-	_id: Types.ObjectId;
-	name: Record<string, string>;
-}
-
-interface TransformedSelectItem {
-	_id: string;
-	name: LanguageLabels;
-}
-
-export const mutateForSelect = <T extends HasIdAndName>(
-	documents: T[]
-): TransformedSelectItem[] => {
-	return documents.map((doc) => ({
-		_id: doc._id.toString(),
-		name: doc.name,
-	}));
+export const mutateForSelect = <T extends Record<string, any>>(
+	documents: T[],
+	nameKey: string = 'name'
+): Array<{ _id?: string; name: LanguageMap }> => {
+	return documents.map((doc) => {
+		const nestedValue = nameKey ? getNestedValue(doc, nameKey) : doc.name;
+		const result: { _id?: string; name: LanguageMap } = {
+			name: nestedValue || {},
+		};
+		if ('_id' in doc) {
+			result._id = doc._id.toString();
+		}
+		return result;
+	});
 };

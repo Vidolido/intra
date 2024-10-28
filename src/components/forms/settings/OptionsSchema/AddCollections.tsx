@@ -1,43 +1,73 @@
 'use client';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+
+// state/actions
+import { generateID } from '@/functions/generateID';
 
 // components
-import ContextButton from '@/components/buttons/ContextButton';
-import LanguageInput from '@/components/reusable/LanguageInput';
-import { generateUUID } from '@/utils/generateUUID';
+import LanguageInput from '@/components/reusable/Inputs/LanguageInput';
+import ContextButton from '@/components/reusable/ContextButton';
 
-const AddCollections = ({ languages, setState, setActionStatus, reset }) => {
+//tupes
+import {
+	ActionResponse,
+	Collection,
+	Language,
+	LanguageInputComponent,
+	Metadata,
+	Options,
+	Reset,
+} from '@/types/type';
+import { isObjectEmpty } from '@/functions/isObjectEmpty';
+
+interface AddCollectionsProps {
+	languages: Language[];
+	state: Options;
+	setState: Dispatch<SetStateAction<Options>>;
+	setActionStatus: Dispatch<SetStateAction<ActionResponse>>;
+	reset: Reset;
+}
+
+const AddCollections = ({
+	languages,
+	state,
+	setState,
+	setActionStatus,
+	reset,
+}: AddCollectionsProps) => {
 	const [collectionData, setCollectionData] = useState({});
 
 	const handleAdd = () => {
+		setActionStatus((prev) => ({ ...prev, isLoading: true }));
+		const collections = state?.collections || [];
 		let areAllFieldsEmpty = Object.values(collectionData).every(
 			(value) => value === ''
 		);
 		if (areAllFieldsEmpty) {
 			setActionStatus({
+				data: null,
 				success: null,
-				error: {
-					collections: 'Please insert text for at least one language.',
-				},
+				error: true,
+				message: 'Please insert text for at least one language.',
+				component: 'collections',
+				isLoading: false,
 			});
-		} else {
-			setState((prev) => ({
-				...prev,
-				collections: [
-					...prev?.collections,
-					{ id: generateUUID(), name: collectionData },
-				],
-			}));
-			setActionStatus({
-				success: 'Added collection.',
-				error: null,
-			});
-			setCollectionData({});
-			reset.setReset((prev) => ({ ...prev, [reset.resetType]: true }));
+			return;
+		}
+		if (!isObjectEmpty(collectionData)) {
+			collections.push(collectionData as Collection);
+			setState((prev) => ({ ...prev, collections }));
 		}
 	};
-	const handleCollectionData = (data) => {
-		setCollectionData(data);
+	const handleCollectionData = (data: LanguageInputComponent) => {
+		// const collections = state?.collections || [];
+		const collection = {
+			id: generateID(),
+			name: data as Record<string, string>,
+		} as Collection;
+		// collections.push(collection);
+
+		setCollectionData(collection);
 	};
 	return (
 		<fieldset
@@ -48,12 +78,19 @@ const AddCollections = ({ languages, setState, setActionStatus, reset }) => {
 				data={{
 					defaultLanguage: languages[0].language,
 					state: collectionData,
+					inputName: 'add-collections',
 				}}
 				extractData={handleCollectionData}
 				reset={reset}
 			/>
 
-			<ContextButton label='Add' type='edit' onClick={handleAdd} />
+			{/* <ContextButton label='Add' type='edit' onClick={handleAdd} /> */}
+			<ContextButton
+				label='Add'
+				type='edit'
+				onClick={handleAdd}
+				classes='mt-[2px]'
+			/>
 		</fieldset>
 	);
 };

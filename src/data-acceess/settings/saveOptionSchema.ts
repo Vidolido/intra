@@ -6,8 +6,9 @@ import { revalidatePath } from 'next/cache';
 import Setting from '@/db/models/Setting';
 import connection from '@/db/connection';
 import { revalidatePaths } from '@/functions/reavalidatePaths';
+import { Options } from '@/types/type';
 
-export async function saveOptionSchema(state, documentId) {
+export async function saveOptionSchema(state: Options, documentId: string) {
 	// console.log(state, 'the state');
 	try {
 		cookies();
@@ -21,27 +22,33 @@ export async function saveOptionSchema(state, documentId) {
 
 		if (isSingularEmpty == undefined) {
 			return {
+				data: null,
 				success: null,
-				error: {
-					singular: 'Singular name is empty',
-				},
+				error: true,
+				message: 'Singular name is empty',
+				component: 'singular',
+				isLoading: false,
 			};
 		}
 		if (isPluralEmpty == undefined) {
 			return {
+				data: null,
 				success: null,
-				error: {
-					plural: 'Plural name is empty',
-				},
+				error: true,
+				message: 'Plural name is empty',
+				component: 'singular',
+				isLoading: false,
 			};
 		}
 
 		if (!state.collections.length) {
 			return {
+				data: null,
 				success: null,
-				error: {
-					collections: 'Add at least one collection',
-				},
+				error: true,
+				message: 'Add at least one collection',
+				component: 'collections',
+				isLoading: false,
 			};
 		}
 
@@ -66,14 +73,26 @@ export async function saveOptionSchema(state, documentId) {
 			'/dashboard/settings/create',
 		]);
 
+		return {
+			data: document,
+			success: true,
+			error: false,
+			message: 'Schema saved to database',
+			component: '',
+			isLoading: false,
+		};
+
 		return { success: 'Schema saved to database', error: null };
 	} catch (error) {
 		console.log('Failed to save schema:', error);
-		return {
-			success: null,
-			error: {
-				catch: error.message,
-			},
-		};
+		if (error instanceof Error)
+			return {
+				data: null,
+				success: null,
+				error: true,
+				message: error.message,
+				component: 'collections',
+				isLoading: false,
+			};
 	}
 }

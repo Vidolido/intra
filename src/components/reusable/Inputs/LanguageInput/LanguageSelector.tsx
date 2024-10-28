@@ -1,9 +1,9 @@
 import { cn } from '@/functions/cn';
-import { LanguageSchema } from '@/types/zod/languagesSchema';
+import { Language } from '@/types/type';
 import { ChangeEvent, FocusEvent } from 'react';
 
 interface LanguageSelectorProps {
-	languages: LanguageSchema[];
+	languages: Language[];
 	selectedLanguage: string;
 	onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 	selectName?: string;
@@ -20,12 +20,12 @@ const LanguageSelector = ({
 	return (
 		<select
 			name={selectName}
+			value={selectedLanguage}
+			onChange={onChange}
 			className={cn(
 				'box-content border border-grey-50 border-opacity-60 rounded',
 				'hover:border-red-200 focus:outline-none cursor-pointer h-[21px] text-sm pl-[2px]'
 			)}
-			onChange={onChange}
-			value={selectedLanguage}
 			disabled={disabled || false}>
 			{languages.map((lang) => (
 				<option key={lang._id.toString()} value={lang.language}>

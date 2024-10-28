@@ -5,18 +5,22 @@ import { z } from 'zod';
 
 // connection/moddels/database functions
 // import dbConnect from '@/db/conn';
-import Setting from '@/db/models/Setting';
 import connection from '@/db/connection';
-
-// types
-import { SettingsHeaderFormState } from '@/types/typesTS';
+import Setting from '@/db/models/Setting';
 import { revalidatePaths } from '@/functions/reavalidatePaths';
 
-const HeaderSchema = z.object({
-	businessArea: z.string(),
-	settingName: z.string(),
-	documentStatus: z.string().default('draft'),
-});
+// types
+import {
+	ActionResponse,
+	HeaderSchema,
+	SettingsHeaderFormState,
+} from '@/types/type';
+
+// const HeaderSchema = z.object({
+// 	businessArea: z.string(),
+// 	settingName: z.string(),
+// 	documentStatus: z.string().default('draft'),
+// });
 // interface FormState {
 // 	state: { message: string; success: boolean; error: boolean };
 // 	formState: FormState;
@@ -29,9 +33,9 @@ const HeaderSchema = z.object({
 
 // TODO: Handle errors
 export async function saveSettingHeader(
-	prevState: SettingsHeaderFormState,
+	state: ActionResponse,
 	formData: FormData
-): Promise<SettingsHeaderFormState> {
+): Promise<ActionResponse> {
 	// console.log(prevState, 'prevState');
 	// console.log(formData, 'formDataAAAAAAAAAAAAAAAA');
 	const _id = formData.get('document_id') as string;
@@ -64,13 +68,6 @@ export async function saveSettingHeader(
 			`/dashboard/settings/draft/[_id]`,
 			'/dashboard/settings/create',
 		]);
-		// const pathsToRevalidate = [
-		// 	`/dashboard/settings/edit/[_id]`,
-		// 	`/dashboard/settings/draft/[_id]`,
-		// 	'/dashboard/settings/create',
-		// ];
-
-		// pathsToRevalidate.forEach((path) => revalidatePath(path, 'page'));
 
 		return {
 			success: true,

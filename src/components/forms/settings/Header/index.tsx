@@ -4,26 +4,17 @@ import { useFormState } from 'react-dom';
 
 // state/actions
 import { saveSettingHeader } from '@/data-acceess/settings/saveSettingHeader';
+import { mutateForSelect } from '@/functions/mutateForSelect';
 
 // components
 import ShowHideButton from '@/components/reusable/ShowHideButton';
 import SelectInput from '@/components/reusable/Inputs/SelectInput';
-
-// import SelectInput from '@/components/reusable/SelectInput';
-// import NormalInput from '@/components/reusable/NormalInput';
-// import ContextButton from '@/components/buttons/ContextButton';
-
-// types
-import {
-	BusinessAreasDocument,
-	LanguagesDocument,
-	SettingsHeaderFormState,
-} from '@/types/typesTS';
-import { Settings } from '@/types/zod/settingSchema';
-import { mutateForSelect } from '@/functions/mutateForSelect';
 import NormalInput from '@/components/reusable/Inputs/NormalInput';
 import ContextButton from '@/components/reusable/ContextButton';
 import ErrorMsg from '@/components/reusable/ErrorMsg';
+
+// types
+import { ActionResponse, BusinessAreas, Language, Setting } from '@/types/type';
 
 const status = [
 	{
@@ -36,7 +27,6 @@ const status = [
 	},
 	{
 		_id: null,
-
 		name: {
 			en: 'published',
 			mk: 'објавен',
@@ -46,21 +36,22 @@ const status = [
 ];
 
 interface HeaderFormProps {
-	languages: LanguagesDocument[];
-	businessAreas: BusinessAreasDocument[];
-	setting: Settings;
+	languages: Language[];
+	businessAreas: BusinessAreas[];
+	setting: Setting;
 }
 
-const initialState: SettingsHeaderFormState = {
-	message: null,
-	success: null,
-	error: null,
-};
-
 const HeaderForm = ({ languages, businessAreas, setting }: HeaderFormProps) => {
-	const [state, formAction] = useFormState<SettingsHeaderFormState, FormData>(
+	const [state, formAction] = useFormState<ActionResponse, FormData>(
 		saveSettingHeader,
-		initialState
+		{
+			data: null,
+			success: null,
+			error: null,
+			message: null,
+			component: null,
+			isLoading: false,
+		}
 	);
 	let hasName = setting.settingName;
 	const [visible, setVisible] = useState(() => !hasName);
@@ -68,8 +59,7 @@ const HeaderForm = ({ languages, businessAreas, setting }: HeaderFormProps) => {
 
 	const settingName = !hasName ? '' : setting?.settingName;
 
-	const businessAreasTransformed =
-		mutateForSelect<BusinessAreasDocument>(businessAreas);
+	const businessAreasTransformed = mutateForSelect(businessAreas);
 
 	return (
 		<form

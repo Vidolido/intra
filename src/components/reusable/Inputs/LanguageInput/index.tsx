@@ -1,75 +1,42 @@
 'use client';
 import React, { useEffect, useState, ChangeEvent, FocusEvent } from 'react';
-import { cn } from '@/functions/cn';
 
 // state/actions
-// import { deepEqual } from '@/utils/helpers/deepEqual';
+import { cn } from '@/functions/cn';
 
 //compponents
 import LanguageInputField from './LanguageInputField';
 import LanguageSelector from './LanguageSelector';
-import { LanguageSchema } from '@/types/zod/languagesSchema';
-import { LanguageLabels } from '@/types/typesTS';
-import { HasIdAndName } from '@/functions/mutateForSelect';
-import { Types } from 'mongoose';
-import { Languages, Options } from '@/types/zod/settingSchema';
 
 // types
+import {
+	Language,
+	LanguageInputComponent,
+	LanguageInputData,
+	LanguageMap,
+	Metadata,
+	Reset,
+} from '@/types/type';
 
 // helper
-
-const initializeState = (languages: LanguageSchema[], data: StateFields) => {
-	return languages.reduce((acc: StateFields, lang: LanguageSchema) => {
+const initializeState = (
+	languages: Language[],
+	data: LanguageInputComponent
+) => {
+	return languages.reduce((acc: LanguageInputComponent, lang: Language) => {
 		acc[lang.language] = data && data[lang.language] ? data[lang.language] : '';
 		return acc;
 	}, {});
 };
 
-interface Language {
-	_id: Types.ObjectId;
-	language: string;
-	active?: boolean;
-	locale?: string;
-	isDeleted?: boolean;
-}
-
-type StateFields = {
-	[key: string]: string | undefined;
-};
-
-interface LanguageInputData {
-	id?: string;
-	state?: StateFields;
-	defaultLanguage?: string;
-	label?: string;
-	inputName?: string;
-	inputClass?: string;
-	fieldSetName?: string;
-	fieldSetClass?: string;
-	labelClass?: string;
-	required?: boolean;
-	disabled?: boolean;
-	error?: boolean;
-	helperText?: string;
-}
-
-interface ResetConfig {
-	resetData: Record<string, boolean>;
-	setReset?: (data: Record<string, boolean>) => void;
-	resetType: string;
-}
-
-type Metadata = {
-	id: string;
-	name: string;
-};
-
 interface LanguageInputProps {
-	languages: LanguageSchema[];
+	languages: Language[];
 	data?: LanguageInputData | null;
-	extractData?: ((value: StateFields, metadata: Metadata) => void) | null;
-	reset?: ResetConfig | null;
-	onChange?: (value: LanguageLabels) => void;
+	extractData?:
+		| ((data: LanguageInputComponent, dataObj: Metadata) => void)
+		| null;
+	reset?: Reset | null;
+	onChange?: (value: LanguageMap) => void;
 }
 const LanguageInput = ({
 	languages,
@@ -78,7 +45,7 @@ const LanguageInput = ({
 	reset = null,
 }: LanguageInputProps) => {
 	const [state, setState] = useState(() =>
-		data && data?.state ? initializeState(languages, data.state) : null
+		data && data?.state ? initializeState(languages, data.state) : {}
 	);
 	const [selectedLanguage, setSelectedLanguage] = useState(
 		data?.defaultLanguage || languages[0].language
@@ -89,47 +56,61 @@ const LanguageInput = ({
 			? Object.values(reset.resetData).some((value) => value === true)
 			: false;
 
-		if (shouldReset && reset?.resetType) {
-			data && data?.state && initializeState(languages, data.state);
+		if (
+			shouldReset &&
+			data?.inputName &&
+			reset?.components.includes(data?.inputName) &&
+			data?.state
+		) {
+			const newState = initializeState(languages, data.state);
+			setState(newState); // Reset state
+
 			const newResetData = Object.fromEntries(
 				Object.keys(reset.resetData).map((key) => [key, false])
 			);
-			reset?.setReset && reset.setReset(newResetData);
+
+			// reset?.setReset && reset.setReset(newResetData);
 		}
 	}, [reset, languages, data]);
 
 	useEffect(() => {
-		const newState =
-			data && data?.state && initializeState(languages, data.state);
-		if (newState && JSON.stringify(state) !== JSON.stringify(newState)) {
-			setState(newState);
+		if (data?.state) {
+			const newState = initializeState(languages, data.state);
+			if (JSON.stringify(state) !== JSON.stringify(newState)) {
+				setState(newState);
+			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data?.state]);
+	}, [data?.state, languages]);
 
 	const handleInputBlur = (e: FocusEvent<HTMLInputElement>) => {
-		state != null &&
+		if (state) {
 			extractData &&
-			extractData(state, { id: e?.target?.id, name: e?.target?.name });
+				extractData(state, {
+					id: e.target.id,
+					name: e.target.name,
+					type: e.target.type,
+				});
+		}
 	};
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const newState = {
-			...state,
-			[selectedLanguage]: e.target.value,
-		};
-		setState(newState);
+		const newValue = e.target.value;
+		setState((prevState) => ({
+			...prevState,
+			[selectedLanguage]: newValue,
+		}));
 	};
 
 	const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) =>
 		setSelectedLanguage(e.target.value);
 
 	return (
-		<fieldset
-			name={data?.fieldSetName}
-			className={cn(data?.fieldSetClass, 'flex flex-col')}>
-			<label className={cn(data?.labelClass)}>{data?.label}</label>
-			<div className='flex flex-nowrap gap-1'>
+		<fieldset name={data?.fieldSetName} className={cn(data?.fieldSetClass)}>
+			<label className={cn(data?.labelClass)}>
+				{data?.label}
+				{data && data.required && <span className='text-red-500 ml-1'>*</span>}
+			</label>
+			<div className='flex flex-nowrap gap-1 w-full'>
 				<LanguageInputField
 					id={data?.id}
 					value={state ? state[selectedLanguage] : ''}

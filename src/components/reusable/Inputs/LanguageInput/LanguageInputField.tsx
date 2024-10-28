@@ -26,17 +26,19 @@ const LanguageInputField = ({
 	return (
 		<input
 			id={id}
-			name={inputName}
 			type='text'
-			value={value}
+			name={inputName}
+			value={value || ''}
 			onChange={onChange}
 			onBlur={onBlur}
 			className={cn(
 				inputClass,
-				'min-w-28',
+				'min-w-28, w-full',
 				'box-content border border-grey-50 border-opacity-60 rounded ',
 				'hover:border-red-200 focus:outline-none h-[21px]'
 			)}
+			disabled={disabled}
+			required={required}
 		/>
 	);
 };

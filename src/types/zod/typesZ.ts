@@ -61,11 +61,11 @@ import { z } from 'zod';
 // //makeDraft
 
 // ResetComponentsData
-const ResetComponentsDataSchema = z.object({
-	singular: z.boolean().default(false),
-	plural: z.boolean().default(false),
-	collections: z.boolean().default(false),
-	collection: z.string(),
-});
-export type ResetComponentsData = z.infer<typeof ResetComponentsDataSchema>;
+// const ResetComponentsDataSchema = z.object({
+// 	singular: z.boolean().default(false),
+// 	plural: z.boolean().default(false),
+// 	collections: z.boolean().default(false),
+// 	collection: z.string(),
+// });
+// export type ResetComponentsData = z.infer<typeof ResetComponentsDataSchema>;
 // ResetComponentsData

@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
 	try {
 		await connection();
 		const businessAreas = await BusinessArea.find({ ...payload });
-
 		revalidatePath('/');
 		return NextResponse.json({ businessAreas }, { status: 200 });
 	} catch (error) {
