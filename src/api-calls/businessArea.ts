@@ -5,18 +5,18 @@ import { BusinessAreaResponse, SearchQueryParams } from '@/types/type';
 import { queryParser } from '@/functions/queryParser';
 
 export async function getBusinessAreas(
-	searchQuery?: SearchQueryParams
+  searchQuery?: SearchQueryParams
 ): Promise<BusinessAreaResponse> {
-	const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/business-areas`;
+  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/business-areas`;
 
-	let query = !searchQuery ? baseUrl : queryParser(baseUrl, searchQuery);
+  let query = !searchQuery ? baseUrl : queryParser(baseUrl, searchQuery);
 
-	const res = await fetch(query);
+  const res = await fetch(query);
 
-	if (!res.ok) {
-		console.log(res);
-		throw new Error('Failed to get sectors from db. Reason: ' + res);
-	}
+  if (!res.ok) {
+    console.log(res);
+    throw new Error('Failed to get sectors from db. Reason: ' + res);
+  }
 
-	return res.json();
+  return res.json();
 }
