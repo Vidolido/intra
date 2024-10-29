@@ -1,30 +1,30 @@
 import {
-  Collection,
-  CollectionsOuput,
-  CollectionsOutputSchema,
-  Options,
-  OptionsState,
-  Setting,
-  SettingCollectionItem,
-  State,
+	Collection,
+	CollectionsOuput,
+	CollectionsOutputSchema,
+	Options,
+	OptionsState,
+	Setting,
+	SettingCollectionItem,
+	State,
 } from '@/types/type';
 import { RmOptions } from 'fs';
 
 export const createOptionsState = (
-  settings: Setting[] | undefined | null = []
+	settings: Setting[] | undefined | null = []
 ): OptionsState | null => {
-  if (!settings) return null;
+	if (!settings) return null;
 
-  return (
-    settings?.map((setting) => ({
-      id: setting?._id.toString(),
-      showOptions: false,
-      options: {
-        edit: false,
-        expand: false,
-      },
-    })) || null
-  );
+	return (
+		settings?.map((setting) => ({
+			id: setting?._id.toString(),
+			showOptions: false,
+			options: {
+				edit: false,
+				expand: false,
+			},
+		})) || null
+	);
 };
 
 // export const createInitialState = (
@@ -49,56 +49,55 @@ export const createOptionsState = (
 // };
 
 export function createCollectionsState(
-  collections: Collection[] | null = null
+	collections: Collection[] | null = null
 ): CollectionsOuput | {} {
-  if (!collections) return {};
+	if (!collections) return { collections: {} };
 
-  const result: CollectionsOuput = {
-    collections: {},
-  };
-  collections.forEach((collection) => {
-    if (collection?._id) {
-      const id = collection._id.toString();
+	const result: CollectionsOuput = {
+		collections: {},
+	};
+	collections.forEach((collection) => {
+		if (collection?._id) {
+			const id = collection._id.toString();
+			if (result.collections) result.collections[id] = [];
+		}
+	});
 
-      result.collections[id] = [];
-    }
-  });
-
-  return CollectionsOutputSchema.parse(result);
+	return CollectionsOutputSchema.parse(result);
 }
 export const createOptionsSchemaState = (
-  optionsSchema: Options | undefined
+	optionsSchema: Options | undefined
 ): Options => {
-  return {
-    parameter: optionsSchema?.parameter || {
-      name: {
-        singular: {},
-        plural: {},
-      },
-    },
-    collections: optionsSchema?.collections || [],
-  };
+	return {
+		parameter: optionsSchema?.parameter || {
+			name: {
+				singular: {},
+				plural: {},
+			},
+		},
+		collections: optionsSchema?.collections || [],
+	};
 };
 
 export const createServerState = (setting: Setting): State => {
-  const collections = setting?.optionsSchema?.collections || null;
-  const firstCollectionId = collections
-    ? collections[0]?._id?.toString()
-    : null;
+	const collections = setting?.optionsSchema?.collections || null;
+	const firstCollectionId = collections
+		? collections[0]?._id?.toString()
+		: null;
 
-  return {
-    insertSettingsProps: {
-      selected: firstCollectionId || null,
-      parameterName:
-        setting?.optionsSchema?.parameter?.name?.singular?.en || '',
-      collections: !collections ? [] : collections,
+	return {
+		insertSettingsProps: {
+			selected: firstCollectionId || null,
+			parameterName:
+				setting?.optionsSchema?.parameter?.name?.singular?.en || '',
+			collections: !collections ? [] : collections,
 
-      state: {
-        parameter: {},
-        collections: createCollectionsState(collections) || {},
-      },
-    },
-  };
+			state: {
+				parameter: {},
+				collections: createCollectionsState(collections) || {},
+			},
+		},
+	};
 };
 
 // // Usage
