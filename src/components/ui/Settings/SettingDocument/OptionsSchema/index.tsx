@@ -43,6 +43,7 @@ const OptionsSchema = ({ setting, languages }: OptionsSchemaProps) => {
     component: null,
     isLoading: false,
   });
+
   const [resetComponents, setResetComponents] = useState<ResetComponentsData>({
     singular: false,
     plural: false,

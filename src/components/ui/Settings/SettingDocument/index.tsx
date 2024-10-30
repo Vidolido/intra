@@ -1,12 +1,12 @@
 // components
 import HeaderForm from '@/components/ui/Settings/SettingDocument/Header';
 import OptionsSchema from '@/components/ui/Settings/SettingDocument/OptionsSchema';
+import InsertSettingsForm from './InsertSettingsForm';
 // import InsertSettingsForm from './InsertSettingsForm';
 // import DisplaySettings from './DisplaySettings';
 
 // types
 import { BusinessAreas, Language, Setting } from '@/types/type';
-import InsertSettingsForm from './InsertSettingsForm';
 interface SettingDocumentProps {
   title: string;
   businessAreas: BusinessAreas[];
@@ -25,7 +25,6 @@ const SettingDocument = ({
   const hasSettingsCollection = setting?.settings ? true : false;
 
   return (
-    // <div className='min-w-[400px] max-w-[85%]'>
     <div className='w-[85%]'>
       <h2>{title}</h2>
       <div className='flex gap-2'>
@@ -39,12 +38,7 @@ const SettingDocument = ({
             <OptionsSchema setting={setting} languages={languages} />
           )}
           {setting.optionsSchema != null && (
-            <InsertSettingsForm
-              setting={setting}
-              //   insertSettingsProps={insertSettingsProps}
-              //   initState={initState}
-              languages={languages}
-            />
+            <InsertSettingsForm setting={setting} languages={languages} />
           )}
         </div>
         {/* {setting?.settings?.length > 0 && (

@@ -9,8 +9,8 @@ import { revalidatePaths } from '@/functions/reavalidatePaths';
 import { Options } from '@/types/type';
 
 export async function saveOptionSchema(state: Options, documentId: string) {
-  console.log(state, 'the state');
-  console.log(documentId, 'the documentId');
+  // console.log(state, 'the state');
+  // console.log(documentId, 'the documentId');
   try {
     cookies();
 

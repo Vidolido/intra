@@ -1,7 +1,7 @@
 // state/actions
-import { getBusinessAreas } from '@/api-calls/businessArea';
-import { getLanguages } from '@/api-calls/languages';
-import { getSettingById } from '@/api-calls/setting';
+import { getBusinessAreas } from '@/app/api-calls/businessArea';
+import { getLanguages } from '@/app/api-calls/languages';
+import { getSettingById } from '@/app/api-calls/setting';
 
 // components
 import SettingDocument from '@/components/ui/Settings/SettingDocument';
