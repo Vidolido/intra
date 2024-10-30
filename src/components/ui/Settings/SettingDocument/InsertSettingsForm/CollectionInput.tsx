@@ -1,17 +1,22 @@
 'use client';
-import { memo, useEffect, useState } from 'react';
+import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 
 // state/actions
-// import { generateUUID } from '@/utils/generateUUID';
+import { generateID } from '@/functions/generateID';
 
 // components
-// import ContextButton from '@/components/buttons/ContextButton';
-// import NormalInput from '@/components/reusable/NormalInput';
-// import LanguageInput from '@/components/reusable/LanguageInput';
-import { generateID } from '@/functions/generateID';
 import NormalInput from '@/components/reusable/Inputs/NormalInput';
 import LanguageInput from '@/components/reusable/Inputs/LanguageInput';
 import ContextButton from '@/components/reusable/ContextButton';
+
+// types
+import {
+  ActionResponse,
+  InsertSettingsState,
+  Language,
+  Metadata,
+  Reset,
+} from '@/types/type';
 
 let types = (
   languages,
@@ -72,6 +77,19 @@ let types = (
   ),
 });
 
+interface CollectionInputProps {
+  languages: Language[];
+  inputType: 'simple' | 'translations' | 'key/value';
+  selectedCollection: string;
+  state: InsertSettingsState;
+  setState: Dispatch<SetStateAction<InsertSettingsState>>;
+  inputData: string;
+  setInputData: Dispatch<SetStateAction<null>>;
+  setActionStatus: Dispatch<SetStateAction<ActionResponse>>;
+  reset: Reset;
+  buttonLabel: string;
+}
+
 const CollectionInput = ({
   languages,
   inputType,
@@ -83,7 +101,7 @@ const CollectionInput = ({
   setActionStatus,
   reset,
   buttonLabel,
-}) => {
+}: CollectionInputProps) => {
   const handleAdd = () => {
     if (!inputData) {
       setActionStatus({
@@ -121,7 +139,7 @@ const CollectionInput = ({
     }
   };
 
-  const handleChange = (data, dataObj) => {
+  const handleChange = (data, dataObj: Metadata) => {
     let name = dataObj?.name;
     let value = data;
     if ('simple' === dataObj?.name && typeof data === 'string') {
