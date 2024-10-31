@@ -60,23 +60,12 @@ export const ParameterSchema = z.object({
 	}),
 });
 
-// export const CollectionSchema = z.object({
-//   _id: z.union([z.instanceof(Types.ObjectId), z.string()]).optional(),
-//   id: z.string().optional(),
-//   name: LanguageMapSchema,
-// });
 export const CollectionSchema = z.object({
-	_id: z.instanceof(Types.ObjectId).optional(),
+	_id: z.union([z.instanceof(Types.ObjectId), z.string()]).optional(),
 	id: z.string().optional(),
 	name: LanguageMapSchema,
 });
 export type Collection = z.infer<typeof CollectionSchema>;
-
-// type CollectionsOutput = {
-// 	collections: {
-// 	  [key: string]: SettingCollectionItem[];
-// 	};
-//   };
 
 export const OptionsSchema = z.object({
 	parameter: ParameterSchema,
@@ -85,7 +74,12 @@ export const OptionsSchema = z.object({
 
 export type Options = z.infer<typeof OptionsSchema>;
 
-export const ValueSchema = z.union([z.string(), z.number(), LanguageMapSchema]);
+const keyValue = z.object({
+	key: z.string(),
+	value: z.string(),
+});
+
+export const ValueSchema = z.union([z.string(), LanguageMapSchema, keyValue]);
 
 export const SettingCollectionItemSchema = z.object({
 	//   _id: z.instanceof(Types.ObjectId).optional(),
@@ -94,54 +88,39 @@ export const SettingCollectionItemSchema = z.object({
 	value: ValueSchema,
 });
 
-// const CollectionItemSchema = z.object({
-// 	_id: z.instanceof(Types.ObjectId), // or z.string() if you're working with ObjectId as strings
-// 	inputType: z.string(),
-// 	value: z.union([z.string(), z.number(), z.record(z.string())]),
-//   });
-
 export const SettingsCollectionSchema = z.object({
-	// _id: z.union([z.instanceof(Types.ObjectId), z.string()]).nullable(),
 	_id: z.union([z.instanceof(Types.ObjectId), z.string()]).optional(),
 	parameter: LanguageMapSchema,
 	collections: z.record(z.array(SettingCollectionItemSchema)),
 });
 
-// collections: z.record(
-//     z
-//       .array(SettingCollectionItemSchema)
-//       .length(0)
-//       .or(z.array(SettingCollectionItemSchema))
-//   ),
-
-// export const CollectionsOutputSchema = z.object({
-//   collections: z.record(z.array(SettingCollectionItemSchema)).optional(),
-// });
 export const CollectionsOutputSchema = z
 	.record(z.string(), z.array(SettingCollectionItemSchema).default([]))
 	.default({});
-// export const CollectionsOutputSchema = z.object({
-//   collections: z.record(z.array(SettingCollectionItemSchema).default([])),
-// });
-// export type CollectionsOutput = {
-//   collections: {
-//     [key: string]: {
-//       value: string | number | Record<string, string>;
-//       _id: ObjectId;
-//       inputType: string;
-//     }[];
-//   };
-// };
-// export const CollectionsOutputSchema = z.object({
-//   collections: z.record(z.array(SettingCollectionItemSchema)).optional(),
-// });
-// export const CollectionsOutputSchema = z.object({
-//   collections: z
-//     .record(z.string(), z.array(SettingCollectionItemSchema))
-//     .optional(),
-// });
 
 export type CollectionsOutput = z.infer<typeof CollectionsOutputSchema>;
+
+export const InsertSettingsStateSchema = z.object({
+	parameter: LanguageMapSchema,
+	collections: CollectionsOutputSchema,
+});
+
+export type InsertSettingsState = z.infer<typeof InsertSettingsStateSchema>;
+
+const InputTypeSchema = z.enum(['simple', 'translations', 'key/value']);
+
+export type InputType = z.infer<typeof InputTypeSchema>;
+
+// const InsertSettingDataSchema = z
+// 	.union([z.string(), LanguageMapSchema, keyValue])
+// 	.nullable();
+const InsertSettingDataSchema = z.union([
+	z.string(),
+	LanguageMapSchema,
+	keyValue,
+]);
+
+export type InsertSettingData = z.infer<typeof InsertSettingDataSchema>;
 
 export const SettingSchema = z.object({
 	documentStatus: z.enum(['draft', 'published', 'archived']).default('draft'),
@@ -178,25 +157,8 @@ export const HeaderSchema = z.object({
 });
 export type SettingHeader = z.infer<typeof HeaderSchema>;
 
-export const InsertSettingsStateSchema = z.object({
-	parameter: LanguageMapSchema,
-	collections: CollectionsOutputSchema,
-});
+// type InputType = 'simple' | 'translations' | 'key/value';
 
-export type InsertSettingsState = z.infer<typeof InsertSettingsStateSchema>;
-// type InsertSettingsState = {
-//   parameter: LanguageMap;
-//   collections: CollectionsOutput;
-// };
-// Setting
-
-// ResetComponentsData
-// const ResetComponentsDataSchema = z.object({
-//   singular: z.boolean().default(false),
-//   plural: z.boolean().default(false),
-//   collections: z.boolean().default(false),
-//   collection: z.string(),
-// });
 const ResetComponentsDataSchema = z.object({
 	singular: z.boolean().optional(),
 	plural: z.boolean().optional(),
@@ -212,43 +174,10 @@ const ZMetadataSchema = z.object({
 });
 export type Metadata = z.infer<typeof ZMetadataSchema>;
 
-// type Reset = {
-// 	resetData: ResetComponentsData,
-// 	setReset: Dispatch<SetStateAction<ResetComponentsData>>,
-// 	components: string[]
-// }
 const ZExtractDataSchema = z
 	.function()
 	.args(z.string(), ZMetadataSchema)
 	.returns(z.void());
-
-// const ZReset = z.object({
-// 	resetData: z.record(z.string(), z.boolean()),
-// 	setReset: z.function().returns(z.void()),
-// 	resetType: z.string(),
-// });
-// export type Reset = z.infer<typeof ZReset>;
-// const ResetComponentsDataSchema = z.object({
-//     singular: z.boolean().default(false),
-//     plural: z.boolean().default(false),
-//     collections: z.boolean().default(false),
-//     collection: z.string(),
-// });
-
-// Define the schema for Reset
-// const ResetSchema = z.object({
-//   resetData: ResetComponentsDataSchema,
-//   setReset: z.function().args(z.any()).returns(z.void()), // This defines a function that takes any args and returns void
-//   components: z.array(z.string()), // An array of strings for the component names
-// });
-
-// const ResetSchema = z.object({
-// 	resetData: ResetComponentsDataSchema,
-// 	setReset: z.function()
-// 	  .args(z.object({}).or(z.string())) // Accepts a function with a specific argument structure if needed
-// 	  .returns(z.void()), // Return type matches `Dispatch<SetStateAction<ResetComponentsData>>`
-// 	components: z.array(z.string()),
-//   });
 
 const ResetSchema = z.object({
 	resetData: ResetComponentsDataSchema,
@@ -256,26 +185,17 @@ const ResetSchema = z.object({
 		.function()
 		.args(
 			z.union([
-				ResetComponentsDataSchema, // Direct value
+				ResetComponentsDataSchema,
 				z
 					.function()
 					.args(ResetComponentsDataSchema)
-					.returns(ResetComponentsDataSchema), // Updater function
+					.returns(ResetComponentsDataSchema),
 			])
 		)
 		.returns(z.void()),
 	components: z.array(z.string()),
 });
 export type Reset = z.infer<typeof ResetSchema>;
-// export type Reset = {
-//   resetData: ResetComponentsData;
-//   setReset: Dispatch<SetStateAction<ResetComponentsData>>;
-//   components: string[];
-// };
-
-// Export the inferred type
-// export type Reset = z.infer<typeof ResetSchema>;
-// ResetComponentsData
 
 // Forms
 const SettingsHeaderStateSchema = z.object({

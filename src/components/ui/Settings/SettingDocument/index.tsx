@@ -42,9 +42,9 @@ const SettingDocument = ({
 							languages={languages}
 						/>
 					)}
-					{/* {setting.optionsSchema != null && (
-            <InsertSettingsForm setting={setting} languages={languages} />
-          )} */}
+					{setting.optionsSchema != null && (
+						<InsertSettingsForm setting={setting} languages={languages} />
+					)}
 				</div>
 				{/* {setting?.settings?.length > 0 && (
 					<DisplaySettings
