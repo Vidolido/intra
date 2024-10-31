@@ -11,7 +11,7 @@ import LanguageInput from '@/components/reusable/Inputs/LanguageInput';
 import SelectInput from '@/components/reusable/Inputs/SelectInput';
 import ErrorMsg from '@/components/reusable/ErrorMsg';
 import RadioButtons from './RadioButtons';
-import CollectionInput from './CollectionInput';
+// import CollectionInput from './CollectionInput';
 import DisplayCollections from './DisplayCollections';
 import ContextButton from '@/components/reusable/ContextButton';
 
@@ -27,6 +27,7 @@ import {
   ResetComponentsData,
   Setting,
 } from '@/types/type';
+import CollectionInput from './CollectionInput';
 interface InsertSettingsFormProps {
   languages: Language[];
   setting: Setting;
