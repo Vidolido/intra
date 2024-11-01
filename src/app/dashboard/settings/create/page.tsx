@@ -20,7 +20,6 @@ const page = async ({ searchParams }: PageProps) => {
   const { businessAreas } = await getBusinessAreas();
 
   const { setting: draft } = await getSettingById(_id);
-  console.log(businessAreas, 'BA');
 
   return (
     <SettingDocument

@@ -11,6 +11,7 @@ export const revalidate = 0;
 const page = async () => {
   const { businessAreas } = await getBusinessAreas();
   const { settings: drafts } = await getSettings({
+    documentStatus: 'draft',
     isDeleted: 'false',
   });
   const { settings: published } = await getSettings({
