@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 // components
-import ContextButton from '@/components/buttons/ContextButton';
-import EditCollectionItem from './EditCollectionItem';
-import { formatKeyValue } from '@/utils/settings/formatKeyValue';
+// import EditCollectionItem from './EditCollectionItem';
+// import { formatKeyValue } from '@/utils/settings/formatKeyValue';
+import ContextButton from '@/components/reusable/ContextButton';
 
 const SingleCollectionItem = ({
   languages,
