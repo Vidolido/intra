@@ -36,7 +36,7 @@ export async function saveSettingHeader(
 	state: ActionResponse,
 	formData: FormData
 ): Promise<ActionResponse> {
-	// console.log(prevState, 'prevState');
+	// console.log(state, 'state');
 	// console.log(formData, 'formDataAAAAAAAAAAAAAAAA');
 	const _id = formData.get('document_id') as string;
 
@@ -45,6 +45,7 @@ export async function saveSettingHeader(
 			success: false,
 			error: true,
 			message: 'Document ID is required',
+			isLoading: false,
 		};
 	}
 
@@ -73,6 +74,7 @@ export async function saveSettingHeader(
 			success: true,
 			error: false,
 			message: 'Save successful.',
+			isLoading: false,
 		};
 	} catch (error) {
 		shouldRedirect = false;
@@ -83,6 +85,7 @@ export async function saveSettingHeader(
 				message: `Validation error: ${error.errors
 					.map((e) => e.message)
 					.join(', ')}`,
+				isLoading: false,
 			};
 		}
 
@@ -91,6 +94,7 @@ export async function saveSettingHeader(
 				success: false,
 				error: true,
 				message: error.message,
+				isLoading: false,
 			};
 		}
 
@@ -98,6 +102,7 @@ export async function saveSettingHeader(
 			success: false,
 			error: true,
 			message: 'An unknown error occurred',
+			isLoading: false,
 		};
 	} finally {
 		if (shouldRedirect) {

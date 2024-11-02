@@ -1,101 +1,128 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+
+// state/actions
+import { typeOfValue } from '../../helpers';
 
 // components
+import ContextButton from '@/components/reusable/ContextButton';
+import EditCollectionItem from '../EditCollectionItem';
 // import EditCollectionItem from './EditCollectionItem';
 // import { formatKeyValue } from '@/utils/settings/formatKeyValue';
-import ContextButton from '@/components/reusable/ContextButton';
+import {
+	InputType,
+	InsertSettingData,
+	InsertSettingsState,
+	ItemValue,
+	Language,
+	LanguageMap,
+	SettingCollectionItem,
+	Value,
+} from '@/types/type';
+
+interface SingleCollectionItemProps {
+	languages: Language[];
+	state: InsertSettingsState;
+	setState: Dispatch<SetStateAction<InsertSettingsState>>;
+	selectedCollection: string;
+	item: SettingCollectionItem;
+}
 
 const SingleCollectionItem = ({
-  languages,
-  state,
-  setState,
-  selectedCollection,
-  item,
-}) => {
-  const [canEdit, setCanEdit] = useState({
-    edit: false,
-    id: null,
-    value: null,
-  });
+	languages,
+	state,
+	setState,
+	selectedCollection,
+	item,
+}: SingleCollectionItemProps) => {
+	const [isEditing, setIsEditing] = useState(false);
+	const [editData, setEditData] = useState<InsertSettingData | null>(null);
 
-  const handleSave = (id) => {
-    setCanEdit({
-      edit: false,
-      id: null,
-      value: null,
-    });
-  };
+	const handleSave = () => {
+		const updatedCollection = state.collections[selectedCollection].map(
+			(collectionItem) => {
+				if (collectionItem.id === item.id && collectionItem._id === item._id) {
+					return {
+						...collectionItem,
+						value: editData ? (editData as Value) : item.value,
+					};
+				}
+				return collectionItem;
+			}
+		);
 
-  const handleEdit = (id) => {
-    setCanEdit({
-      ...canEdit,
-      edit: true,
-      id,
-    });
-  };
+		setState(
+			(prev: InsertSettingsState): InsertSettingsState => ({
+				...prev,
+				collections: {
+					...prev.collections,
+					[selectedCollection]: updatedCollection,
+				},
+			})
+		);
+		setIsEditing(false);
+	};
 
-  const handleDelete = (itemId) => {
-    setState((prev) => ({
-      ...prev,
-      collections: {
-        ...prev.collections,
-        [selectedCollection]: prev.collections[selectedCollection].filter(
-          ({ id, _id }) => id !== itemId && _id !== itemId
-        ),
-      },
-    }));
-  };
+	const handleEdit = () => {
+		setIsEditing(true);
+	};
 
-  let typeOfValue = (item, language) => ({
-    simple: item?.value,
-    translations: item?.value[language],
-    'key/value': {
-      key: item?.key,
-      value: item?.value,
-    },
-  });
-  return (
-    <li className='list-disc border border-slate-50 hover:border-red-200 focus:outline-none'>
-      <div className='flex justify-between gap-2'>
-        {canEdit.id !== item.id || canEdit.id !== item?._id ? (
-          <span className='block border-l border-slate-300 px-2'>
-            {typeOfValue(item, languages[0].language)[item.inputType]}
-          </span>
-        ) : (
-          <EditCollectionItem
-            languages={languages}
-            state={state}
-            setState={setState}
-            selectedCollection={selectedCollection}
-            item={item}
-          />
-        )}
-        <div>
-          {canEdit.id !== item.id || canEdit.id !== item?._id ? (
-            <ContextButton
-              label='edit'
-              type='default'
-              onClick={() => handleEdit(item?.id || item?._id)}
-              classes='border-l border-slate-300 px-2'
-            />
-          ) : (
-            <ContextButton
-              label='save'
-              type='default'
-              classes='border-l border-slate-300 px-2'
-              onClick={() => handleSave(item?.id || item?._id)}
-            />
-          )}
-          <ContextButton
-            label='delete'
-            type='default'
-            onClick={() => handleDelete(item?.id || item?._id)}
-            classes='border-l border-slate-300 px-2'
-          />
-        </div>
-      </div>
-    </li>
-  );
+	const handleDelete = (itemId: string) => {
+		setState((prev) => ({
+			...prev,
+			collections: {
+				...prev.collections,
+				[selectedCollection]: prev.collections[selectedCollection].filter(
+					({ id, _id }) => id !== itemId && _id !== itemId
+				),
+			},
+		}));
+	};
+
+	return (
+		<li className='list-disc border border-slate-50 hover:border-red-200 focus:outline-none'>
+			<div className='flex justify-between gap-2'>
+				{!isEditing ? (
+					<span className='block border-l border-slate-300 px-2'>
+						{typeOfValue(item, languages[0].language)}
+					</span>
+				) : (
+					<EditCollectionItem
+						languages={languages}
+						// state={state}
+						// setState={setState}
+						setEditData={setEditData}
+						selectedCollection={selectedCollection}
+						item={item}
+					/>
+				)}
+				<div>
+					{!isEditing ? (
+						<ContextButton
+							label='edit'
+							type='default'
+							onClick={() => handleEdit()}
+							classes='border-l border-slate-300 px-2'
+						/>
+					) : (
+						<ContextButton
+							label='save'
+							type='default'
+							classes='border-l border-slate-300 px-2'
+							onClick={() => handleSave()}
+						/>
+					)}
+					<ContextButton
+						label='delete'
+						type='default'
+						onClick={() =>
+							handleDelete((item?.id as string) || (item?._id as string))
+						}
+						classes='border-l border-slate-300 px-2'
+					/>
+				</div>
+			</div>
+		</li>
+	);
 };
 
 export default SingleCollectionItem;
