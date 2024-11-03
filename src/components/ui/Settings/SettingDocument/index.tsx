@@ -1,13 +1,19 @@
+// state/actions/utils
+import { createOptionsSchemaState, createOptionsState } from './helpers';
+
 // components
 import HeaderForm from '@/components/ui/Settings/SettingDocument/Header';
 import OptionsSchema from '@/components/ui/Settings/SettingDocument/OptionsSchema';
 import InsertSettingsForm from './InsertSettingsForm';
-// import InsertSettingsForm from './InsertSettingsForm';
-// import DisplaySettings from './DisplaySettings';
+import DisplaySettings from './DisplaySettings';
 
 // types
-import { BusinessAreas, Language, Setting } from '@/types/type';
-import { createOptionsSchemaState } from './helpers';
+import {
+	BusinessAreas,
+	Language,
+	Setting,
+	SettingsCollection,
+} from '@/types/type';
 interface SettingDocumentProps {
 	title: string;
 	businessAreas: BusinessAreas[];
@@ -23,8 +29,10 @@ const SettingDocument = ({
 }: SettingDocumentProps) => {
 	const hasName = setting?.settingName ? true : false;
 	const hasSchema = setting?.optionsSchema ? true : false;
-	const hasSettingsCollection = setting?.settings ? true : false;
 	let optionsSchema = createOptionsSchemaState(setting.optionsSchema);
+	let settingOptions = createOptionsState(
+		setting?.settings as SettingsCollection[]
+	);
 	return (
 		<div className='w-[85%]'>
 			<h2>{title}</h2>
@@ -42,20 +50,21 @@ const SettingDocument = ({
 							languages={languages}
 						/>
 					)}
-					{setting.optionsSchema != null && (
+					{hasSchema && (
 						<InsertSettingsForm setting={setting} languages={languages} />
 					)}
 				</div>
-				{/* {setting?.settings?.length > 0 && (
+				{setting?.settings && setting?.settings?.length > 0 && (
 					<DisplaySettings
-						defaultLanguage={languages[0].language}
 						languages={languages}
-						documentId={setting._id}
-						optionsSchema={setting?.optionsSchema}
-						settings={setting?.settings}
-						optionsForSettings={optionsForSettings}
+						defaultLanguage={languages[0].language}
+						documentId={setting._id.toString()}
+						document={setting}
+						optionsSchema={optionsSchema}
+						settings={setting.settings}
+						settingOptions={settingOptions}
 					/>
-				)} */}
+				)}
 			</div>
 		</div>
 	);

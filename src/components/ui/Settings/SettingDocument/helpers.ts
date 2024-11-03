@@ -6,40 +6,22 @@ import {
 	OptionsState,
 	Setting,
 	SettingCollectionItem,
+	SettingsCollection,
 	Value,
 } from '@/types/type';
 
 export const createOptionsState = (
-	settings: Setting[] | undefined | null = []
-): OptionsState | null => {
-	if (!settings) return null;
+	settings: SettingsCollection[]
+): OptionsState => {
+	if (!settings || !Array.isArray(settings)) return [];
 
-	return (
-		settings?.map((setting) => ({
-			id: setting?._id.toString(),
-			showOptions: false,
-			options: {
-				edit: false,
-				expand: false,
-			},
-		})) || null
-	);
+	return settings.map((setting) => ({
+		_id: setting._id.toString(),
+		showOptions: false,
+		edit: false,
+		expand: false,
+	}));
 };
-
-// export const createInitialState = (
-// 	optionsSchema: Options | null | undefined
-// ): Options | null => {
-// 	if (!optionsSchema) return null;
-// 	return {
-// 		...optionsSchema,
-// 	};
-// };
-// export const createInitialState = (optionsSchema: Options): Options => {
-// 	// if (!optionsSchema) return null;
-// 	return {
-// 		...optionsSchema,
-// 	};
-// };
 
 export function createCollectionsState(
 	collections: Collection[]
@@ -60,12 +42,6 @@ export function createCollectionsState(
 		}
 	});
 
-	//   console.log(result, 'the result');
-	//   console.log(
-	//     CollectionsOutputSchema.safeParse(result.collections),
-	//     'the validation'
-	//   );
-
 	return CollectionsOutputSchema.parse(result.collections);
 }
 
@@ -82,30 +58,6 @@ export const createOptionsSchemaState = (
 		collections: optionsSchema?.collections || [],
 	};
 };
-
-// export const createServerState = (setting: Setting): State => {
-//   const collections = setting?.optionsSchema?.collections || null;
-//   const firstCollectionId = collections
-//     ? collections[0]?._id?.toString()
-//     : null;
-
-//   return {
-//     insertSettingsProps: {
-//       selected: firstCollectionId || null,
-//       parameterName:
-//         setting?.optionsSchema?.parameter?.name?.singular?.en || '',
-//       collections: !collections ? [] : collections,
-
-//       state: {
-//         parameter: {},
-//         collections: createCollectionsState(collections) || {},
-//       },
-//     },
-//   };
-// };
-
-// // Usage
-// //   export const createState = createServerState(setting);
 
 export const typeOfValue = (
 	item: SettingCollectionItem,

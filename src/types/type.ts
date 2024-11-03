@@ -95,13 +95,14 @@ export type ItemValue = z.infer<typeof ValueSchema>;
 
 export const SettingCollectionItemSchema = z.object({
 	id: z.string().optional(),
-	_id: z.union([z.instanceof(Types.ObjectId), z.string()]).optional(),
+	_id: z.union([z.instanceof(Types.ObjectId), z.string()]),
 	inputType: z.string(),
 	value: ValueSchema,
 });
 
 export const SettingsCollectionSchema = z.object({
-	_id: z.union([z.instanceof(Types.ObjectId), z.string()]).optional(),
+	_id: z.union([z.instanceof(Types.ObjectId), z.string()]),
+	// _id: z.union([z.instanceof(Types.ObjectId), z.string()]).optional(),
 	parameter: LanguageMapSchema,
 	collections: z.record(z.array(SettingCollectionItemSchema)),
 });
@@ -123,9 +124,6 @@ const InputTypeSchema = z.enum(['simple', 'translations', 'key/value']);
 
 export type InputType = z.infer<typeof InputTypeSchema>;
 
-// const InsertSettingDataSchema = z
-// 	.union([z.string(), LanguageMapSchema, keyValue])
-// 	.nullable();
 const InsertSettingDataSchema = z.union([
 	z.string(),
 	LanguageMapSchema,
@@ -405,13 +403,19 @@ export type LanguageInputData = z.infer<typeof LanguageInputDataSchema>;
 // Reusables
 
 // helper functions
+// const ZOptions = z.object({
+// 	_id: z.string(),
+// 	showOptions: z.boolean(),
+// 	options: z.object({
+// 		edit: z.boolean(),
+// 		expand: z.boolean(),
+// 	}),
+// });
 const ZOptions = z.object({
-	id: z.string(),
+	_id: z.string(),
 	showOptions: z.boolean(),
-	options: z.object({
-		edit: z.boolean(),
-		expand: z.boolean(),
-	}),
+	edit: z.boolean(),
+	expand: z.boolean(),
 });
 const ZOptionsState = z.array(ZOptions);
 export type OptionsState = z.infer<typeof ZOptionsState>;

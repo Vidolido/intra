@@ -1,37 +1,55 @@
 'use server';
 import { revalidatePath } from 'next/cache';
 
-// models/db functions
+// connection/moddels/database functions
 import Setting from '@/db/models/Setting';
-import connection from '@/db/connection';
 import { revalidatePaths } from '@/functions/reavalidatePaths';
+import connection from '@/db/connection';
 import { InsertSettingsState } from '@/types/type';
-import { Types } from 'mongoose';
 
-export async function insertSettings(
-	state: InsertSettingsState,
-	documentId: string
+// ERROR HANDLING IS MISSING
+export async function editSetting(
+	documentId: string,
+	settingId: string,
+	settingState: InsertSettingsState
 ) {
-	console.log('THIS RAN');
+	console.log(documentId, settingState, 'OVIE LI?');
 	try {
 		await connection();
 		const foundDocument = await Setting.findOne({ _id: documentId });
+
 		if (!foundDocument) {
 			return {
-				success: null,
 				error: {
 					document: 'There is no document with that id.',
 				},
 			};
 		}
 
-		let settings = foundDocument.settings || [];
-		if (state) settings.push(state);
+		let updatedDocumentSettings =
+			foundDocument.settings &&
+			foundDocument.settings.map((setting) => {
+				if (setting._id.toString() === settingId.toString()) {
+					return {
+						_id: setting._id,
+						...settingState,
+					};
+				}
+				return setting;
+			});
+
+		let upadtedSetting = updatedDocumentSettings
+			? updatedDocumentSettings.find(
+					(setting) => setting._id.toString() === settingId.toString()
+			  )
+			: null;
+
+		upadtedSetting = JSON.parse(JSON.stringify(upadtedSetting));
 
 		let updated = await Setting.updateOne(
 			{ _id: documentId },
 			{
-				$set: { settings },
+				$set: { settings: updatedDocumentSettings },
 			}
 		);
 
