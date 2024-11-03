@@ -4,31 +4,36 @@ import PublishedSettings from './PublishedSettings';
 import DisplayDraftSettings from './DisplayDraftSettings';
 
 // types
-import { BusinessAreas, Setting } from '@/types/type';
+import { BusinessAreas, ModelType, Setting } from '@/types/type';
 
 interface SettingsPageProps {
-  businessAreas: BusinessAreas[];
-  drafts: Setting[];
-  published: Setting[];
+	businessAreas: BusinessAreas[];
+	drafts: Setting[];
+	published: Setting[];
 }
 
 const SettingsPage = ({
-  businessAreas,
-  drafts,
-  published,
+	businessAreas,
+	drafts,
+	published,
 }: SettingsPageProps) => {
-  return (
-    <div className='w-full'>
-      <CreateDraft />
-      <div className='flex justify-between w-full'>
-        <PublishedSettings
-          businessAreas={businessAreas}
-          published={published}
-        />
-        <DisplayDraftSettings drafts={drafts} />
-      </div>
-    </div>
-  );
+	const draftConfig = {
+		model: 'Setting' as ModelType,
+		redirectPath: '/dashboard/settings/create',
+		buttonText: 'Add New Setting',
+	};
+	return (
+		<div className='w-full'>
+			<CreateDraft {...draftConfig} />
+			<div className='flex justify-between w-full'>
+				<PublishedSettings
+					businessAreas={businessAreas}
+					published={published}
+				/>
+				<DisplayDraftSettings drafts={drafts} />
+			</div>
+		</div>
+	);
 };
 
 export default SettingsPage;

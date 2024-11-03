@@ -2,10 +2,11 @@ import Link, { LinkProps } from 'next/link';
 import Image from 'next/image';
 
 // types
-import { LinksStateTypes } from '@/types/typesTS';
+// import { LinksStateTypes } from '@/types/typesTS';
 
 // components
 import Links from '../shared/Links';
+import { LinksStateTypes } from '@/types/type';
 
 const links: LinksStateTypes = {
 	home: {

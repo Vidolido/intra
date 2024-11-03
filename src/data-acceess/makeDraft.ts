@@ -4,23 +4,82 @@ import { revalidatePaths } from '@/functions/reavalidatePaths';
 
 // connection/moddels/database functions
 import Setting from '@/db/models/Setting';
+import LaboratoryTemplate from '@/db/models/LaboratoryTemplate';
 import connection from '@/db/connection';
 
 // types
-import { ActionResponse, SettingSchema } from '@/types/type';
+import {
+	ActionResponse,
+	LaboratoryTemplateSchema,
+	ModelType,
+	SettingSchema,
+} from '@/types/type';
 
-export async function makeDraft(draftType: string): Promise<ActionResponse> {
+// type ModelType = 'Setting' | 'LaboratoryTemplate';
+
+// // Define the structure of a model configuration
+interface ModelConfig {
+	model: typeof Setting | typeof LaboratoryTemplate; // Add other model types as needed
+	schema: z.ZodSchema;
+	revalidatePaths: string[];
+}
+
+const MODEL_CONFIG: Record<ModelType, ModelConfig> = {
+	Setting: {
+		model: Setting,
+		schema: SettingSchema,
+		revalidatePaths: [
+			'/dashboard/settings/draft/[_id]',
+			'/dashboard/settings/edit/[_id]',
+			'/dashboard/settings/create',
+			'/dashboard/settings',
+		],
+	},
+	LaboratoryTemplate: {
+		model: LaboratoryTemplate,
+		schema: LaboratoryTemplateSchema,
+		revalidatePaths: [
+			'/dashboard/laboratory-templates/draft/[_id]',
+			'/dashboard/laboratory-templates/edit/[_id]',
+			'/dashboard/laboratory-templates/create',
+			'/dashboard/laboratory-templates',
+		],
+	},
+};
+
+export async function makeDraft(
+	modelType: ModelType,
+	additionalData?: Record<string, any>
+): Promise<ActionResponse> {
 	try {
 		await connection();
-		const draft = await Setting.create({
+		// const draft = await Setting.create({
+		// 	documentStatus: 'draft',
+		// 	isDeleted: false,
+		// });
+		const config = MODEL_CONFIG[modelType];
+		if (!config) {
+			throw new Error(`Invalid model type: ${modelType}`);
+		}
+
+		const { model, schema, revalidatePaths: paths } = config;
+
+		const draftData = {
 			documentStatus: 'draft',
 			isDeleted: false,
-		});
+			...additionalData,
+		};
+		const draft = await (
+			model as typeof Setting & typeof LaboratoryTemplate
+		).create(draftData);
 
 		let validatedDraft;
 		try {
-			validatedDraft = SettingSchema.parse(draft);
+			// validatedDraft = SettingSchema.parse(draft);
+			validatedDraft = schema.parse(draft);
+			console.log(validatedDraft, 'the validation');
 		} catch (validationError) {
+			console.log(validationError, 'the error');
 			if (validationError instanceof z.ZodError) {
 				return {
 					data: null,
@@ -34,12 +93,7 @@ export async function makeDraft(draftType: string): Promise<ActionResponse> {
 			throw validationError;
 		}
 
-		revalidatePaths([
-			'/dashboard/settings/draft/[_id]',
-			'/dashboard/settings/edit/[_id]',
-			'/dashboard/settings/create',
-			'/dashboard/settings',
-		]);
+		revalidatePaths(paths);
 
 		return {
 			data: {

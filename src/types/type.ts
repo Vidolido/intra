@@ -8,6 +8,29 @@ export type LayoutType = {
 	children: ReactNodes;
 };
 
+//--navigation
+export type LinkItem = {
+	label: LanguageMap;
+	path: string;
+};
+
+export type LinkContents = LinkItem & {
+	additionalLinks?: LinkItem[] | null;
+};
+
+export type LinksStateTypes = {
+	[key: string]: LinkContents;
+};
+
+export type LinksProps = {
+	link: LinkItem;
+	location: string;
+};
+export type LinksType = {
+	links: LinkItem | LinkItem[];
+};
+//--navigation
+
 export const isDeleted = z
 	.preprocess((val) => val === 'true', z.boolean())
 	.default(false);
@@ -174,6 +197,85 @@ const BusinessAreaGroupShema = z.object({
 
 export type BusinessAreaGroup = z.infer<typeof BusinessAreaGroupShema>;
 
+// LaboratoryTemplates
+
+// Grouped Schema
+export const GroupedSchema = z.object({
+	isGrouped: z.boolean().default(false),
+	group: z.object({
+		_id: z.instanceof(Types.ObjectId),
+		name: LanguageMapSchema,
+	}),
+});
+
+export type Grouped = z.infer<typeof GroupedSchema>;
+
+// // Parameter Schema
+// export const ParameterSchema = z.object({
+// 	name: LanguageMapSchema,
+// 	_id: z.instanceof(Types.ObjectId),
+// });
+
+// export type Parameter = z.infer<typeof ParameterSchema>;
+
+// Collection Item Schema
+export const TemplateCollectionItemSchema = z.object({
+	value: z.string(),
+	_id: z.instanceof(Types.ObjectId),
+});
+
+export type CollectionItem = z.infer<typeof TemplateCollectionItemSchema>;
+
+// Template Schema
+export const TemplateSchema = z.object({
+	parameter: ParameterSchema,
+	collections: z.record(z.array(TemplateCollectionItemSchema)).optional(),
+	result: z.string().default('0'),
+	marginError: z.string().nullable().default(null),
+	grouped: GroupedSchema.optional(),
+	isDeleted: isDeleted,
+	_id: z.instanceof(Types.ObjectId),
+});
+
+export type Template = z.infer<typeof TemplateSchema>;
+
+// Laboratory Templates Schema
+export const LaboratoryTemplatesHeaderSchema = z.object({
+	product: z.string(),
+	sampleType: z.string(),
+	origin: z.string(),
+	documentType: z.string(),
+});
+
+export type LaboratoryTemplatesHeader = z.infer<
+	typeof LaboratoryTemplatesHeaderSchema
+>;
+
+// export const SchemaNamesSchema = z.object({
+// 	parameter: z.any(),
+// 	collections: z.any(),
+// });
+
+// export type SchemaNames = z.infer<typeof SchemaNamesSchema>;
+
+export const LaboratoryTemplateSchema = z.object({
+	_id: z.instanceof(Types.ObjectId),
+	header: LaboratoryTemplatesHeaderSchema.optional(),
+	schemaNames: OptionsSchema.optional(),
+	template: z.array(TemplateSchema).optional(),
+	documentStatus: z.string().default('draft'),
+	isDeleted: isDeleted,
+});
+
+export type LaboratoryTemplate = z.infer<typeof LaboratoryTemplateSchema>;
+export interface LaboratoryTemplateDocument
+	extends LaboratoryTemplate,
+		Document {}
+export type LaboratoryTemplateModel = Model<LaboratoryTemplateDocument>;
+export type TemplateResponse = Record<string, LaboratoryTemplate[]>;
+
+// LaboratoryTemplates
+
 // interface BusinessAreaGroup {
 // 	name: string;
 // 	documents: Setting[];
@@ -231,6 +333,19 @@ export type SettingsHeaderFormState = {
 // Forms
 
 //makeDraft
+export type ModelType = 'Setting' | 'LaboratoryTemplate';
+// export interface ModelConfig {
+// 	model: typeof Setting | typeof LaboratoryTemplate; // Add other model types as needed
+// 	schema: z.ZodSchema;
+// 	revalidatePaths: string[];
+// }
+export interface CreateDraftProps {
+	model: ModelType;
+	redirectPath: string;
+	buttonText: string;
+	additionalData?: Record<string, any>;
+}
+
 const dataSchema = z.record(
 	z.string(),
 	z.union([

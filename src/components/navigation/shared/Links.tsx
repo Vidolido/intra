@@ -2,25 +2,19 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+// components
+import SubRoutes from './SubRoutes';
 // types
-import {
-	LanguageLabels,
-	LinkContents,
-	LinkItem,
-	LinksProps,
-} from '@/types/typesTS';
+import { LanguageMap, LinkContents, LinksProps } from '@/types/type';
 type Classes = {
 	[key: string]: string;
 };
-
-// components
-import SubRoutes from './SubRoutes';
 
 const Links = ({ link, location }: LinksProps) => {
 	const pathname: string = usePathname();
 	const { path, label, additionalLinks = null }: LinkContents = link;
 
-	const getLabel = (label: LanguageLabels) => {
+	const getLabel = (label: LanguageMap) => {
 		if (typeof label === 'string') {
 			return label;
 		}
