@@ -23,19 +23,25 @@ const page = async () => {
     documentStatus: 'draft',
     sorted: true,
   });
-  const { settings: templateSettings } = await getSettings({
+  const { settings } = await getSettings({
     documentStatus: 'published',
     isDeleted: false,
+    settingName: 'Products',
   });
 
-  const { products, countries, types, laboratoryTemplates } =
-    await mutateTemplateSettings(templateSettings);
-
   // Make Instructions if these options are not available
-  console.log(products, countries, types, laboratoryTemplates, 'OVIE SE ');
+  const { products, countries, types, laboratoryTemplates } =
+    mutateTemplateSettings(settings);
+
+  // console.log(products, countries, types, laboratoryTemplates, 'OVIE SE ');
+  // console.log(products, 'products');
+  // const data = {
+  //   products: settings.find((setting) => setting.settingName === 'Products'),
+  // };
 
   return (
-    <Templates
+    <>
+      {/* <Templates
       published={published}
       drafts={draftTemplates}
       data={{
@@ -44,7 +50,8 @@ const page = async () => {
         countries,
         schemaNames: laboratoryTemplates?.optionsSchema,
       }}
-    />
+      /> */}
+    </>
   );
 };
 

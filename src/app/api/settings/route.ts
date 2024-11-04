@@ -12,21 +12,24 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const isDeleted = searchParams.get('isDeleted') === 'false' ? false : true;
 
-  const payload = Array.from(searchParams.entries()).reduce(
-    (acc: SearchParamsPayload, [key, value]) => {
-      acc[key] = key === 'isDeleted' ? isDeleted : value;
-      return acc;
-    },
-    {}
-  );
+  const settingNames = searchParams.getAll('settingName');
+  const documentStatus = searchParams.get('documentStatus') || undefined;
 
+  const payload: SearchParamsPayload = {
+    isDeleted,
+    ...(documentStatus && { documentStatus }),
+  };
+
+  if (settingNames.length > 0) {
+    payload.settingName = {
+      $in: settingNames,
+    };
+  }
   try {
     await connection();
-    let settings = await Setting.find({ ...payload })
-      .populate('businessArea')
-      .sort({
-        $natural: -1,
-      });
+    let settings = await Setting.find(payload).populate('businessArea').sort({
+      $natural: -1,
+    });
     revalidatePaths([
       '/dashboard/settings',
       '/dashboard/laboratory/templates',
@@ -35,7 +38,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ settings }, { status: 200 });
   } catch (error) {
-    // return NextResponse.json({ error, success: null }, { status: 500 });
     return NextResponse.json({ error }, { status: 500 });
   }
 }

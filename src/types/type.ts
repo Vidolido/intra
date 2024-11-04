@@ -35,13 +35,21 @@ export const isDeleted = z
   .preprocess((val) => val === 'true', z.boolean())
   .default(false);
 
-export const SeachQueryParamsSchema = z.record(
-  z.string(),
-  z.union([z.string(), z.boolean(), z.array(z.string())])
-);
+// export const SeachQueryParamsSchema = z.record(
+//   z.string(),
+//   z.union([z.string(), z.boolean(), z.array(z.string())]),
+// );
+export const SearchQueryParamsSchema = z
+  .object({
+    documentStatus: z.string().optional(),
+    // isDeleted: z.string().optional(),
+    isDeleted: z.boolean().optional(),
+    settingName: z.union([z.string(), z.array(z.string())]).optional(),
+  })
+  .catchall(z.union([z.string(), z.boolean(), z.array(z.string())]));
 
 //queryParser
-export type SearchQueryParams = z.infer<typeof SeachQueryParamsSchema>;
+export type SearchQueryParams = z.infer<typeof SearchQueryParamsSchema>;
 export const BaseUrlSchema = z.string().url().startsWith('http');
 export type BaseUrl = z.infer<typeof BaseUrlSchema>;
 //queryParser
@@ -509,5 +517,13 @@ export type ContextButtonProps = {
   formMethod?: string;
 };
 
-export const SearchParamData = z.record(z.union([z.string(), z.boolean()]));
-export type SearchParamsPayload = z.infer<typeof SearchParamData>;
+// export const SearchParamData = z.record(z.union([z.string(), z.boolean()]));
+// export type SearchParamsPayload = z.infer<typeof SearchParamData>;
+export interface SearchParamsPayload {
+  documentStatus?: string;
+  isDeleted: boolean;
+  settingName?: {
+    $in: string[];
+  };
+  [key: string]: any;
+}
