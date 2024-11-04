@@ -1,12 +1,11 @@
 'use server';
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePaths } from '@/functions/reavalidatePaths';
 
 // connection/models/db functions
 import connection from '@/db/connection';
 import Setting from '@/db/models/Setting';
 import BusinessArea from '@/db/models/BusinessArea';
-import { revalidatePaths } from '@/functions/reavalidatePaths';
 import { SearchParamsPayload } from '@/types/type';
 
 export async function GET(request: NextRequest) {
@@ -28,7 +27,11 @@ export async function GET(request: NextRequest) {
       .sort({
         $natural: -1,
       });
-    revalidatePaths(['/dashboard/settings', '/dashboard/laboratory/documents']);
+    revalidatePaths([
+      '/dashboard/settings',
+      '/dashboard/laboratory/templates',
+      '/dashboard/laboratory/documents',
+    ]);
 
     return NextResponse.json({ settings }, { status: 200 });
   } catch (error) {
