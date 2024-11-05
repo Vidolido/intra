@@ -10,13 +10,10 @@ export async function getSettings(
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/settings`;
 
   if (searchQuery?.settingName) {
-    if (Array.isArray(searchQuery.settingName)) {
-      searchQuery.settingName = searchQuery.settingName;
-    } else {
-      searchQuery.settingName = [searchQuery.settingName];
-    }
+    searchQuery.settingName = Array.isArray(searchQuery.settingName)
+      ? searchQuery.settingName
+      : [searchQuery.settingName];
   }
-
   let query = !searchQuery ? baseUrl : queryParser(baseUrl, searchQuery);
 
   const res = await fetch(query);
@@ -25,7 +22,6 @@ export async function getSettings(
     console.log(res);
     throw new Error('Failed to get settings from db. Reason: ' + res);
   }
-
   return res.json();
 }
 

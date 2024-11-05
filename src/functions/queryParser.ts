@@ -26,6 +26,8 @@ export function queryParser(
           filteredParams[key] = value.map((item) => item.toString());
         } else if (typeof value === 'boolean') {
           filteredParams[key] = value;
+        } else if (value === 'true' || value === 'false') {
+          filteredParams[key] = value === 'true';
         } else if (value !== '') {
           filteredParams[key] = value.toString();
         }

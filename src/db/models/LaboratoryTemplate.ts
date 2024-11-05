@@ -124,9 +124,9 @@ const laboratoryTemplatesSchema = new Schema<
   {
     header: {
       product: String,
-      sampleType: String,
-      origin: String,
-      documentType: String,
+      // sampleType: String,
+      // origin: String,
+      // documentType: String,
       templateName: {
         type: String,
         default: '',
@@ -167,9 +167,9 @@ const laboratoryTemplatesSchema = new Schema<
 );
 
 laboratoryTemplatesSchema.index({ 'header.product': 1 });
-laboratoryTemplatesSchema.index({ 'header.sampleType': 1 });
-laboratoryTemplatesSchema.index({ 'header.origin': 1 });
-laboratoryTemplatesSchema.index({ 'header.documentType': 1 });
+// laboratoryTemplatesSchema.index({ 'header.sampleType': 1 });
+// laboratoryTemplatesSchema.index({ 'header.origin': 1 });
+// laboratoryTemplatesSchema.index({ 'header.documentType': 1 });
 laboratoryTemplatesSchema.index({ 'header.templateName': 1 });
 laboratoryTemplatesSchema.index({ documentStatus: 1 });
 laboratoryTemplatesSchema.index({ isDeleted: 1 });

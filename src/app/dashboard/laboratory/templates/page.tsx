@@ -1,10 +1,12 @@
 // state/actions
 import { getSettings } from '@/app/api-calls/setting';
 import { getLaboratoryTemplates } from '@/app/api-calls/templates';
-import { mutateTemplateSettings } from '@/functions/mutateTemplateSettings';
 
 // components
-import Templates from '@/components/ui/Templates/TemplatesPage';
+import TemplatesPage from '@/components/ui/Templates/TemplatesPage';
+
+// types
+import { DynamicTemplateSettings } from '@/types/type';
 
 export const metadata = {
   title: 'Templates',
@@ -23,35 +25,29 @@ const page = async () => {
     documentStatus: 'draft',
     sorted: true,
   });
-  const { settings } = await getSettings({
-    documentStatus: 'published',
-    isDeleted: false,
-    settingName: 'Products',
-  });
 
-  // Make Instructions if these options are not available
   const { products, countries, types, laboratoryTemplates } =
-    mutateTemplateSettings(settings);
+    (await getSettings({
+      documentStatus: 'published',
+      isDeleted: false,
+      settingName: ['Products', 'Countries', 'Types', 'Laboratory Templates'],
+    })) as DynamicTemplateSettings;
 
-  // console.log(products, countries, types, laboratoryTemplates, 'OVIE SE ');
-  // console.log(products, 'products');
-  // const data = {
-  //   products: settings.find((setting) => setting.settingName === 'Products'),
-  // };
+  const schema = laboratoryTemplates?.optionsSchema
+    ? laboratoryTemplates?.optionsSchema
+    : { parameter: { name: { singular: {}, plural: {} } }, collections: [] };
 
   return (
-    <>
-      {/* <Templates
+    <TemplatesPage
       published={published}
       drafts={draftTemplates}
       data={{
         products,
         types,
         countries,
-        schemaNames: laboratoryTemplates?.optionsSchema,
+        schemaNames: schema,
       }}
-      /> */}
-    </>
+    />
   );
 };
 

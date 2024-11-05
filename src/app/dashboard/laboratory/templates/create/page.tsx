@@ -4,13 +4,17 @@ import { getTemplateById } from '@/app/api-calls/templates';
 import { mutateTemplateSettings } from '@/functions/mutateTemplateSettings';
 
 // components
-// import Template from '@/components/Templates/Template';
+import TemplateDocument from '@/components/ui/Templates/TemplateDocument';
 
 //types
-import { Setting } from '@/types/type';
+import { DynamicTemplateSettings, Setting } from '@/types/type';
 interface PageProps {
   searchParams: { [key: string]: string };
 }
+
+type Test = {
+  [key: string]: Setting;
+};
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -18,32 +22,29 @@ export const revalidate = 0;
 const page = async ({ searchParams }: PageProps) => {
   const { _id } = searchParams;
   const { languages } = await getLanguages();
+  const { template } = await getTemplateById(_id);
   // const { template } = await getTemplateById(_id);
 
-  const { settings } = await getSettings({
+  const settings = (await getSettings({
     documentStatus: 'published',
     isDeleted: false,
-    settingName: ['Products'],
-  });
+    settingName: [
+      'Products',
+      'Grouped Parameters',
+      'Types',
+      'Laboratory Templates',
+    ],
+  })) as DynamicTemplateSettings;
 
-  // const { products, countries, types, laboratoryTemplates } =
-  //   mutateTemplateSettings(settings);
+  let defaultLanguage = languages[0].language;
 
-  // Make Instructions if these options are not available
-  // console.log(products, countries, types, laboratoryTemplates, 'OVIE SE ');
-  console.log(settings, 'the settings');
   return (
-    <>
-      Template
-      {/* <Template
+    <TemplateDocument
       title='Edit Draft Template'
-      languages={languages}
-      setting={setting}
+      defaultLanguage={defaultLanguage}
+      settings={settings}
       template={template}
-      groups={groups}
-      templateSettings={templateSettings}
-      /> */}
-    </>
+    />
   );
 };
 

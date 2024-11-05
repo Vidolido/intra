@@ -183,7 +183,8 @@ export type SettingCollectionItem = z.infer<typeof SettingCollectionItemSchema>;
 export type SettingsCollection = z.infer<typeof SettingsCollectionSchema>;
 
 export type Setting = z.infer<typeof SettingSchema>;
-export type SettingsResponse = Record<string, Setting[]>;
+export type SettingsArray = Setting[];
+// export type SettingsResponse = Record<string, Setting>;
 export interface SettingsDocument extends Setting, Document {}
 export type SettingsModel = Model<SettingsDocument>;
 
@@ -237,9 +238,9 @@ export type Template = z.infer<typeof TemplateSchema>;
 // Laboratory Templates Schema
 export const LaboratoryTemplatesHeaderSchema = z.object({
   product: z.string().optional(),
-  sampleType: z.string().optional(),
-  origin: z.string().optional(),
-  documentType: z.string().optional(),
+  // sampleType: z.string().optional(),
+  // origin: z.string().optional(),
+  // documentType: z.string().optional(),
   templateName: z.string().optional(),
 });
 
@@ -517,8 +518,7 @@ export type ContextButtonProps = {
   formMethod?: string;
 };
 
-// export const SearchParamData = z.record(z.union([z.string(), z.boolean()]));
-// export type SearchParamsPayload = z.infer<typeof SearchParamData>;
+export const SearchParamData = z.record(z.union([z.string(), z.boolean()]));
 export interface SearchParamsPayload {
   documentStatus?: string;
   isDeleted: boolean;
@@ -527,3 +527,20 @@ export interface SearchParamsPayload {
   };
   [key: string]: any;
 }
+
+export const SettingQuerySchema = z.object({
+  documentStatus: z.enum(['draft', 'published']).optional(),
+  isDeleted: z.boolean().default(false),
+  settingName: z.union([z.string(), z.array(z.string())]).optional(),
+});
+
+export type SettingQuery = z.infer<typeof SettingQuerySchema>;
+export type DynamicTemplateSettings = {
+  [key: string]: Setting;
+};
+
+export type SettingsArrayResponse = {
+  settings: Setting[];
+};
+
+export type SettingsResponse = SettingsArrayResponse | DynamicTemplateSettings;

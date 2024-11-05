@@ -1,10 +1,10 @@
 // components
 import CreateDraft from '@/components/reusable/CreateDraft';
 import PublishedTemplates from './PublishedTemplates';
+import DraftTemplates from './DraftTemplates';
 
 // types
 import { LaboratoryTemplate, ModelType, Options, Setting } from '@/types/type';
-import DraftTemplates from './DraftTemplates';
 
 interface TempaltesProps {
   published: LaboratoryTemplate[];
@@ -17,7 +17,7 @@ interface TempaltesProps {
   };
 }
 
-const Templates = ({ published, drafts, data }: TempaltesProps) => {
+const TemplatesPage = ({ published, drafts, data }: TempaltesProps) => {
   const draftConfig = {
     model: 'LaboratoryTemplate' as ModelType,
     redirectPath: '/dashboard/laboratory/templates/create',
@@ -37,4 +37,4 @@ const Templates = ({ published, drafts, data }: TempaltesProps) => {
   );
 };
 
-export default Templates;
+export default TemplatesPage;
