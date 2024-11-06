@@ -1,0 +1,588 @@
+[{
+  "_id": {
+    "$oid": "6728a71520f117ad62688bcd"
+  },
+  "documentStatus": "published",
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2024-11-04T10:51:01.703Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-04T11:07:19.996Z"
+  },
+  "__v": 0,
+  "businessArea": {
+    "$oid": "66ddfe0285beab162d47257c"
+  },
+  "settingName": "Products",
+  "optionsSchema": {
+    "parameter": {
+      "name": {
+        "singular": {
+          "en": "Product",
+          "mk": "Продукт",
+          "gr": ""
+        },
+        "plural": {
+          "en": "Products",
+          "mk": "Продукти",
+          "gr": ""
+        }
+      }
+    },
+    "collections": [
+      {
+        "name": {
+          "en": "Aliases",
+          "mk": "Псевдоними",
+          "gr": ""
+        },
+        "_id": {
+          "$oid": "6728a76d20f117ad62688be4"
+        }
+      },
+      {
+        "name": {
+          "en": "Colos",
+          "mk": "Бои",
+          "gr": ""
+        },
+        "_id": {
+          "$oid": "6728a76d20f117ad62688be5"
+        }
+      },
+      {
+        "name": {
+          "en": "Notes",
+          "mk": "Забелешки",
+          "gr": ""
+        },
+        "_id": {
+          "$oid": "6728a76d20f117ad62688be6"
+        }
+      }
+    ]
+  },
+  "settings": [
+    {
+      "parameter": {
+        "en": "UNL-95",
+        "mk": "БМБ-95",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [
+          {
+            "inputType": "translations",
+            "value": {
+              "en": "EUROSUPER BS - 95",
+              "mk": "ЕУРОСУПЕР БС - 95",
+              "gr": ""
+            },
+            "_id": {
+              "$oid": "6728a80820f117ad62688bf4"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary",
+              "value": "#daeef3"
+            },
+            "_id": {
+              "$oid": "6728a80820f117ad62688bf5"
+            }
+          },
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "secondary",
+              "value": "#95b3d7"
+            },
+            "_id": {
+              "$oid": "6728a80820f117ad62688bf6"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728a80820f117ad62688bf3"
+      }
+    },
+    {
+      "parameter": {
+        "en": "UNL-98",
+        "mk": "БМБ-98",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [
+          {
+            "inputType": "translations",
+            "value": {
+              "en": "EUROSUPER BS - 98",
+              "mk": "ЕУРОСУПЕР - 98",
+              "gr": ""
+            },
+            "_id": {
+              "$oid": "6728a89120f117ad62688c0b"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary ",
+              "value": "#ebf1de"
+            },
+            "_id": {
+              "$oid": "6728a89120f117ad62688c0c"
+            }
+          },
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "secondary",
+              "value": "#c4d79b"
+            },
+            "_id": {
+              "$oid": "6728a89120f117ad62688c0d"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728a89120f117ad62688c0a"
+      }
+    },
+    {
+      "parameter": {
+        "en": "UNL-100",
+        "mk": "БМБ-100",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [
+          {
+            "inputType": "translations",
+            "value": {
+              "en": "EUROSUPER BS - 100",
+              "mk": "ЕУРОСУПЕР БС - 100",
+              "gr": ""
+            },
+            "_id": {
+              "$oid": "6728a92020f117ad62688c32"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary",
+              "value": "--"
+            },
+            "_id": {
+              "$oid": "6728a92020f117ad62688c33"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728a92020f117ad62688c31"
+      }
+    },
+    {
+      "parameter": {
+        "en": "Jet A-1",
+        "mk": "ГМ-1",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [
+          {
+            "inputType": "translations",
+            "value": {
+              "en": "JET FUEL",
+              "mk": "Гориво за Млазни Мотори",
+              "gr": ""
+            },
+            "_id": {
+              "$oid": "6728a98020f117ad62688c61"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary",
+              "value": "#efefef"
+            },
+            "_id": {
+              "$oid": "6728a98020f117ad62688c62"
+            }
+          },
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "secondary",
+              "value": "#efefef"
+            },
+            "_id": {
+              "$oid": "6728a98020f117ad62688c63"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728a98020f117ad62688c60"
+      }
+    },
+    {
+      "parameter": {
+        "en": "ULSD",
+        "mk": "Дизел",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [
+          {
+            "inputType": "translations",
+            "value": {
+              "en": "EURODIESEL BS",
+              "mk": "ЕУРОДИЗЕЛ БС",
+              "gr": ""
+            },
+            "_id": {
+              "$oid": "6728a9cd20f117ad62688c9d"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary",
+              "value": "#ffffcc"
+            },
+            "_id": {
+              "$oid": "6728a9cd20f117ad62688c9e"
+            }
+          },
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "secondary",
+              "value": "#ffff00"
+            },
+            "_id": {
+              "$oid": "6728a9cd20f117ad62688c9f"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728a9cd20f117ad62688c9c"
+      }
+    },
+    {
+      "parameter": {
+        "en": "H.G.O.",
+        "mk": "Екстра Лесно",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [
+          {
+            "inputType": "translations",
+            "value": {
+              "en": "Heating Oil",
+              "mk": "Масло за горење",
+              "gr": ""
+            },
+            "_id": {
+              "$oid": "6728aa1a20f117ad62688ce5"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary",
+              "value": "#f2dcdb"
+            },
+            "_id": {
+              "$oid": "6728aa1a20f117ad62688ce6"
+            }
+          },
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "secondary",
+              "value": "#da9694"
+            },
+            "_id": {
+              "$oid": "6728aa1a20f117ad62688ce7"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728aa1a20f117ad62688ce4"
+      }
+    },
+    {
+      "parameter": {
+        "en": "Fuel Oil",
+        "mk": "Мазут",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [
+          {
+            "inputType": "translations",
+            "value": {
+              "en": "Fuel Oil",
+              "mk": "Масло за горење",
+              "gr": ""
+            },
+            "_id": {
+              "$oid": "6728aa5a20f117ad62688d39"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary",
+              "value": "#d9d9d9"
+            },
+            "_id": {
+              "$oid": "6728aa5a20f117ad62688d3a"
+            }
+          },
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "secondary",
+              "value": "#a6a6a6"
+            },
+            "_id": {
+              "$oid": "6728aa5a20f117ad62688d3b"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728aa5a20f117ad62688d38"
+      }
+    },
+    {
+      "parameter": {
+        "en": "L.P.G.",
+        "mk": "Т.Н.Г.",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [
+          {
+            "inputType": "translations",
+            "value": {
+              "en": "Liquefied petroleum gas",
+              "mk": "Втечнет нафтен гас",
+              "gr": ""
+            },
+            "_id": {
+              "$oid": "6728aaa720f117ad62688d99"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary",
+              "value": "#e4dfec"
+            },
+            "_id": {
+              "$oid": "6728aaa720f117ad62688d9a"
+            }
+          },
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "secondary",
+              "value": "#ccc0da"
+            },
+            "_id": {
+              "$oid": "6728aaa720f117ad62688d9b"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728aaa720f117ad62688d98"
+      }
+    },
+    {
+      "parameter": {
+        "en": "Water",
+        "mk": "Вода",
+        "gr": ""
+      },
+      "collections": {
+        "6728a76d20f117ad62688be4": [],
+        "6728a76d20f117ad62688be5": [
+          {
+            "inputType": "key/value",
+            "value": {
+              "key": "primary",
+              "value": "transparent"
+            },
+            "_id": {
+              "$oid": "6728aad220f117ad62688e05"
+            }
+          }
+        ],
+        "6728a76d20f117ad62688be6": []
+      },
+      "_id": {
+        "$oid": "6728aad220f117ad62688e04"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "672b2a8b16294caeb22d20dc"
+  },
+  "documentStatus": "published",
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2024-11-06T08:36:27.991Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-06T08:47:41.512Z"
+  },
+  "__v": 0,
+  "businessArea": {
+    "$oid": "66dad89fcde9a728bc1b939d"
+  },
+  "settingName": "Laboratory Templates",
+  "optionsSchema": {
+    "parameter": {
+      "name": {
+        "singular": {
+          "en": "Propery",
+          "mk": "Својство",
+          "gr": ""
+        },
+        "plural": {
+          "en": "Properties",
+          "mk": "Својства",
+          "gr": ""
+        }
+      }
+    },
+    "collections": [
+      {
+        "name": {
+          "en": "Methods",
+          "mk": "Методи",
+          "gr": ""
+        },
+        "_id": {
+          "$oid": "672b2bdc16294caeb22d2117"
+        }
+      },
+      {
+        "name": {
+          "en": "Units",
+          "mk": "Единици",
+          "gr": ""
+        },
+        "_id": {
+          "$oid": "672b2bdc16294caeb22d2118"
+        }
+      },
+      {
+        "name": {
+          "en": "Limits",
+          "mk": "Ограничувања",
+          "gr": ""
+        },
+        "_id": {
+          "$oid": "672b2bdc16294caeb22d2119"
+        }
+      }
+    ]
+  },
+  "settings": [
+    {
+      "parameter": {
+        "en": "1,3-Butadiene",
+        "mk": "1,3-Бутадиен",
+        "gr": ""
+      },
+      "collections": {
+        "672b2bdc16294caeb22d2117": [
+          {
+            "inputType": "simple",
+            "value": "ASTM D3606",
+            "_id": {
+              "$oid": "672b2c2f16294caeb22d2127"
+            }
+          },
+          {
+            "inputType": "simple",
+            "value": "ASTM D5833",
+            "_id": {
+              "$oid": "672b2c2f16294caeb22d2128"
+            }
+          },
+          {
+            "inputType": "simple",
+            "value": "ЕN 27941",
+            "_id": {
+              "$oid": "672b2c2f16294caeb22d2129"
+            }
+          },
+          {
+            "inputType": "simple",
+            "value": "IP 406",
+            "_id": {
+              "$oid": "672b2c2f16294caeb22d212a"
+            }
+          }
+        ],
+        "672b2bdc16294caeb22d2118": [
+          {
+            "inputType": "simple",
+            "value": "mol%",
+            "_id": {
+              "$oid": "672b2c2f16294caeb22d212b"
+            }
+          }
+        ],
+        "672b2bdc16294caeb22d2119": []
+      },
+      "_id": {
+        "$oid": "672b2c2f16294caeb22d2126"
+      }
+    }
+  ]
+}]
