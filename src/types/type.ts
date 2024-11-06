@@ -55,7 +55,11 @@ export type BaseUrl = z.infer<typeof BaseUrlSchema>;
 //queryParser
 
 // Languages
-export const LanguageMapSchema = z.record(z.string());
+// export const LanguageMapSchema = z.record(z.string());
+export const LanguageMapSchema = z.union([
+  z.record(z.string()),
+  z.custom<Map<string, string>>((data) => data instanceof Map),
+]);
 export const LanguageSchema = z.object({
   _id: z.instanceof(Types.ObjectId),
   language: z.string(),
@@ -85,6 +89,7 @@ export type BusinessModel = Model<BusinessAreasDocument>;
 // BusinessAreas
 
 // Settings
+
 export const ParameterSchema = z.object({
   name: z.object({
     singular: LanguageMapSchema,
@@ -94,7 +99,7 @@ export const ParameterSchema = z.object({
 
 export const CollectionSchema = z.object({
   _id: z.union([z.instanceof(Types.ObjectId), z.string()]).optional(),
-  id: z.string().optional(),
+  // id: z.string().optional(),
   name: LanguageMapSchema,
 });
 export type Collection = z.infer<typeof CollectionSchema>;
@@ -188,12 +193,12 @@ export type SettingsArray = Setting[];
 export interface SettingsDocument extends Setting, Document {}
 export type SettingsModel = Model<SettingsDocument>;
 
-export const HeaderSchema = z.object({
+export const SettingHeaderSchema = z.object({
   businessArea: z.string(),
   settingName: z.string(),
   documentStatus: z.string().default('draft'),
 });
-export type SettingHeader = z.infer<typeof HeaderSchema>;
+export type SettingHeader = z.infer<typeof SettingHeaderSchema>;
 
 const BusinessAreaGroupShema = z.object({
   name: z.string(),
@@ -238,9 +243,9 @@ export type Template = z.infer<typeof TemplateSchema>;
 // Laboratory Templates Schema
 export const LaboratoryTemplatesHeaderSchema = z.object({
   product: z.string().optional(),
-  // sampleType: z.string().optional(),
-  // origin: z.string().optional(),
-  // documentType: z.string().optional(),
+  sampleType: z.string().optional(),
+  origin: z.string().optional(),
+  documentType: z.string().optional(),
   templateName: z.string().optional(),
 });
 
@@ -248,8 +253,20 @@ export type LaboratoryTemplatesHeader = z.infer<
   typeof LaboratoryTemplatesHeaderSchema
 >;
 
+// export const NamesSchema = z.object({
+//   parameter: ParameterSchema.optional(),
+//   collections: z.array(CollectionSchema).optional(),
+// });
+
 export const NamesSchema = z.object({
-  parameter: ParameterSchema.optional(),
+  parameter: z
+    .object({
+      name: z.object({
+        singular: LanguageMapSchema,
+        plural: LanguageMapSchema,
+      }),
+    })
+    .optional(),
   collections: z.array(CollectionSchema).optional(),
 });
 
@@ -515,6 +532,7 @@ export type ContextButtonProps = {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   type: 'default' | 'edit' | 'delete';
   classes?: string;
+  disabled?: boolean;
   formMethod?: string;
 };
 

@@ -16,12 +16,6 @@ interface PublishedTemplatesProps {
   };
 }
 
-// type OrderByProductOutput = {
-//   _id: string;
-//   product: LanguageMap;
-//   templates: LaboratoryTemplate[];
-// };
-
 const PublishedTemplates = ({ published, data }: PublishedTemplatesProps) => {
   const mutPublished =
     (data?.products?.settings &&

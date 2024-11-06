@@ -1,8 +1,78 @@
 import mongoose, { Schema } from 'mongoose';
 import {
+  Collection,
   LaboratoryTemplateDocument,
   LaboratoryTemplateModel,
+  Options,
+  Parameter,
 } from '@/types/type';
+
+const optionsParameterSchema = new Schema<Parameter>(
+  {
+    name: {
+      singular: {
+        type: Map,
+        of: String,
+        // required: true,
+        // validate: {
+        //   validator: function (map: Map<string, string>) {
+        //     return map.size > 0;
+        //   },
+        //   message: 'Singular name must have at least one language entry',
+        // },
+        default: undefined,
+      },
+      plural: {
+        type: Map,
+        of: String,
+        // required: true,
+        // validate: {
+        //   validator: function (map: Map<string, string>) {
+        //     return map.size > 0;
+        //   },
+        //   message: 'Plural name must have at least one language entry',
+        // },
+        default: undefined,
+      },
+    },
+  },
+  { _id: false, strict: true }
+);
+
+const optionsCollectionSchema = new Schema<Collection>(
+  {
+    _id: Schema.Types.ObjectId,
+    name: {
+      type: Map,
+      of: String,
+      // validate: {
+      //   validator: function (map: Map<string, string>) {
+      //     return map.size > 0;
+      //   },
+      //   message: 'Collection name must have at least one language entry',
+      // },
+      default: undefined,
+    },
+  },
+  { _id: false, strict: true }
+);
+
+const optionsSchema = new Schema<Options>(
+  {
+    parameter: {
+      type: optionsParameterSchema,
+      // validate: {
+      //   validator: function (map: Map<string, string>) {
+      //     return map.size > 0;
+      //   },
+      //   message: 'Parameter name must have at least one language entry',
+      // },
+      default: undefined,
+    },
+    collections: [optionsCollectionSchema],
+  },
+  { _id: false, strict: true }
+);
 
 const groupedSchema = new Schema(
   {
@@ -133,12 +203,8 @@ const laboratoryTemplatesSchema = new Schema<
       },
     },
     schemaNames: {
-      parameter: {
-        type: Schema.Types.Mixed,
-      },
-      collections: {
-        type: Schema.Types.Mixed,
-      },
+      type: optionsSchema,
+      default: undefined,
     },
     template: {
       type: [templateSchema],

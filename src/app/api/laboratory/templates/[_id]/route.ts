@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 // connection/models/db functions
-import LaboratoryTemplate from '@/db/models/LaboratoryTemplate';
+import { LaboratoryTemplate } from '@/db/models';
 import connection from '@/db/connection';
 
 interface ParamProps {
@@ -17,11 +17,14 @@ export async function GET(
 ) {
   let { _id } = params;
   try {
+    console.log(params, 'the params in back');
     cookies();
     await connection();
     const template = await LaboratoryTemplate.findOne({
       _id,
     });
+    console.log(template, 'the template');
+
     return NextResponse.json({ template }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });

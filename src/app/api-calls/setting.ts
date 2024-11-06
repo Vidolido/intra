@@ -16,13 +16,23 @@ export async function getSettings(
   }
   let query = !searchQuery ? baseUrl : queryParser(baseUrl, searchQuery);
 
-  const res = await fetch(query);
+  try {
+    const res = await fetch(query);
+    const data = await res.json();
 
-  if (!res.ok) {
-    console.log(res);
-    throw new Error('Failed to get settings from db. Reason: ' + res);
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to fetch settings');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    throw new Error(
+      `Failed to get settings: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
+    );
   }
-  return res.json();
 }
 
 export async function getSettingById(_id: string) {

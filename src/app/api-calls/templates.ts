@@ -4,7 +4,7 @@ import { SearchQueryParams, TemplateResponse } from '@/types/type';
 export async function getLaboratoryTemplates(
   searchQuery: SearchQueryParams
 ): Promise<TemplateResponse> {
-  let baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/laboratory/templates/get-laboratory-templates`;
+  let baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/laboratory/templates`;
 
   let query = queryParser(baseUrl, searchQuery);
 
