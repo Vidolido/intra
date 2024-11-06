@@ -148,20 +148,7 @@ const InputForm = ({
 			_id: selectedProperty?._id,
 			name: selectedProperty?.parameter,
 		};
-		// let mutCollections =
-		// 	selectedProperty?.collections &&
-		// 	Object.entries(selectedProperty?.collections).reduce<CollectionsMap>(
-		// 		(acc, [_id, options]) => {
-		// 			if (_id in selectedOptions) {
-		// 				let itemsToFind = selectedOptions[_id].map((slectedOptionId) => {
-		// 					const option = options.find((opt) => opt._id === slectedOptionId);
-		// 					return option ? { _id: option._id, value: option.value } : {};
-		// 				});
-		// 				return (acc[_id] = itemsToFind);
-		// 			} else return acc;
-		// 		},
-		// 		{}
-		// 	);
+
 		let mutCollections: CollectionsMap = {};
 
 		if (selectedProperty?.collections) {
