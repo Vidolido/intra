@@ -13,7 +13,6 @@ export async function editSetting(
 	settingId: string,
 	settingState: InsertSettingsState
 ) {
-	console.log(documentId, settingState, 'OVIE LI?');
 	try {
 		await connection();
 		const foundDocument = await Setting.findOne({ _id: documentId });

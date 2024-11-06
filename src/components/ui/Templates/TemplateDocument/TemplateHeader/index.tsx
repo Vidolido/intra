@@ -12,86 +12,104 @@ import TemplateName from './TemplateName';
 
 // types
 import {
-  ActionResponse,
-  DynamicTemplateSettings,
-  LaboratoryTemplate,
+	ActionResponse,
+	DynamicTemplateSettings,
+	LaboratoryTemplate,
 } from '@/types/type';
 
 interface TemplateHeaderProps {
-  defaultLanguage: string;
-  settings: DynamicTemplateSettings;
-  template: LaboratoryTemplate;
+	defaultLanguage: string;
+	settings: DynamicTemplateSettings;
+	template: LaboratoryTemplate;
 }
 const TemplateHeader = ({
-  defaultLanguage,
-  settings,
-  template,
+	defaultLanguage,
+	settings,
+	template,
 }: TemplateHeaderProps) => {
-  const wrappedAction = async (
-    prevState: ActionResponse,
-    formData: FormData
-  ) => {
-    if (settings.laboratoryTemplates) {
-      formData.append(
-        'options-schema',
-        JSON.stringify(settings.laboratoryTemplates.optionsSchema)
-      );
-    }
+	const initialState: ActionResponse = {
+		data: null,
+		success: null,
+		error: null,
+		message: null,
+		component: null,
+		isLoading: false,
+	};
+	const wrappedAction = async (
+		prevState: ActionResponse,
+		formData: FormData
+	) => {
+		try {
+			if (settings.laboratoryTemplates) {
+				formData.append(
+					'options-schema',
+					JSON.stringify(settings.laboratoryTemplates.optionsSchema)
+				);
+			}
+			const result = await saveTemplateHeader(prevState, formData);
+			return result || initialState;
+		} catch (error) {
+			if (error instanceof Error)
+				return {
+					...initialState,
+					error: true,
+					message: error.message,
+					isLoading: false,
+				};
+			return initialState;
+		}
+	};
+	const [state, formAction] = useFormState<ActionResponse, FormData>(
+		wrappedAction,
+		{
+			data: null,
+			success: null,
+			error: null,
+			message: null,
+			component: null,
+			isLoading: false,
+		}
+	);
 
-    return saveTemplateHeader(prevState, formData);
-  };
-  const [state, formAction] = useFormState<ActionResponse, FormData>(
-    wrappedAction,
-    {
-      data: null,
-      success: null,
-      error: null,
-      message: null,
-      component: null,
-      isLoading: false,
-    }
-  );
-
-  let hasName = template.header && template.header.templateName;
-  console.log(settings, 'settings');
-  return (
-    <form
-      action={formAction}
-      // action={handleSubmit}
-      className='border border-slate-300 rounded w-fit p-2'>
-      <input
-        type='text'
-        className='hidden'
-        defaultValue={template?._id?.toString()}
-        name='document_id'
-      />
-      <div className='flex gap-2 mb-1'>
-        <Product
-          defaultLanguage={defaultLanguage}
-          products={settings.products}
-          template={template}
-        />
-        <TemplateName state={template.header?.templateName} />
-        {hasName && (
-          <DocumentStatus
-            defaultLanguage={defaultLanguage}
-            template={template}
-          />
-        )}
-      </div>
-      <ContextButton
-        label='Save'
-        type='edit'
-        onClick={(e) => {
-          e.preventDefault();
-          const targetForm = (e.target as HTMLButtonElement).form;
-          if (targetForm) targetForm.requestSubmit();
-        }}
-        classes='w-full'
-        disabled={state.isLoading}
-      />
-    </form>
-  );
+	let hasName = template.templateName ?? null;
+	return (
+		<form
+			action={formAction}
+			// action={handleSubmit}
+			className='border border-slate-300 rounded w-fit p-2'>
+			<input
+				type='text'
+				className='hidden'
+				defaultValue={template?._id?.toString()}
+				name='document_id'
+			/>
+			<div className='flex gap-2 mb-1'>
+				<Product
+					defaultLanguage={defaultLanguage}
+					products={settings.products}
+					template={template}
+				/>
+				<TemplateName state={template.templateName} />
+				{hasName && (
+					<DocumentStatus
+						defaultLanguage={defaultLanguage}
+						template={template}
+					/>
+				)}
+			</div>
+			<ContextButton
+				label='Save'
+				type='edit'
+				onClick={(e) => {
+					e.preventDefault();
+					const targetForm = (e.target as HTMLButtonElement).form;
+					if (targetForm) targetForm.requestSubmit();
+				}}
+				classes='w-full'
+				disabled={state && state.isLoading}
+			/>
+		</form>
+	);
 };
 
 export default TemplateHeader;

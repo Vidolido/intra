@@ -1,52 +1,54 @@
 // components
 import TemplateHeader from './TemplateHeader';
-import TemplateInputForm from './TemplateInputForm';
+import InputForm from './TemplateInputForm';
 import Template from './Template';
 
 // types
 import {
-  DynamicTemplateSettings,
-  LaboratoryTemplate,
-  SettingsResponse,
+	DynamicTemplateSettings,
+	LaboratoryTemplate,
+	Language,
 } from '@/types/type';
+import TemplateInputForm from './TemplateInputForm';
 interface TemplateDocumentProps {
-  title: string;
-  defaultLanguage: string;
-  settings: DynamicTemplateSettings;
-  template: LaboratoryTemplate;
+	title: string;
+	defaultLanguage: string;
+	languages: Language[];
+	settings: DynamicTemplateSettings;
+	template: LaboratoryTemplate;
 }
 
 const TemplateDocument = ({
-  title,
-  defaultLanguage,
-  settings,
-  template,
+	title,
+	defaultLanguage,
+	languages,
+	settings,
+	template,
 }: TemplateDocumentProps) => {
-  return (
-    <div className='flex flex-col gap-1 w-full pr-2'>
-      <h2>{title}</h2>
-      <TemplateHeader
-        defaultLanguage={defaultLanguage}
-        settings={settings}
-        template={template}
-      />
-      {/* <TemplateInputForm
-        languages={languages}
-        document={template._id}
-        setting={setting}
-        groups={groups}
-        defaultLanguage={defaultLanguage}
-      />
+	return (
+		<div className='flex flex-col gap-1 w-full pr-2'>
+			<h2>{title}</h2>
+			<TemplateHeader
+				defaultLanguage={defaultLanguage}
+				settings={settings}
+				template={template}
+			/>
+			<TemplateInputForm
+				documentId={template?._id?.toString()}
+				defaultLanguage={defaultLanguage}
+				languages={languages}
+				settings={settings}
+			/>
 
-      <h3>Template</h3>
+			<h3>Template</h3>
 
-      <Template
+			{/* <Template
         template={template}
         setting={setting}
         defaultLanguage={defaultLanguage}
       /> */}
-    </div>
-  );
+		</div>
+	);
 };
 
 export default TemplateDocument;

@@ -1,3 +1,4 @@
+import { formatKeyValue } from '@/functions/formatKeyValue';
 import {
 	Collection,
 	CollectionsOutput,
@@ -79,7 +80,8 @@ export const typeOfValue = (
 		'key' in item.value
 	) {
 		const keyValue = item.value as { key: string; value: string };
-		return `${keyValue.key} / ${keyValue.value}`;
+		let formated = formatKeyValue(keyValue.key, keyValue.value, 'min', 'max');
+		return formated;
 	}
 	return '';
 };

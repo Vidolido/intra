@@ -1,49 +1,50 @@
+// state/actions
 import { getLanguages } from '@/app/api-calls/languages';
 import { getSettings } from '@/app/api-calls/setting';
 import { getTemplateById } from '@/app/api-calls/templates';
-// import { mutateTemplateSettings } from '@/functions/mutateTemplateSettings';
 
 // components
 import TemplateDocument from '@/components/ui/Templates/TemplateDocument';
 
 //types
-import { DynamicTemplateSettings, Setting } from '@/types/type';
+import { DynamicTemplateSettings } from '@/types/type';
 interface PageProps {
-  searchParams: { [key: string]: string };
+	searchParams: { [key: string]: string };
 }
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 const page = async ({ searchParams }: PageProps) => {
-  const { _id } = searchParams;
-  const { languages } = await getLanguages();
-  const { template } = await getTemplateById(_id);
-  // const { template } = await getTemplateById(_id);
+	const { _id } = searchParams;
+	try {
+		const [{ languages }, { template }, settings] = await Promise.all([
+			getLanguages(),
+			getTemplateById(_id),
+			getSettings({
+				documentStatus: 'published',
+				isDeleted: false,
+				settingName: ['Products', 'Laboratory Templates'],
+			}) as Promise<DynamicTemplateSettings>,
+		]);
+		let defaultLanguage = languages[0].language;
+		// TODO:
+		// Make instructions if undefind/null: settingName: ['Products', 'Laboratory Templates']
 
-  console.log(searchParams, 'searchParams in create');
-
-  const settings = (await getSettings({
-    documentStatus: 'published',
-    isDeleted: false,
-    settingName: [
-      'Products',
-      'Grouped Parameters',
-      'Types',
-      'Laboratory Templates',
-    ],
-  })) as DynamicTemplateSettings;
-
-  let defaultLanguage = languages[0].language;
-
-  return (
-    <TemplateDocument
-      title='Edit Draft Template'
-      defaultLanguage={defaultLanguage}
-      settings={settings}
-      template={template}
-    />
-  );
+		return (
+			<TemplateDocument
+				title='Create Draft Template'
+				defaultLanguage={defaultLanguage}
+				languages={languages}
+				settings={settings}
+				template={template}
+			/>
+		);
+	} catch (error) {
+		console.error('Page Error:', error);
+		// might want to return an error component here
+		throw error; // let nextjs error boundary handle it
+	}
 };
 
 export default page;

@@ -12,7 +12,6 @@ export async function insertSettings(
 	state: InsertSettingsState,
 	documentId: string
 ) {
-	console.log('THIS RAN');
 	try {
 		await connection();
 		const foundDocument = await Setting.findOne({ _id: documentId });
