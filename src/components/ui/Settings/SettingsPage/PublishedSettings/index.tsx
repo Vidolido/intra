@@ -17,7 +17,7 @@ const PublishedSettings = ({
 }: PublishedSettingsProps) => {
   const mutPublished = orderByBusinessArea(businessAreas, published) || [];
 
-  console.log(mutPublished, 'mutPub');
+  // console.log(mutPublished, 'mutPub');
   return (
     <div className='flex flex-col gap-1'>
       <h2>Settings</h2>
